@@ -163,7 +163,7 @@ export const SiteHubMobile = memo(
 								transform: 'scale(0.5)',
 								borderRadius: 4,
 							} }
-							{ ...( dashboardLink && ! isBlockTheme
+							{ ...( ! isBlockTheme
 								? {
 										href: dashboardLink,
 										label: __( 'Go to the Dashboard' ),

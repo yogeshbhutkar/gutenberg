@@ -24,6 +24,25 @@
 	"supports": {
 		"reusable": false,
 		"html": false,
+		"__experimentalBorder": {
+			"color": true,
+			"width": true,
+			"style": true,
+			"radius": true,
+			"__experimentalDefaultControls": {
+				"width": true,
+				"radius": true
+			}
+		},
+		"color": {
+			"text": true,
+			"background": true,
+			"link": true
+		},
+		"spacing": {
+			"padding": true,
+			"margin": true
+		},
 		"typography": {
 			"fontSize": true,
 			"lineHeight": true,
@@ -39,6 +58,9 @@
 		},
 		"interactivity": {
 			"clientNavigation": true
+		},
+		"border": {
+			"radius": true
 		}
 	},
 	"editorStyle": "wp-block-home-link-editor",

@@ -132,7 +132,7 @@ export const SiteHubMobile = memo(
 					dashboardLink:
 						getSettings().__experimentalDashboardLink ||
 						'index.php',
-					isBlockTheme: getCurrentTheme()?.is_block_theme ?? false,
+					isBlockTheme: getCurrentTheme()?.is_block_theme,
 					homeUrl: getEntityRecord( 'root', '__unstableBase' )?.home,
 					siteTitle:
 						! _site?.title && !! _site?.url

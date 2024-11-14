@@ -74,7 +74,7 @@ const ZoomOutToggle = ( { disabled } ) => {
 			disabled={ disabled }
 			onClick={ handleZoomOut }
 			icon={ zoomOutIcon }
-			label={ __( 'Zoom Out' ) }
+			label={ isZoomOut ? __( 'Zoom In' ) : __( 'Zoom Out' ) }
 			isPressed={ isZoomOut }
 			size="compact"
 			showTooltip={ ! showIconLabels }

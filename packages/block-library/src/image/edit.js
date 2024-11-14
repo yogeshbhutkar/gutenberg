@@ -121,10 +121,14 @@ export function ImageEdit( {
 		( parentLayout.type !== 'flex' && parentLayout.type !== 'grid' );
 	const [ maxWidthObserver, maxContentWidth ] = useMaxWidthObserver();
 
-	const [ placeholderResizeListener, { width: placeholderWidth } ] =
-		useResizeObserver();
+	const [
+		placeholderResizeListener,
+		{ width: placeholderWidth, height: placeholderHeight },
+	] = useResizeObserver();
 
-	const isSmallContainer = placeholderWidth && placeholderWidth < 160;
+	const isSmallContainer =
+		( placeholderWidth && placeholderWidth < 160 ) ||
+		( placeholderHeight && placeholderHeight < 230 );
 
 	const altRef = useRef();
 	useEffect( () => {

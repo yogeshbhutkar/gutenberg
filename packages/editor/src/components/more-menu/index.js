@@ -16,6 +16,7 @@ import {
 	store as preferencesStore,
 } from '@wordpress/preferences';
 import { store as interfaceStore, ActionItem } from '@wordpress/interface';
+import { store as blockEditorStore } from '@wordpress/block-editor';
 
 /**
  * Internal dependencies
@@ -25,19 +26,30 @@ import ModeSwitcher from '../mode-switcher';
 import ToolsMoreMenuGroup from './tools-more-menu-group';
 import ViewMoreMenuGroup from './view-more-menu-group';
 import { store as editorStore } from '../../store';
+import { unlock } from '../../lock-unlock';
 
 export default function MoreMenu() {
 	const { openModal } = useDispatch( interfaceStore );
 	const { set: setPreference } = useDispatch( preferencesStore );
 	const { toggleDistractionFree } = useDispatch( editorStore );
-	const showIconLabels = useSelect(
-		( select ) =>
-			select( preferencesStore ).get( 'core', 'showIconLabels' ),
-		[]
-	);
+	const { resetZoomLevel } = unlock( useDispatch( blockEditorStore ) );
+	const { isZoomOut, showIconLabels } = useSelect( ( select ) => {
+		const { get: getPreference } = select( preferencesStore );
+
+		return {
+			showIconLabels: getPreference( 'core', 'showIconLabels' ),
+			isZoomOut: unlock( select( blockEditorStore ) ).isZoomOut(),
+		};
+	}, [] );
 
 	const turnOffDistractionFree = () => {
 		setPreference( 'core', 'distractionFree', false );
+	};
+
+	const handleZoomOut = () => {
+		if ( isZoomOut ) {
+			resetZoomLevel();
+		}
 	};
 
 	return (
@@ -80,11 +92,12 @@ export default function MoreMenu() {
 								label={ __( 'Distraction free' ) }
 								info={ __( 'Write with calmness' ) }
 								handleToggling={ false }
-								onToggle={ () =>
+								onToggle={ () => {
 									toggleDistractionFree( {
 										createNotice: false,
-									} )
-								}
+									} );
+									handleZoomOut();
+								} }
 								messageActivated={ __(
 									'Distraction free mode activated.'
 								) }

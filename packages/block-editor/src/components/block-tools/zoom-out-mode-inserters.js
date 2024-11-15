@@ -3,7 +3,6 @@
  */
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useEffect, useState } from '@wordpress/element';
-import { store as preferencesStore } from '@wordpress/preferences';
 
 /**
  * Internal dependencies
@@ -21,7 +20,6 @@ function ZoomOutModeInserters() {
 		setInserterIsOpened,
 		sectionRootClientId,
 		selectedBlockClientId,
-		isDistractionFree,
 	} = useSelect( ( select ) => {
 		const {
 			getSettings,
@@ -32,7 +30,6 @@ function ZoomOutModeInserters() {
 		} = unlock( select( blockEditorStore ) );
 
 		const root = getSectionRootClientId();
-		const { get } = select( preferencesStore );
 
 		return {
 			hasSelection: !! getSelectionStart().clientId,
@@ -41,7 +38,6 @@ function ZoomOutModeInserters() {
 			setInserterIsOpened:
 				getSettings().__experimentalSetIsInserterOpened,
 			selectedBlockClientId: getSelectedBlockClientId(),
-			isDistractionFree: get( 'core', 'distractionFree' ),
 		};
 	}, [] );
 
@@ -58,7 +54,7 @@ function ZoomOutModeInserters() {
 		};
 	}, [] );
 
-	if ( ! isReady || ! hasSelection || isDistractionFree ) {
+	if ( ! isReady || ! hasSelection ) {
 		return null;
 	}
 

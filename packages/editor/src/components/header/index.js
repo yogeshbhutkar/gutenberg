@@ -64,6 +64,7 @@ function Header( {
 		showIconLabels,
 		hasFixedToolbar,
 		hasBlockSelection,
+		isDistractionFree,
 	} = useSelect( ( select ) => {
 		const { get: getPreference } = select( preferencesStore );
 		const {
@@ -80,6 +81,7 @@ function Header( {
 			hasFixedToolbar: getPreference( 'core', 'fixedToolbar' ),
 			hasBlockSelection:
 				!! select( blockEditorStore ).getBlockSelectionStart(),
+			isDistractionFree: getPreference( 'core', 'distractionFree' ),
 		};
 	}, [] );
 
@@ -167,7 +169,7 @@ function Header( {
 					forceIsAutosaveable={ forceIsDirty }
 				/>
 
-				{ canBeZoomedOut && isWideViewport && (
+				{ canBeZoomedOut && isWideViewport && ! isDistractionFree && (
 					<ZoomOutToggle disabled={ forceDisableBlockTools } />
 				) }
 

@@ -835,6 +835,9 @@ export const toggleDistractionFree =
 				dispatch.setIsInserterOpened( false );
 				dispatch.setIsListViewOpened( false );
 			} );
+
+			// Exit zoom out state when toggling distraction free mode.
+			unlock( registry.dispatch( blockEditorStore ) ).resetZoomLevel();
 		}
 		registry.batch( () => {
 			registry

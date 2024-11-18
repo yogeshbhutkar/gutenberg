@@ -74,6 +74,11 @@ $blocks-block__margin: 0.5em;
 	}
 }
 
+// no-background-gradient class is used to remove the default gradient background from the button.
+.wp-block-buttons .wp-block-button .no-background-gradient {
+	background: none;
+}
+
 // For vertical buttons, gap is not factored into width calculations.
 .wp-block-buttons.is-vertical > .wp-block-button {
 	&.wp-block-button__width-25 {

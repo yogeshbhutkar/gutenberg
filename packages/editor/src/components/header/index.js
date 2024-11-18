@@ -169,8 +169,10 @@ function Header( {
 					forceIsAutosaveable={ forceIsDirty }
 				/>
 
-				{ canBeZoomedOut && isWideViewport && ! isDistractionFree && (
-					<ZoomOutToggle disabled={ forceDisableBlockTools } />
+				{ canBeZoomedOut && isWideViewport && (
+					<ZoomOutToggle
+						disabled={ forceDisableBlockTools || isDistractionFree }
+					/>
 				) }
 
 				{ ( isWideViewport || ! showIconLabels ) && (

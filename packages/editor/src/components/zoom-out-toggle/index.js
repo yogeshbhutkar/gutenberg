@@ -28,6 +28,8 @@ const ZoomOutToggle = ( { disabled } ) => {
 		),
 	} ) );
 
+	const { set: setPreference } = useDispatch( preferencesStore );
+
 	const { resetZoomLevel, setZoomLevel } = unlock(
 		useDispatch( blockEditorStore )
 	);
@@ -57,6 +59,7 @@ const ZoomOutToggle = ( { disabled } ) => {
 			resetZoomLevel();
 		} else {
 			setZoomLevel( 'auto-scaled' );
+			setPreference( 'core', 'distractionFree', false );
 		}
 	} );
 

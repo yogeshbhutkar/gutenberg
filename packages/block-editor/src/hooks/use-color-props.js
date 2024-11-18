@@ -62,7 +62,7 @@ export function getColorClassesAndStyles( attributes ) {
 			style?.color?.gradient,
 		'has-link-color': style?.elements?.link?.color,
 		// If there exists a background color, remove the background property from the gradient.
-		'no-background-gradient': backgroundColor,
+		'no-background-gradient': backgroundColor || style?.color?.background,
 	} );
 
 	// Collect inline styles for colors.

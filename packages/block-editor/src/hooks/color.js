@@ -183,6 +183,8 @@ export function addSaveProps( props, blockNameOrType, attributes ) {
 		'has-background': serializeHasBackground && hasBackground,
 		'has-link-color':
 			shouldSerialize( 'link' ) && style?.elements?.link?.color,
+		// If there exists a background color, remove the background property from the gradient.
+		'no-background-gradient': backgroundColor || style?.color?.background,
 	} );
 	props.className = newClassName ? newClassName : undefined;
 

@@ -834,10 +834,10 @@ export const toggleDistractionFree =
 					.set( 'core', 'fixedToolbar', true );
 				dispatch.setIsInserterOpened( false );
 				dispatch.setIsListViewOpened( false );
+				unlock(
+					registry.dispatch( blockEditorStore )
+				).resetZoomLevel();
 			} );
-
-			// Exit zoom out state when toggling distraction free mode.
-			unlock( registry.dispatch( blockEditorStore ) ).resetZoomLevel();
 		}
 		registry.batch( () => {
 			registry

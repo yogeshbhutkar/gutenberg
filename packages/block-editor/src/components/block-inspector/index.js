@@ -215,7 +215,7 @@ const BlockInspectorSingleBlock = ( {
 	const availableTabs = useInspectorControlsTabs( blockName );
 	const showTabs = ! isSectionBlock && availableTabs?.length > 1;
 
-	const { hasBlockStyles, mode } = useSelect(
+	const { hasBlockStyles, isNavigationMode } = useSelect(
 		( select ) => {
 			const { getBlockStyles } = select( blocksStore );
 			const blockStyles = getBlockStyles( blockName );
@@ -223,7 +223,7 @@ const BlockInspectorSingleBlock = ( {
 
 			return {
 				hasBlockStyles: blockStyles && blockStyles.length > 0,
-				mode: editorMode,
+				isNavigationMode: editorMode,
 			};
 		},
 		[ blockName ]
@@ -259,7 +259,7 @@ const BlockInspectorSingleBlock = ( {
 			/>
 			<BlockVariationTransforms blockClientId={ clientId } />
 			<BlockInfo.Slot />
-			{ showTabs && ! mode && (
+			{ showTabs && ! isNavigationMode && (
 				<InspectorControlsTabs
 					hasBlockStyles={ hasBlockStyles }
 					clientId={ clientId }

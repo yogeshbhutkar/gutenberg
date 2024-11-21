@@ -202,7 +202,10 @@ export default function FiltersPanel( {
 							);
 						} }
 						renderContent={ () => (
-							<DropdownContentWrapper paddingSize="small">
+							<DropdownContentWrapper
+								paddingSize="small"
+								className="components-dropdown-content-wrapper__duotone-content"
+							>
 								<MenuGroup label={ __( 'Duotone' ) }>
 									<p>
 										{ __(

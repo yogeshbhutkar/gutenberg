@@ -28,7 +28,6 @@ import ParentControl from './parent-control';
 import { TaxonomyControls } from './taxonomy-controls';
 import FormatControls from './format-controls';
 import StickyControl from './sticky-control';
-import CreateNewPostLink from './create-new-post-link';
 import PerPageControl from './per-page-control';
 import OffsetControl from './offset-controls';
 import PagesControl from './pages-control';
@@ -191,11 +190,7 @@ export default function QueryInspectorControls( props ) {
 
 	return (
 		<>
-			{ !! postType && (
-				<BlockInfo>
-					<CreateNewPostLink postType={ postType } />
-				</BlockInfo>
-			) }
+			{ !! postType && <BlockInfo /> }
 			{ showSettingsPanel && (
 				<PanelBody title={ __( 'Settings' ) }>
 					{ showInheritControl && (

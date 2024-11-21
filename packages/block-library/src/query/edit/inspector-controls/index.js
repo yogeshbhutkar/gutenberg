@@ -15,7 +15,6 @@ import {
 import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
 import { __ } from '@wordpress/i18n';
-import { privateApis as blockEditorPrivateApis } from '@wordpress/block-editor';
 import { debounce } from '@wordpress/compose';
 import { useEffect, useState, useCallback } from '@wordpress/element';
 
@@ -31,7 +30,6 @@ import StickyControl from './sticky-control';
 import PerPageControl from './per-page-control';
 import OffsetControl from './offset-controls';
 import PagesControl from './pages-control';
-import { unlock } from '../../../lock-unlock';
 import {
 	usePostTypes,
 	useIsPostTypeHierarchical,
@@ -40,8 +38,6 @@ import {
 	useTaxonomies,
 } from '../../utils';
 import { useToolsPanelDropdownMenuProps } from '../../../utils/hooks';
-
-const { BlockInfo } = unlock( blockEditorPrivateApis );
 
 export default function QueryInspectorControls( props ) {
 	const { attributes, setQuery, setDisplayLayout, isSingular } = props;
@@ -190,7 +186,6 @@ export default function QueryInspectorControls( props ) {
 
 	return (
 		<>
-			{ !! postType && <BlockInfo /> }
 			{ showSettingsPanel && (
 				<PanelBody title={ __( 'Settings' ) }>
 					{ showInheritControl && (

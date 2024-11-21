@@ -6,6 +6,10 @@
 	.components-popover__content {
 		padding: $grid-unit-10;
 
+		.components-dropdown-content-wrapper {
+			margin: 0;
+		}
+
 		&:has(.components-menu-group) {
 			padding: 0;
 

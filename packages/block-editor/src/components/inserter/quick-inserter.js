@@ -19,6 +19,7 @@ import useInsertionPoint from './hooks/use-insertion-point';
 import usePatternsState from './hooks/use-patterns-state';
 import useBlockTypesState from './hooks/use-block-types-state';
 import { store as blockEditorStore } from '../../store';
+import { useViewportMatch } from '@wordpress/compose';
 
 const SEARCH_THRESHOLD = 6;
 const SHOWN_BLOCK_TYPES = 6;
@@ -32,6 +33,7 @@ export default function QuickInserter( {
 	isAppender,
 	prioritizePatterns,
 	selectBlockOnInsert,
+	closeQuickInserter,
 	hasSearch = true,
 } ) {
 	const [ filterValue, setFilterValue ] = useState( '' );
@@ -53,6 +55,8 @@ export default function QuickInserter( {
 		undefined,
 		true
 	);
+
+	const isMobileDevice = useViewportMatch( 'small', '<' );
 
 	const { setInserterIsOpened, insertionIndex } = useSelect(
 		( select ) => {
@@ -86,6 +90,14 @@ export default function QuickInserter( {
 	// When clicking Browse All select the appropriate block so as
 	// the insertion point can work as expected.
 	const onBrowseAll = () => {
+		if (
+			isMobileDevice &&
+			closeQuickInserter &&
+			typeof closeQuickInserter === 'function'
+		) {
+			closeQuickInserter();
+		}
+
 		setInserterIsOpened( {
 			filterValue,
 			onSelect,

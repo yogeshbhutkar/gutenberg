@@ -211,7 +211,7 @@ function ReusableBlockEdit( {
 
 	const handleEditOriginal = () => {
 		onNavigateToEntityRecord( {
-			id: ref,
+			postId: ref,
 			postType: 'wp_block',
 		} );
 	};

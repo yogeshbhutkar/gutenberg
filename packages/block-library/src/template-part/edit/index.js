@@ -242,7 +242,7 @@ export default function TemplatePartEdit( {
 							<ToolbarButton
 								onClick={ () =>
 									onNavigateToEntityRecord( {
-										id: templatePartId,
+										postId: templatePartId,
 										postType: 'wp_template_part',
 									} )
 								}

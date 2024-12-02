@@ -38,6 +38,7 @@ import { getBlockBindingsSource } from '@wordpress/blocks';
  * Internal dependencies
  */
 import { unlock } from '../lock-unlock';
+import { getPath } from '@wordpress/url';
 
 const { useLayoutClasses } = unlock( blockEditorPrivateApis );
 const { hasOverridableBlocks } = unlock( patternsPrivateApis );
@@ -183,6 +184,10 @@ function ReusableBlockEdit( {
 		[]
 	);
 
+	const isSiteEditor = getPath( window.location.href )?.includes(
+		'site-editor.php'
+	);
+
 	const canOverrideBlocks = useMemo(
 		() => hasPatternOverridesSource && hasOverridableBlocks( blocks ),
 		[ hasPatternOverridesSource, blocks ]
@@ -211,8 +216,8 @@ function ReusableBlockEdit( {
 
 	const handleEditOriginal = () => {
 		onNavigateToEntityRecord( {
-			postId: ref,
 			postType: 'wp_block',
+			...( isSiteEditor ? { id: ref } : { postId: ref } ),
 		} );
 	};
 

@@ -39,6 +39,7 @@ import {
 	useAlternativeTemplateParts,
 	useTemplatePartArea,
 } from './utils/hooks';
+import { getPath } from '@wordpress/url';
 
 function ReplaceButton( {
 	isEntityAvailable,
@@ -173,6 +174,10 @@ export default function TemplatePartEdit( {
 		[ templatePartId, attributes.area, clientId ]
 	);
 
+	const isSiteEditor = getPath( window.location.href )?.includes(
+		'site-editor.php'
+	);
+
 	const areaObject = useTemplatePartArea( area );
 	const blockProps = useBlockProps();
 	const isPlaceholder = ! slug;
@@ -242,8 +247,10 @@ export default function TemplatePartEdit( {
 							<ToolbarButton
 								onClick={ () =>
 									onNavigateToEntityRecord( {
-										postId: templatePartId,
 										postType: 'wp_template_part',
+										...( isSiteEditor
+											? { id: templatePartId }
+											: { postId: templatePartId } ),
 									} )
 								}
 							>

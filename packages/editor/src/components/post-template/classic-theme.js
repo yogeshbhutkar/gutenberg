@@ -181,7 +181,7 @@ function PostTemplateDropdownContent( { onClose } ) {
 						variant="link"
 						onClick={ () => {
 							onNavigateToEntityRecord( {
-								id: currentTemplateId,
+								postId: currentTemplateId,
 								postType: 'wp_template',
 							} );
 							onClose();

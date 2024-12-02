@@ -99,7 +99,7 @@ export default function CreateNewTemplateModal( { onClose } ) {
 
 		setIsBusy( false );
 		onNavigateToEntityRecord( {
-			id: newTemplate.id,
+			postId: newTemplate.id,
 			postType: 'wp_template',
 		} );
 		cancel();

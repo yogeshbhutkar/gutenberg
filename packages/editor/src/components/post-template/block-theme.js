@@ -109,7 +109,7 @@ export default function BlockThemeControl( { id } ) {
 							<MenuItem
 								onClick={ () => {
 									onNavigateToEntityRecord( {
-										id: template.id,
+										postId: template.id,
 										postType: 'wp_template',
 									} );
 									onClose();

@@ -356,7 +356,7 @@ const getPageContentFocusCommands = () =>
 				icon: layout,
 				callback: ( { close } ) => {
 					onNavigateToEntityRecord( {
-						postId: templateId,
+						id: templateId,
 						postType: 'wp_template',
 					} );
 					close();

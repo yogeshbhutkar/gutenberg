@@ -103,7 +103,7 @@ function ContentOnlySettingsMenuItems( { clientId, onClose } ) {
 				<MenuItem
 					onClick={ () => {
 						onNavigateToEntityRecord( {
-							postId: entity.id,
+							id: entity.id,
 							postType: entity.type,
 						} );
 					} }

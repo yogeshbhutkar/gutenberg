@@ -86,7 +86,7 @@ export default function EditTemplateBlocksNotification( { contentRef } ) {
 			onConfirm={ () => {
 				setIsDialogOpen( false );
 				onNavigateToEntityRecord( {
-					postId: templateId,
+					id: templateId,
 					postType: 'wp_template',
 				} );
 			} }

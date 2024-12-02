@@ -127,7 +127,7 @@ function EditableTemplatePartInnerBlocks( {
 			? {
 					onDoubleClick: () =>
 						onNavigateToEntityRecord( {
-							postId: id,
+							id,
 							postType: 'wp_template_part',
 						} ),
 			  }

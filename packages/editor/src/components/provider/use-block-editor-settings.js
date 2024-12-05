@@ -274,6 +274,11 @@ function useBlockEditorSettings( settings, postType, postId, renderingMode ) {
 
 	const forceDisableFocusMode = settings.focusMode === false;
 
+	const isInserterOpened = useSelect(
+		( select ) => select( editorStore ).isInserterOpened(),
+		[]
+	);
+
 	return useMemo( () => {
 		const blockEditorSettings = {
 			...Object.fromEntries(
@@ -326,6 +331,7 @@ function useBlockEditorSettings( settings, postType, postId, renderingMode ) {
 				postType === 'wp_navigation'
 					? [ [ 'core/navigation', {}, [] ] ]
 					: settings.template,
+			__experimentalIsInserterOpened: isInserterOpened,
 			__experimentalSetIsInserterOpened: setIsInserterOpened,
 			[ sectionRootClientIdKey ]: sectionRootClientId,
 			editorTool:
@@ -360,6 +366,7 @@ function useBlockEditorSettings( settings, postType, postId, renderingMode ) {
 		globalStylesData,
 		globalStylesLinksData,
 		renderingMode,
+		isInserterOpened,
 	] );
 }
 

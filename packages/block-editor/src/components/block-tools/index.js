@@ -44,6 +44,7 @@ function selector( select ) {
 		isTyping: isTyping(),
 		isZoomOutMode: isZoomOut(),
 		isDragging: isDragging(),
+		isInserterOpened: getSettings().__experimentalIsInserterOpened,
 	};
 }
 
@@ -61,8 +62,14 @@ export default function BlockTools( {
 	__unstableContentRef,
 	...props
 } ) {
-	const { clientId, hasFixedToolbar, isTyping, isZoomOutMode, isDragging } =
-		useSelect( selector, [] );
+	const {
+		clientId,
+		hasFixedToolbar,
+		isTyping,
+		isZoomOutMode,
+		isDragging,
+		isInserterOpened,
+	} = useSelect( selector, [] );
 
 	const isMatch = useShortcutEventMatch();
 	const {
@@ -234,7 +241,7 @@ export default function BlockTools( {
 					name="__unstable-block-tools-after"
 					ref={ blockToolbarAfterRef }
 				/>
-				{ isZoomOutMode && ! isDragging && (
+				{ isZoomOutMode && ! isDragging && ! isInserterOpened && (
 					<ZoomOutModeInserters
 						__unstableContentRef={ __unstableContentRef }
 					/>

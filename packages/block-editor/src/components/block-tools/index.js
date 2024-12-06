@@ -33,6 +33,7 @@ function selector( select ) {
 		isTyping,
 		isDragging,
 		isZoomOut,
+		showZoomOutModeInserter,
 	} = unlock( select( blockEditorStore ) );
 
 	const clientId =
@@ -44,7 +45,7 @@ function selector( select ) {
 		isTyping: isTyping(),
 		isZoomOutMode: isZoomOut(),
 		isDragging: isDragging(),
-		isInserterOpened: getSettings().__experimentalIsInserterOpened,
+		showZoomOutModeInserter: showZoomOutModeInserter(),
 	};
 }
 
@@ -68,7 +69,7 @@ export default function BlockTools( {
 		isTyping,
 		isZoomOutMode,
 		isDragging,
-		isInserterOpened,
+		showZoomOutModeInserter,
 	} = useSelect( selector, [] );
 
 	const isMatch = useShortcutEventMatch();
@@ -200,6 +201,7 @@ export default function BlockTools( {
 			}
 		}
 	}
+
 	const blockToolbarRef = usePopoverScroll( __unstableContentRef );
 	const blockToolbarAfterRef = usePopoverScroll( __unstableContentRef );
 
@@ -241,7 +243,7 @@ export default function BlockTools( {
 					name="__unstable-block-tools-after"
 					ref={ blockToolbarAfterRef }
 				/>
-				{ isZoomOutMode && ! isDragging && ! isInserterOpened && (
+				{ isZoomOutMode && ! isDragging && showZoomOutModeInserter && (
 					<ZoomOutModeInserters
 						__unstableContentRef={ __unstableContentRef }
 					/>

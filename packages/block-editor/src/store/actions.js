@@ -657,6 +657,20 @@ export function setTemplateValidity( isValid ) {
 }
 
 /**
+ * Action that shows the zoom out mode inserter.
+ *
+ * @param {boolean} showZoomOutModeInserter show the zoom out mode inserter.
+ *
+ * @return {Object} Action object.
+ */
+export function setShowZoomOutModeInserter( showZoomOutModeInserter ) {
+	return {
+		type: 'SET_ZOOM_OUT_MODE_INSERTER',
+		showZoomOutModeInserter,
+	};
+}
+
+/**
  * Action that synchronizes the template with the list of blocks.
  *
  * @return {Object} Action object.

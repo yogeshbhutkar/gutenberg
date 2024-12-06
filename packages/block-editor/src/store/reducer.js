@@ -1660,6 +1660,29 @@ export function template( state = { isValid: true }, action ) {
 }
 
 /**
+ * Reducer returning whether the zoom out mode inserter should be shown or not.
+ *
+ * @param {Object} state  Current state.
+ * @param {Object} action Dispatched action.
+ *
+ * @return {Object} Updated state.
+ */
+export function zoomOutModeInserter(
+	state = { showZoomOutModeInserter: true },
+	action
+) {
+	switch ( action.type ) {
+		case 'SET_ZOOM_OUT_MODE_INSERTER':
+			return {
+				...state,
+				showZoomOutModeInserter: action.showZoomOutModeInserter,
+			};
+	}
+
+	return state;
+}
+
+/**
  * Reducer returning the editor setting.
  *
  * @param {Object} state  Current state.
@@ -2119,6 +2142,7 @@ const combinedReducers = combineReducers( {
 	insertionPoint,
 	insertionCue,
 	template,
+	zoomOutModeInserter,
 	settings,
 	preferences,
 	lastBlockAttributesChange,

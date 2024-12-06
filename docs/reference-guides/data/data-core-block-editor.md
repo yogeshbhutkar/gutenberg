@@ -1227,6 +1227,18 @@ _Returns_
 
 -   `?boolean`: Whether the template is valid or not.
 
+### showZoomOutModeInserter
+
+Returns whether the zoom out mode inserter is enabled or not.
+
+_Parameters_
+
+-   _state_ `Object`: Global application state.
+
+_Returns_
+
+-   `boolean`: Whether the drop pattern is enabled or not.
+
 ### wasBlockJustInserted
 
 Tells if the block with the passed clientId was just inserted.
@@ -1720,6 +1732,18 @@ Action that enables or disables the navigation mode.
 _Parameters_
 
 -   _isNavigationMode_ `boolean`: Enable/Disable navigation mode.
+
+### setShowZoomOutModeInserter
+
+Action that shows the zoom out mode inserter.
+
+_Parameters_
+
+-   _showZoomOutModeInserter_ `boolean`: show the zoom out mode inserter.
+
+_Returns_
+
+-   `Object`: Action object.
 
 ### setTemplateValidity
 

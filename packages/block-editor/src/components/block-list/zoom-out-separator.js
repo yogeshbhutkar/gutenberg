@@ -11,8 +11,8 @@ import {
 	__unstableAnimatePresence as AnimatePresence,
 } from '@wordpress/components';
 import { useReducedMotion } from '@wordpress/compose';
-import { useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -20,6 +20,80 @@ import { __ } from '@wordpress/i18n';
  */
 import { store as blockEditorStore } from '../../store';
 import { unlock } from '../../lock-unlock';
+
+const useRenderDropZone = ( {
+	position,
+	insertionPoint,
+	blockInsertionPointVisible,
+	blockInsertionPoint,
+	clientId,
+	sectionClientIds,
+	selectedBlockIds,
+} ) => {
+	const [ isVisible, setIsVisible ] = useState( false );
+	const { setShowZoomOutModeInserter } = useDispatch( blockEditorStore );
+
+	useEffect( () => {
+		const hasTopInsertionPoint =
+			insertionPoint?.index === 0 &&
+			clientId === sectionClientIds[ insertionPoint.index ];
+		const hasBottomInsertionPoint =
+			insertionPoint &&
+			insertionPoint.hasOwnProperty( 'index' ) &&
+			clientId === sectionClientIds[ insertionPoint.index - 1 ];
+
+		let visibility = false;
+		let selectedBlockId = null;
+
+		if ( position === 'top' ) {
+			visibility =
+				hasTopInsertionPoint ||
+				( blockInsertionPointVisible &&
+					blockInsertionPoint.index === 0 &&
+					clientId ===
+						sectionClientIds[ blockInsertionPoint.index ] );
+			selectedBlockId =
+				sectionClientIds[
+					hasTopInsertionPoint
+						? insertionPoint.index
+						: blockInsertionPoint.index
+				];
+		}
+
+		if ( position === 'bottom' ) {
+			visibility =
+				hasBottomInsertionPoint ||
+				( blockInsertionPointVisible &&
+					clientId ===
+						sectionClientIds[ blockInsertionPoint.index - 1 ] );
+			selectedBlockId =
+				sectionClientIds[
+					hasBottomInsertionPoint
+						? insertionPoint.index - 1
+						: blockInsertionPoint.index - 1
+				];
+		}
+
+		if ( visibility ) {
+			setShowZoomOutModeInserter(
+				! selectedBlockIds.includes( selectedBlockId )
+			);
+		}
+
+		setIsVisible( visibility );
+	}, [
+		position,
+		insertionPoint,
+		blockInsertionPointVisible,
+		blockInsertionPoint,
+		clientId,
+		sectionClientIds,
+		selectedBlockIds,
+		setShowZoomOutModeInserter,
+	] );
+
+	return isVisible;
+};
 
 export function ZoomOutSeparator( {
 	clientId,
@@ -33,11 +107,13 @@ export function ZoomOutSeparator( {
 		insertionPoint,
 		blockInsertionPointVisible,
 		blockInsertionPoint,
+		selectedBlockIds,
 	} = useSelect( ( select ) => {
 		const {
 			getInsertionPoint,
 			getBlockOrder,
 			getSectionRootClientId,
+			getSelectedBlockClientIds,
 			isBlockInsertionPointVisible,
 			getBlockInsertionPoint,
 		} = unlock( select( blockEditorStore ) );
@@ -51,8 +127,24 @@ export function ZoomOutSeparator( {
 			insertionPoint: getInsertionPoint(),
 			blockInsertionPoint: getBlockInsertionPoint(),
 			blockInsertionPointVisible: isBlockInsertionPointVisible(),
+			selectedBlockIds: getSelectedBlockClientIds(),
 		};
 	}, [] );
+
+	const isVisible = useRenderDropZone( {
+		position,
+		insertionPoint,
+		blockInsertionPointVisible,
+		blockInsertionPoint,
+		clientId,
+		sectionClientIds,
+		selectedBlockIds,
+	} );
+
+	const isSectionBlock =
+		rootClientId === sectionRootClientId &&
+		sectionClientIds &&
+		sectionClientIds.includes( clientId );
 
 	const isReducedMotion = useReducedMotion();
 
@@ -60,41 +152,8 @@ export function ZoomOutSeparator( {
 		return;
 	}
 
-	let isVisible = false;
-
-	const isSectionBlock =
-		rootClientId === sectionRootClientId &&
-		sectionClientIds &&
-		sectionClientIds.includes( clientId );
-
 	if ( ! isSectionBlock ) {
 		return null;
-	}
-
-	const hasTopInsertionPoint =
-		insertionPoint?.index === 0 &&
-		clientId === sectionClientIds[ insertionPoint.index ];
-	const hasBottomInsertionPoint =
-		insertionPoint &&
-		insertionPoint.hasOwnProperty( 'index' ) &&
-		clientId === sectionClientIds[ insertionPoint.index - 1 ];
-	// We want to show the zoom out separator in either of these conditions:
-	// 1. If the inserter has an insertion index set
-	// 2. We are dragging a pattern over an insertion point
-	if ( position === 'top' ) {
-		isVisible =
-			hasTopInsertionPoint ||
-			( blockInsertionPointVisible &&
-				blockInsertionPoint.index === 0 &&
-				clientId === sectionClientIds[ blockInsertionPoint.index ] );
-	}
-
-	if ( position === 'bottom' ) {
-		isVisible =
-			hasBottomInsertionPoint ||
-			( blockInsertionPointVisible &&
-				clientId ===
-					sectionClientIds[ blockInsertionPoint.index - 1 ] );
 	}
 
 	return (

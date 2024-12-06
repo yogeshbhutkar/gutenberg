@@ -1538,6 +1538,17 @@ export function isBlockInsertionPointVisible( state ) {
 }
 
 /**
+ * Returns whether the zoom out mode inserter is enabled or not.
+ *
+ * @param {Object} state Global application state.
+ *
+ * @return {boolean} Whether the drop pattern is enabled or not.
+ */
+export function showZoomOutModeInserter( state ) {
+	return state.zoomOutModeInserter.showZoomOutModeInserter;
+}
+
+/**
  * Returns whether the blocks matches the template or not.
  *
  * @param {boolean} state

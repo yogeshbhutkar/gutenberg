@@ -9,9 +9,9 @@ import {
 	Flex,
 	FlexItem,
 } from '@wordpress/components';
-import { __, sprintf } from '@wordpress/i18n';
+import { __, sprintf, isRTL } from '@wordpress/i18n';
 import { privateApis as blockEditorPrivateApis } from '@wordpress/block-editor';
-import { plus, shadow as shadowIcon } from '@wordpress/icons';
+import { plus, Icon, chevronLeft, chevronRight } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -135,9 +135,17 @@ function ShadowItem( { shadow, category } ) {
 	return (
 		<NavigationButtonAsItem
 			path={ `/shadows/edit/${ category }/${ shadow.slug }` }
-			icon={ shadowIcon }
 		>
-			{ shadow.name }
+			<HStack direction="row">
+				<FlexItem className="edit-site-font-size__item">
+					{ shadow.name }
+				</FlexItem>
+				<FlexItem>
+					<HStack justify="flex-end">
+						<Icon icon={ isRTL() ? chevronLeft : chevronRight } />
+					</HStack>
+				</FlexItem>
+			</HStack>
 		</NavigationButtonAsItem>
 	);
 }

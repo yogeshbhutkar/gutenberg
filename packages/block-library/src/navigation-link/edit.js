@@ -578,7 +578,7 @@ export default function NavigationLinkEdit( {
 									// the popover, it's because something has taken the focus from the popover, and
 									// we don't want to steal it back.
 									if (
-										linkUIref.current.contains(
+										linkUIref?.current?.contains(
 											window.document.activeElement
 										)
 									) {

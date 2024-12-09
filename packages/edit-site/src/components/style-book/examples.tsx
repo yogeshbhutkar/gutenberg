@@ -89,7 +89,12 @@ function getOverviewBlockExamples(
 			title: __( 'Colors' ),
 			category: 'overview',
 			content: (
-				<ColorExamples colors={ themePalette.colors } type={ colors } />
+				<ColorExamples
+					colors={ themePalette.colors }
+					type={ colors }
+					templateColumns="repeat(auto-fill, minmax( 200px, 1fr ))"
+					itemHeight="32px"
+				/>
 			),
 		};
 

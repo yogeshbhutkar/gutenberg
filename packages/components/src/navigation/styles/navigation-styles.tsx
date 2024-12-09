@@ -137,6 +137,7 @@ export const ItemBaseUI = styled.li`
 		color: ${ COLORS.white };
 
 		> button,
+		.components-button:hover,
 		> a {
 			color: ${ COLORS.white };
 			opacity: 1;

@@ -137,7 +137,7 @@ function ShadowItem( { shadow, category } ) {
 			path={ `/shadows/edit/${ category }/${ shadow.slug }` }
 		>
 			<HStack direction="row">
-				<FlexItem className="edit-site-font-size__item">
+				<FlexItem className="edit-site-shadows-panel__item">
 					{ shadow.name }
 				</FlexItem>
 				<FlexItem>

@@ -92,7 +92,7 @@ export function getEntityRecordPermissions(
 	name: string,
 	id: string
 ) {
-	return getEntityRecordsPermissions( state, kind, name, id )[ 0 ];
+	return getEntityRecordsPermissions( state, kind, name, [ id ] )[ 0 ];
 }
 
 /**

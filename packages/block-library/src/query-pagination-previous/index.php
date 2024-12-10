@@ -24,13 +24,15 @@ function render_block_core_query_pagination_previous( $attributes, $content, $bl
 
 	global $wp_query;
 
-	if ( ! isset( $block->context['query']['inherit'] ) || ! $block->context['query']['inherit'] ) {
+	if ( isset( $block->context['query']['inherit'] ) && $block->context['query']['inherit'] ) {
+		$total_pages = $wp_query->max_num_pages;
+	} else {
 		$block_query = new WP_Query( build_query_vars_from_query_block( $block, $page ) );
-		$wp_query    = $block_query;
+		$total_pages = $block_query->max_num_pages;
+		wp_reset_postdata();
 	}
 
-	$total = ! $max_page || $max_page > $wp_query->max_num_pages ? $wp_query->max_num_pages : $max_page;
-	wp_reset_postdata();
+	$total = ! $max_page || $max_page > $total_pages ? $total_pages : $max_page;
 
 	$wrapper_attributes = get_block_wrapper_attributes();
 	$show_label         = isset( $block->context['showLabel'] ) ? (bool) $block->context['showLabel'] : true;

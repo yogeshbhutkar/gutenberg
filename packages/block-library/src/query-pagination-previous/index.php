@@ -22,11 +22,8 @@ function render_block_core_query_pagination_previous( $attributes, $content, $bl
 	$max_page            = isset( $block->context['query']['pages'] ) ? (int) $block->context['query']['pages'] : 0;
 	$page                = empty( $_GET[ $page_key ] ) ? 1 : (int) $_GET[ $page_key ];
 
-	global $wp_query;
-
-	if ( isset( $block->context['query']['inherit'] ) && $block->context['query']['inherit'] ) {
-		$total_pages = $wp_query->max_num_pages;
-	} else {
+	$total_pages = $max_page;
+	if ( ! isset( $block->context['query']['inherit'] ) || ! $block->context['query']['inherit'] ) {
 		$block_query = new WP_Query( build_query_vars_from_query_block( $block, $page ) );
 		$total_pages = $block_query->max_num_pages;
 		wp_reset_postdata();

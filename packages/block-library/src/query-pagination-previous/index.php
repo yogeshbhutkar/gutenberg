@@ -19,7 +19,18 @@
 function render_block_core_query_pagination_previous( $attributes, $content, $block ) {
 	$page_key            = isset( $block->context['queryId'] ) ? 'query-' . $block->context['queryId'] . '-page' : 'query-page';
 	$enhanced_pagination = isset( $block->context['enhancedPagination'] ) && $block->context['enhancedPagination'];
+	$max_page            = isset( $block->context['query']['pages'] ) ? (int) $block->context['query']['pages'] : 0;
 	$page                = empty( $_GET[ $page_key ] ) ? 1 : (int) $_GET[ $page_key ];
+
+	global $wp_query;
+
+	if ( ! isset( $block->context['query']['inherit'] ) || ! $block->context['query']['inherit'] ) {
+		$block_query = new WP_Query( build_query_vars_from_query_block( $block, $page ) );
+		$wp_query    = $block_query;
+	}
+
+	$total = ! $max_page || $max_page > $wp_query->max_num_pages ? $wp_query->max_num_pages : $max_page;
+	wp_reset_postdata();
 
 	$wrapper_attributes = get_block_wrapper_attributes();
 	$show_label         = isset( $block->context['showLabel'] ) ? (bool) $block->context['showLabel'] : true;
@@ -44,7 +55,7 @@ function render_block_core_query_pagination_previous( $attributes, $content, $bl
 		add_filter( 'previous_posts_link_attributes', $filter_link_attributes );
 		$content = get_previous_posts_link( $label );
 		remove_filter( 'previous_posts_link_attributes', $filter_link_attributes );
-	} elseif ( 1 !== $page ) {
+	} elseif ( 1 !== $page && $page <= $total ) {
 		$content = sprintf(
 			'<a href="%1$s" %2$s>%3$s</a>',
 			esc_url( add_query_arg( $page_key, $page - 1 ) ),

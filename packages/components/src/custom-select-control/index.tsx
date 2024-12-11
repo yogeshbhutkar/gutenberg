@@ -116,6 +116,8 @@ function CustomSelectControl< T extends CustomSelectOption >(
 		defaultValue: options[ 0 ]?.name,
 	} );
 
+	const { value: currentValue } = Ariakit.useStoreState( store );
+
 	const children = options
 		.map( applyOptionDeprecations )
 		.map( ( { name, key, hint, style, className } ) => {
@@ -149,8 +151,6 @@ function CustomSelectControl< T extends CustomSelectOption >(
 			);
 		} );
 
-	const { value: currentValue } = store.getState();
-
 	const renderSelectedValueHint = () => {
 		const selectedOptionHint = options
 			?.map( applyOptionDeprecations )
@@ -158,7 +158,7 @@ function CustomSelectControl< T extends CustomSelectOption >(
 
 		return (
 			<Styled.SelectedExperimentalHintWrapper>
-				{ store.getState().value }
+				{ currentValue }
 				{ selectedOptionHint && (
 					<Styled.SelectedExperimentalHintItem
 						// Keeping the classname for legacy reasons

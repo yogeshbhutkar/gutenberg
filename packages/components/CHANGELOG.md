@@ -5,6 +5,7 @@
 ### Deprecations
 
 -   `SelectControl`: Deprecate 36px default size ([#66898](https://github.com/WordPress/gutenberg/pull/66898)).
+-   `InputControl`: Deprecate 36px default size ([#66897](https://github.com/WordPress/gutenberg/pull/66897)).
 
 ## 29.0.0 (2024-12-11)
 

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Deprecations
+
+-   `SelectControl`: Deprecate 36px default size ([#66898](https://github.com/WordPress/gutenberg/pull/66898)).
+
 ## 29.0.0 (2024-12-11)
 
 ### Breaking Changes

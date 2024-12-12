@@ -53,7 +53,7 @@ function AddColumnButton() {
 	};
 
 	return (
-		<BlockControls group="block">
+		<BlockControls group="other">
 			<ToolbarButton onClick={ handleAddColumn }>
 				{ __( 'Add Column' ) }
 			</ToolbarButton>

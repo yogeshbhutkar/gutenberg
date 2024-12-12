@@ -12,6 +12,7 @@ import {
 	PanelBody,
 	RangeControl,
 	ToggleControl,
+	ToolbarButton,
 } from '@wordpress/components';
 
 import {
@@ -43,6 +44,32 @@ import {
 const DEFAULT_BLOCK = {
 	name: 'core/column',
 };
+
+function AddColumnButton() {
+	const { insertBlock } = useDispatch( blockEditorStore );
+	const { _getSelectedBlockClientId } = useSelect( ( select ) => {
+		const { getSelectedBlockClientId } = select( blockEditorStore );
+
+		return {
+			_getSelectedBlockClientId: getSelectedBlockClientId,
+		};
+	} );
+
+	const handleAddColumn = () => {
+		const selectedBlockClientId = _getSelectedBlockClientId();
+		const newColumn = createBlock( 'core/column' );
+
+		insertBlock( newColumn, 0, selectedBlockClientId, true );
+	};
+
+	return (
+		<BlockControls group="other">
+			<ToolbarButton onClick={ handleAddColumn }>
+				{ __( 'Add Column' ) }
+			</ToolbarButton>
+		</BlockControls>
+	);
+}
 
 function ColumnInspectorControls( {
 	clientId,
@@ -243,6 +270,7 @@ function ColumnsEditContainer( { attributes, setAttributes, clientId } ) {
 					isStackedOnMobile={ isStackedOnMobile }
 				/>
 			</InspectorControls>
+			<AddColumnButton />
 			<div { ...innerBlocksProps } />
 		</>
 	);

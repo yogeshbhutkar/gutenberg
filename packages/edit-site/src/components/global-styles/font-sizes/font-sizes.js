@@ -114,7 +114,7 @@ function FontSizeGroup( {
 									<FlexItem className="edit-site-font-size__item">
 										{ size.name }
 									</FlexItem>
-									<FlexItem>
+									<FlexItem display="flex">
 										<Icon
 											icon={
 												isRTL()

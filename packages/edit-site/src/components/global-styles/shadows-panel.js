@@ -138,7 +138,7 @@ function ShadowItem( { shadow, category } ) {
 		>
 			<HStack>
 				<FlexItem>{ shadow.name }</FlexItem>
-				<FlexItem>
+				<FlexItem display="flex">
 					<Icon icon={ isRTL() ? chevronLeft : chevronRight } />
 				</FlexItem>
 			</HStack>

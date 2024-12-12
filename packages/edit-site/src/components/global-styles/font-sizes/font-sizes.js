@@ -110,20 +110,18 @@ function FontSizeGroup( {
 								key={ size.slug }
 								path={ `/typography/font-sizes/${ origin }/${ size.slug }` }
 							>
-								<HStack direction="row">
+								<HStack>
 									<FlexItem className="edit-site-font-size__item">
 										{ size.name }
 									</FlexItem>
 									<FlexItem>
-										<HStack justify="flex-end">
-											<Icon
-												icon={
-													isRTL()
-														? chevronLeft
-														: chevronRight
-												}
-											/>
-										</HStack>
+										<Icon
+											icon={
+												isRTL()
+													? chevronLeft
+													: chevronRight
+											}
+										/>
 									</FlexItem>
 								</HStack>
 							</NavigationButtonAsItem>

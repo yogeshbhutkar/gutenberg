@@ -17,12 +17,49 @@ import {
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import {
+	ToolbarButton,
 	__experimentalUseCustomUnits as useCustomUnits,
 	PanelBody,
 	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { sprintf, __ } from '@wordpress/i18n';
+import { createBlock } from '@wordpress/blocks';
+
+function AddColumnButton() {
+	const { insertBlock } = useDispatch( blockEditorStore );
+	const { _getBlockRootClientId, _getBlockIndex, _getSelectedBlockClientId } =
+		useSelect( ( select ) => {
+			const {
+				getBlockRootClientId,
+				getBlockIndex,
+				getSelectedBlockClientId,
+			} = select( blockEditorStore );
+
+			return {
+				_getBlockRootClientId: getBlockRootClientId,
+				_getBlockIndex: getBlockIndex,
+				_getSelectedBlockClientId: getSelectedBlockClientId,
+			};
+		} );
+
+	const handleAddColumn = () => {
+		const selectedBlockClientId = _getSelectedBlockClientId();
+		const newColumn = createBlock( 'core/column' );
+		const rootClientId = _getBlockRootClientId( selectedBlockClientId );
+		const currentBlockIndex = _getBlockIndex( selectedBlockClientId );
+
+		insertBlock( newColumn, currentBlockIndex + 1, rootClientId, true );
+	};
+
+	return (
+		<BlockControls group="block">
+			<ToolbarButton onClick={ handleAddColumn }>
+				{ __( 'Add Column' ) }
+			</ToolbarButton>
+		</BlockControls>
+	);
+}
 
 function ColumnInspectorControls( { width, setAttributes } ) {
 	const [ availableUnits ] = useSettings( 'spacing.units' );
@@ -124,6 +161,7 @@ function ColumnEdit( {
 					setAttributes={ setAttributes }
 				/>
 			</InspectorControls>
+			<AddColumnButton />
 			<div { ...innerBlocksProps } />
 		</>
 	);

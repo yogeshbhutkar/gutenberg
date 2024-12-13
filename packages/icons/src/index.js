@@ -37,6 +37,7 @@ export { default as caption } from './library/caption';
 export { default as capturePhoto } from './library/capture-photo';
 export { default as captureVideo } from './library/capture-video';
 export { default as category } from './library/category';
+export { default as caution } from './library/caution';
 export {
 	/** @deprecated Import `cautionFilled` instead. */
 	default as warning,
@@ -89,6 +90,7 @@ export { default as download } from './library/download';
 export { default as edit } from './library/edit';
 export { default as envelope } from './library/envelope';
 export { default as external } from './library/external';
+export { default as error } from './library/error';
 export { default as file } from './library/file';
 export { default as filter } from './library/filter';
 export { default as flipHorizontal } from './library/flip-horizontal';

@@ -18,22 +18,22 @@ import { store as noticesStore } from '@wordpress/notices';
  */
 import { getItemTitle } from '../../utils/get-item-title';
 
-const SetAsHomepageModal = ( { items, closeModal } ) => {
+const SetAsPostsPageModal = ( { items, closeModal } ) => {
 	const [ item ] = items;
 	const pageTitle = getItemTitle( item );
-	const { showOnFront, currentHomePage, isSaving } = useSelect(
+	const { currentPostsPage, isPageForPostsSet, isSaving } = useSelect(
 		( select ) => {
 			const { getEntityRecord, isSavingEntityRecord } =
 				select( coreStore );
 			const siteSettings = getEntityRecord( 'root', 'site' );
-			const currentHomePageItem = getEntityRecord(
+			const currentPostsPageItem = getEntityRecord(
 				'postType',
 				'page',
-				siteSettings?.page_on_front
+				siteSettings?.page_for_posts
 			);
 			return {
-				showOnFront: siteSettings?.show_on_front,
-				currentHomePage: currentHomePageItem,
+				currentPostsPage: currentPostsPageItem,
+				isPageForPostsSet: siteSettings?.page_for_posts !== 0,
 				isSaving: isSavingEntityRecord( 'root', 'site' ),
 			};
 		}
@@ -43,54 +43,50 @@ const SetAsHomepageModal = ( { items, closeModal } ) => {
 	const { createSuccessNotice, createErrorNotice } =
 		useDispatch( noticesStore );
 
-	async function onSetPageAsHomepage( event ) {
+	async function onSetPageAsPostsPage( event ) {
 		event.preventDefault();
 
 		try {
 			await saveEntityRecord( 'root', 'site', {
-				page_on_front: item.id,
+				page_for_posts: item.id,
 				show_on_front: 'page',
 			} );
 
-			createSuccessNotice( __( 'Homepage updated.' ), {
+			createSuccessNotice( __( 'Posts page updated.' ), {
 				type: 'snackbar',
 			} );
 		} catch ( error ) {
 			const errorMessage =
 				error.message && error.code !== 'unknown_error'
 					? error.message
-					: __( 'An error occurred while setting the homepage.' );
+					: __( 'An error occurred while setting the posts page.' );
 			createErrorNotice( errorMessage, { type: 'snackbar' } );
 		} finally {
 			closeModal?.();
 		}
 	}
 
-	let modalWarning = '';
-	if ( 'posts' === showOnFront ) {
-		modalWarning = __(
-			'This will replace the current homepage which is set to display latest posts.'
-		);
-	} else if ( currentHomePage ) {
-		modalWarning = sprintf(
-			// translators: %s: title of the current home page.
-			__( 'This will replace the current homepage: "%s"' ),
-			getItemTitle( currentHomePage )
-		);
-	}
+	const modalWarning =
+		isPageForPostsSet && currentPostsPage
+			? sprintf(
+					// translators: %s: title of the current posts page.
+					__( 'This will replace the current posts page: "%s"' ),
+					getItemTitle( currentPostsPage )
+			  )
+			: __( 'This page will show the latest posts.' );
 
 	const modalText = sprintf(
-		// translators: %1$s: title of the page to be set as the homepage, %2$s: homepage replacement warning message.
-		__( 'Set "%1$s" as the site homepage? %2$s' ),
+		// translators: %1$s: title of the page to be set as the posts page, %2$s: posts page replacement warning message.
+		__( 'Set "%1$s" as the posts page? %2$s' ),
 		pageTitle,
 		modalWarning
-	).trim();
+	);
 
-	// translators: Button label to confirm setting the specified page as the homepage.
-	const modalButtonLabel = __( 'Set homepage' );
+	// translators: Button label to confirm setting the specified page as the posts page.
+	const modalButtonLabel = __( 'Set posts page' );
 
 	return (
-		<form onSubmit={ onSetPageAsHomepage }>
+		<form onSubmit={ onSetPageAsPostsPage }>
 			<VStack spacing="5">
 				<Text>{ modalText }</Text>
 				<HStack justify="right">
@@ -120,7 +116,7 @@ const SetAsHomepageModal = ( { items, closeModal } ) => {
 	);
 };
 
-export const useSetAsHomepageAction = () => {
+export const useSetAsPostsPageAction = () => {
 	const { pageOnFront, pageForPosts } = useSelect( ( select ) => {
 		const { getEntityRecord } = select( coreStore );
 		const siteSettings = getEntityRecord( 'root', 'site' );
@@ -132,8 +128,8 @@ export const useSetAsHomepageAction = () => {
 
 	return useMemo(
 		() => ( {
-			id: 'set-as-homepage',
-			label: __( 'Set as homepage' ),
+			id: 'set-as-posts-page',
+			label: __( 'Set as posts page' ),
 			isEligible( post ) {
 				if ( post.status !== 'publish' ) {
 					return false;
@@ -155,7 +151,7 @@ export const useSetAsHomepageAction = () => {
 
 				return true;
 			},
-			RenderModal: SetAsHomepageModal,
+			RenderModal: SetAsPostsPageModal,
 		} ),
 		[ pageForPosts, pageOnFront ]
 	);

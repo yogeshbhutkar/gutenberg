@@ -2,11 +2,10 @@
  * WordPress dependencies
  */
 import {
-	PanelBody,
 	__experimentalUseSlotFills as useSlotFills,
+	__experimentalToolsPanel as ToolsPanel,
+	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
-import { useSelect } from '@wordpress/data';
-import { useLayoutEffect, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -14,41 +13,53 @@ import { __ } from '@wordpress/i18n';
  */
 import InspectorControlsGroups from '../inspector-controls/groups';
 import { default as InspectorControls } from '../inspector-controls';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { store as blockEditorStore } from '../../store';
 
 const PositionControlsPanel = () => {
-	const [ initialOpen, setInitialOpen ] = useState();
-
 	// Determine whether the panel should be expanded.
-	const { multiSelectedBlocks } = useSelect( ( select ) => {
-		const { getBlocksByClientId, getSelectedBlockClientIds } =
+	const { selectedClientID, positionAttribute } = useSelect( ( select ) => {
+		const { getSelectedBlockClientIds, getBlockAttributes } =
 			select( blockEditorStore );
+
 		const clientIds = getSelectedBlockClientIds();
+
+		// If multiple blocks are selected, prioritize the first block.
+		const blockAttributes = getBlockAttributes( clientIds[ 0 ] );
+
 		return {
-			multiSelectedBlocks: getBlocksByClientId( clientIds ),
+			selectedClientID: clientIds[ 0 ],
+			positionAttribute: blockAttributes?.style?.position?.type,
 		};
 	}, [] );
 
-	useLayoutEffect( () => {
-		// If any selected block has a position set, open the panel by default.
-		// The first block's value will still be used within the control though.
-		if ( initialOpen === undefined ) {
-			setInitialOpen(
-				multiSelectedBlocks.some(
-					( { attributes } ) => !! attributes?.style?.position?.type
-				)
-			);
-		}
-	}, [ initialOpen, multiSelectedBlocks, setInitialOpen ] );
+	const { updateBlockAttributes } = useDispatch( blockEditorStore );
+
+	function resetPosition() {
+		updateBlockAttributes( selectedClientID, {
+			style: {
+				position: {
+					type: undefined,
+				},
+			},
+		} );
+	}
 
 	return (
-		<PanelBody
+		<ToolsPanel
 			className="block-editor-block-inspector__position"
-			title={ __( 'Position' ) }
-			initialOpen={ initialOpen ?? false }
+			label={ __( 'Position' ) }
+			resetAll={ resetPosition }
 		>
-			<InspectorControls.Slot group="position" />
-		</PanelBody>
+			<ToolsPanelItem
+				isShownByDefault
+				label={ __( 'Position' ) }
+				hasValue={ () => !! positionAttribute }
+				onDeselect={ resetPosition }
+			>
+				<InspectorControls.Slot group="position" />
+			</ToolsPanelItem>
+		</ToolsPanel>
 	);
 };
 

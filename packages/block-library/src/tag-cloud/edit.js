@@ -4,14 +4,14 @@
 import {
 	Flex,
 	FlexItem,
-	PanelBody,
 	ToggleControl,
 	SelectControl,
 	RangeControl,
 	__experimentalUnitControl as UnitControl,
 	__experimentalUseCustomUnits as useCustomUnits,
 	__experimentalParseQuantityAndUnitFromRawValue as parseQuantityAndUnitFromRawValue,
-	__experimentalVStack as VStack,
+	__experimentalToolsPanel as ToolsPanel,
+	__experimentalToolsPanelItem as ToolsPanelItem,
 	Disabled,
 } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
@@ -118,10 +118,25 @@ function TagCloudEdit( { attributes, setAttributes } ) {
 
 	const inspectorControls = (
 		<InspectorControls>
-			<PanelBody title={ __( 'Settings' ) }>
-				<VStack
-					spacing={ 4 }
-					className="wp-block-tag-cloud__inspector-settings"
+			<ToolsPanel
+				label={ __( 'Settings' ) }
+				resetAll={ () => {
+					setAttributes( {
+						taxonomy: 'post_tag',
+						showTagCounts: false,
+						numberOfTags: 45,
+						smallestFontSize: '8pt',
+						largestFontSize: '22pt',
+					} );
+				} }
+			>
+				<ToolsPanelItem
+					hasValue={ () => taxonomy !== 'post_tag' }
+					label={ __( 'Taxonomy' ) }
+					onDeselect={ () =>
+						setAttributes( { taxonomy: 'post_tag' } )
+					}
+					isShownByDefault
 				>
 					<SelectControl
 						__nextHasNoMarginBottom
@@ -133,6 +148,20 @@ function TagCloudEdit( { attributes, setAttributes } ) {
 							setAttributes( { taxonomy: selectedTaxonomy } )
 						}
 					/>
+				</ToolsPanelItem>
+				<ToolsPanelItem
+					hasValue={ () =>
+						smallestFontSize !== '8pt' || largestFontSize !== '22pt'
+					}
+					label={ __( 'Font size' ) }
+					onDeselect={ () =>
+						setAttributes( {
+							smallestFontSize: '8pt',
+							largestFontSize: '22pt',
+						} )
+					}
+					isShownByDefault
+				>
 					<Flex gap={ 4 }>
 						<FlexItem isBlock>
 							<UnitControl
@@ -167,6 +196,13 @@ function TagCloudEdit( { attributes, setAttributes } ) {
 							/>
 						</FlexItem>
 					</Flex>
+				</ToolsPanelItem>
+				<ToolsPanelItem
+					hasValue={ () => numberOfTags !== 45 }
+					label={ __( 'Number of tags' ) }
+					onDeselect={ () => setAttributes( { numberOfTags: 45 } ) }
+					isShownByDefault
+				>
 					<RangeControl
 						__nextHasNoMarginBottom
 						__next40pxDefaultSize
@@ -179,6 +215,15 @@ function TagCloudEdit( { attributes, setAttributes } ) {
 						max={ MAX_TAGS }
 						required
 					/>
+				</ToolsPanelItem>
+				<ToolsPanelItem
+					hasValue={ () => showTagCounts !== false }
+					label={ __( 'Show tag counts' ) }
+					onDeselect={ () =>
+						setAttributes( { showTagCounts: false } )
+					}
+					isShownByDefault
+				>
 					<ToggleControl
 						__nextHasNoMarginBottom
 						label={ __( 'Show tag counts' ) }
@@ -187,8 +232,8 @@ function TagCloudEdit( { attributes, setAttributes } ) {
 							setAttributes( { showTagCounts: ! showTagCounts } )
 						}
 					/>
-				</VStack>
-			</PanelBody>
+				</ToolsPanelItem>
+			</ToolsPanel>
 		</InspectorControls>
 	);
 

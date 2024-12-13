@@ -6,6 +6,7 @@ import {
 	__experimentalToolsPanel as ToolsPanel,
 	__experimentalToolsPanelItem as ToolsPanelItem,
 } from '@wordpress/components';
+import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -13,7 +14,6 @@ import { __ } from '@wordpress/i18n';
  */
 import InspectorControlsGroups from '../inspector-controls/groups';
 import { default as InspectorControls } from '../inspector-controls';
-import { useDispatch, useSelect } from '@wordpress/data';
 import { store as blockEditorStore } from '../../store';
 
 const PositionControlsPanel = () => {

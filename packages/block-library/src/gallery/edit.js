@@ -59,7 +59,6 @@ import {
 	LINK_DESTINATION_MEDIA,
 	LINK_DESTINATION_NONE,
 	LINK_DESTINATION_LIGHTBOX,
-	DEFAULT_COLUMNS,
 	DEFAULT_SIZE_SLUG,
 } from './constants';
 import useImageSizes from './use-image-sizes';
@@ -576,7 +575,7 @@ export default function GalleryEdit( props ) {
 				<ToolsPanel
 					label={ __( 'Settings' ) }
 					resetAll={ () => {
-						setColumnsNumber( DEFAULT_COLUMNS );
+						setColumnsNumber( images.length );
 						setLinkTo( LINK_DESTINATION_NONE );
 						updateImagesSize( defaultImageSizeSlug );
 						toggleOpenInNewTab( false );

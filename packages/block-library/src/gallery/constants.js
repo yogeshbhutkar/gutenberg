@@ -4,5 +4,4 @@ export const LINK_DESTINATION_LIGHTBOX = 'lightbox';
 export const LINK_DESTINATION_ATTACHMENT = 'attachment';
 export const LINK_DESTINATION_MEDIA_WP_CORE = 'file';
 export const LINK_DESTINATION_ATTACHMENT_WP_CORE = 'post';
-export const DEFAULT_COLUMNS = 1;
 export const DEFAULT_SIZE_SLUG = 'large';

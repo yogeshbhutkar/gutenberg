@@ -59,13 +59,14 @@ import {
 	LINK_DESTINATION_MEDIA,
 	LINK_DESTINATION_NONE,
 	LINK_DESTINATION_LIGHTBOX,
+	DEFAULT_COLUMNS,
+	DEFAULT_SIZE_SLUG,
 } from './constants';
 import useImageSizes from './use-image-sizes';
 import useGetNewImages from './use-get-new-images';
 import useGetMedia from './use-get-media';
 import GapStyles from './gap-styles';
 
-const DEFAULT_COLUMNS = 1;
 const MAX_COLUMNS = 8;
 const LINK_OPTIONS = [
 	{
@@ -476,6 +477,12 @@ export default function GalleryEdit( props ) {
 		);
 	}
 
+	const defaultImageSizeSlug = imageSizeOptions?.find(
+		( size ) => size.value === DEFAULT_SIZE_SLUG
+	)
+		? DEFAULT_SIZE_SLUG
+		: imageSizeOptions?.[ 0 ]?.value;
+
 	useEffect( () => {
 		// linkTo attribute must be saved so blocks don't break when changing image_default_link_type in options.php.
 		if ( ! linkTo ) {
@@ -557,6 +564,10 @@ export default function GalleryEdit( props ) {
 		);
 	}
 
+	const sizeSlugInOptions = imageSizeOptions?.some(
+		( size ) => size.value === sizeSlug
+	);
+
 	const hasLinkTo = linkTo && linkTo !== 'none';
 
 	return (
@@ -566,11 +577,13 @@ export default function GalleryEdit( props ) {
 					label={ __( 'Settings' ) }
 					resetAll={ () => {
 						setColumnsNumber( DEFAULT_COLUMNS );
-						setLinkTo( 'none' );
-						toggleImageCrop();
-						toggleRandomOrder();
+						setLinkTo( LINK_DESTINATION_NONE );
+						updateImagesSize( defaultImageSizeSlug );
 						toggleOpenInNewTab( false );
-						updateImagesSize( 'full' );
+						setAttributes( {
+							imageCrop: true,
+							randomOrder: false,
+						} );
 					} }
 				>
 					{ images.length > 1 && (
@@ -578,10 +591,10 @@ export default function GalleryEdit( props ) {
 							isShownByDefault
 							label={ __( 'Columns' ) }
 							hasValue={ () =>
-								columns || defaultColumnsNumber( images.length )
+								columns ? columns !== images.length : false
 							}
 							onDeselect={ () =>
-								setColumnsNumber( DEFAULT_COLUMNS )
+								setColumnsNumber( images.length )
 							}
 						>
 							<RangeControl
@@ -605,9 +618,12 @@ export default function GalleryEdit( props ) {
 						<ToolsPanelItem
 							isShownByDefault
 							label={ __( 'Resolution' ) }
-							hasValue={ () => sizeSlug }
+							hasValue={ () =>
+								sizeSlug !== defaultImageSizeSlug &&
+								sizeSlugInOptions
+							}
 							onDeselect={ () =>
-								updateImagesSize( imageSizeOptions[ 0 ].value )
+								updateImagesSize( defaultImageSizeSlug )
 							}
 						>
 							<SelectControl
@@ -628,8 +644,10 @@ export default function GalleryEdit( props ) {
 						<ToolsPanelItem
 							isShownByDefault
 							label={ __( 'Link' ) }
-							hasValue={ () => linkTo }
-							onDeselect={ () => setLinkTo( 'none' ) }
+							hasValue={ () => hasLinkTo }
+							onDeselect={ () =>
+								setLinkTo( LINK_DESTINATION_NONE )
+							}
 						>
 							<SelectControl
 								__nextHasNoMarginBottom
@@ -645,8 +663,12 @@ export default function GalleryEdit( props ) {
 					<ToolsPanelItem
 						isShownByDefault
 						label={ __( 'Crop images to fit' ) }
-						hasValue={ () => imageCrop }
-						onDeselect={ () => toggleImageCrop() }
+						hasValue={ () =>
+							imageCrop === undefined || ! imageCrop
+						}
+						onDeselect={ () =>
+							setAttributes( { imageCrop: true } )
+						}
 					>
 						<ToggleControl
 							__nextHasNoMarginBottom
@@ -659,7 +681,9 @@ export default function GalleryEdit( props ) {
 						isShownByDefault
 						label={ __( 'Randomize order' ) }
 						hasValue={ () => randomOrder }
-						onDeselect={ () => toggleRandomOrder() }
+						onDeselect={ () =>
+							setAttributes( { randomOrder: false } )
+						}
 					>
 						<ToggleControl
 							__nextHasNoMarginBottom
@@ -684,25 +708,18 @@ export default function GalleryEdit( props ) {
 						</ToolsPanelItem>
 					) }
 					{ Platform.isWeb && ! imageSizeOptions && hasImageIds && (
-						<ToolsPanelItem
-							isShownByDefault
-							label={ __( 'Resolution' ) }
-							hasValue={ () => sizeSlug }
-							onDeselect={ () => updateImagesSize( 'full' ) }
+						<BaseControl
+							className="gallery-image-sizes"
+							__nextHasNoMarginBottom
 						>
-							<BaseControl
-								className="gallery-image-sizes"
-								__nextHasNoMarginBottom
-							>
-								<BaseControl.VisualLabel>
-									{ __( 'Resolution' ) }
-								</BaseControl.VisualLabel>
-								<View className="gallery-image-sizes__loading">
-									<Spinner />
-									{ __( 'Loading options…' ) }
-								</View>
-							</BaseControl>
-						</ToolsPanelItem>
+							<BaseControl.VisualLabel>
+								{ __( 'Resolution' ) }
+							</BaseControl.VisualLabel>
+							<View className="gallery-image-sizes__loading">
+								<Spinner />
+								{ __( 'Loading options…' ) }
+							</View>
+						</BaseControl>
 					) }
 				</ToolsPanel>
 			</InspectorControls>

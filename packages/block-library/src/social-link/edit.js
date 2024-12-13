@@ -22,10 +22,10 @@ import { useState, useRef } from '@wordpress/element';
 import {
 	Button,
 	Dropdown,
-	PanelBody,
-	PanelRow,
 	TextControl,
 	ToolbarButton,
+	__experimentalToolsPanel as ToolsPanel,
+	__experimentalToolsPanelItem as ToolsPanelItem,
 	__experimentalInputControlSuffixWrapper as InputControlSuffixWrapper,
 } from '@wordpress/components';
 import { useMergeRefs } from '@wordpress/compose';
@@ -195,8 +195,20 @@ const SocialLinkEdit = ( {
 				</BlockControls>
 			) }
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings' ) }>
-					<PanelRow>
+				<ToolsPanel
+					label={ __( 'Settings' ) }
+					resetAll={ () => {
+						setAttributes( { label: undefined } );
+					} }
+				>
+					<ToolsPanelItem
+						isShownByDefault
+						label={ __( 'Text' ) }
+						hasValue={ () => !! label }
+						onDeselect={ () => {
+							setAttributes( { label: undefined } );
+						} }
+					>
 						<TextControl
 							__next40pxDefaultSize
 							__nextHasNoMarginBottom
@@ -210,8 +222,8 @@ const SocialLinkEdit = ( {
 							}
 							placeholder={ socialLinkName }
 						/>
-					</PanelRow>
-				</PanelBody>
+					</ToolsPanelItem>
+				</ToolsPanel>
 			</InspectorControls>
 			<InspectorControls group="advanced">
 				<TextControl

@@ -1,9 +1,13 @@
 /**
  * WordPress dependencies
  */
-import { PanelBody, ToggleControl } from '@wordpress/components';
-import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import {
+	ToggleControl,
+	__experimentalToolsPanel as ToolsPanel,
+	__experimentalToolsPanelItem as ToolsPanelItem,
+} from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
 
 export default function LoginOutEdit( { attributes, setAttributes } ) {
 	const { displayLoginAsForm, redirectToCurrent } = attributes;
@@ -11,28 +15,54 @@ export default function LoginOutEdit( { attributes, setAttributes } ) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings' ) }>
-					<ToggleControl
-						__nextHasNoMarginBottom
+				<ToolsPanel
+					label={ __( 'Settings' ) }
+					resetAll={ () => {
+						setAttributes( {
+							displayLoginAsForm: false,
+							redirectToCurrent: true,
+						} );
+					} }
+				>
+					<ToolsPanelItem
 						label={ __( 'Display login as form' ) }
-						checked={ displayLoginAsForm }
-						onChange={ () =>
-							setAttributes( {
-								displayLoginAsForm: ! displayLoginAsForm,
-							} )
+						isShownByDefault
+						hasValue={ () => displayLoginAsForm }
+						onDeselect={ () =>
+							setAttributes( { displayLoginAsForm: false } )
 						}
-					/>
-					<ToggleControl
-						__nextHasNoMarginBottom
+					>
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __( 'Display login as form' ) }
+							checked={ displayLoginAsForm }
+							onChange={ () =>
+								setAttributes( {
+									displayLoginAsForm: ! displayLoginAsForm,
+								} )
+							}
+						/>
+					</ToolsPanelItem>
+					<ToolsPanelItem
 						label={ __( 'Redirect to current URL' ) }
-						checked={ redirectToCurrent }
-						onChange={ () =>
-							setAttributes( {
-								redirectToCurrent: ! redirectToCurrent,
-							} )
+						isShownByDefault
+						hasValue={ () => ! redirectToCurrent }
+						onDeselect={ () =>
+							setAttributes( { redirectToCurrent: true } )
 						}
-					/>
-				</PanelBody>
+					>
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __( 'Redirect to current URL' ) }
+							checked={ redirectToCurrent }
+							onChange={ () =>
+								setAttributes( {
+									redirectToCurrent: ! redirectToCurrent,
+								} )
+							}
+						/>
+					</ToolsPanelItem>
+				</ToolsPanel>
 			</InspectorControls>
 			<div
 				{ ...useBlockProps( {

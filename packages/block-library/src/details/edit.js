@@ -9,7 +9,11 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import {
+	ToggleControl,
+	__experimentalToolsPanel as ToolsPanel,
+	__experimentalToolsPanelItem as ToolsPanelItem,
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const TEMPLATE = [
@@ -46,18 +50,36 @@ function DetailsEdit( { attributes, setAttributes, clientId } ) {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={ __( 'Settings' ) }>
-					<ToggleControl
-						__nextHasNoMarginBottom
+				<ToolsPanel
+					label={ __( 'Settings' ) }
+					resetAll={ () => {
+						setAttributes( {
+							showContent: false,
+						} );
+					} }
+				>
+					<ToolsPanelItem
+						isShownByDefault
 						label={ __( 'Open by default' ) }
-						checked={ showContent }
-						onChange={ () =>
+						hasValue={ () => showContent }
+						onDeselect={ () => {
 							setAttributes( {
-								showContent: ! showContent,
-							} )
-						}
-					/>
-				</PanelBody>
+								showContent: false,
+							} );
+						} }
+					>
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __( 'Open by default' ) }
+							checked={ showContent }
+							onChange={ () =>
+								setAttributes( {
+									showContent: ! showContent,
+								} )
+							}
+						/>
+					</ToolsPanelItem>
+				</ToolsPanel>
 			</InspectorControls>
 			<details
 				{ ...innerBlocksProps }

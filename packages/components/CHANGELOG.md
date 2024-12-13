@@ -20,6 +20,10 @@
 
 -   Add new `Badge` component ([#66555](https://github.com/WordPress/gutenberg/pull/66555)).
 
+### Internal
+
+-   `SlotFill`: rewrite the non-portal version to use `observableMap` ([#67400](https://github.com/WordPress/gutenberg/pull/67400)).
+
 ## 29.0.0 (2024-12-11)
 
 ### Breaking Changes

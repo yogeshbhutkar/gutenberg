@@ -1,5 +1,6 @@
 const keywords: Partial< Record< keyof typeof import('../../'), string[] > > = {
 	cancelCircleFilled: [ 'close' ],
+	cautionFilled: [ 'alert', 'caution', 'warning' ],
 	create: [ 'add' ],
 	file: [ 'folder' ],
 	seen: [ 'show' ],
@@ -7,7 +8,6 @@ const keywords: Partial< Record< keyof typeof import('../../'), string[] > > = {
 	thumbsUp: [ 'like' ],
 	trash: [ 'delete' ],
 	unseen: [ 'hide' ],
-	warning: [ 'alert', 'caution' ],
 };
 
 export default keywords;

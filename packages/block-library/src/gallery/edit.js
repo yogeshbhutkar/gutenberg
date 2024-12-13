@@ -575,10 +575,22 @@ export default function GalleryEdit( props ) {
 				<ToolsPanel
 					label={ __( 'Settings' ) }
 					resetAll={ () => {
+						if ( hasLinkTo ) {
+							toggleOpenInNewTab( false );
+						}
+
+						if ( Platform.isNative && hasLinkTo ) {
+							setLinkTo( LINK_DESTINATION_NONE );
+						}
+
+						if (
+							sizeSlug !== defaultImageSizeSlug &&
+							sizeSlugInOptions
+						) {
+							updateImagesSize( defaultImageSizeSlug );
+						}
+
 						setColumnsNumber( images.length );
-						setLinkTo( LINK_DESTINATION_NONE );
-						updateImagesSize( defaultImageSizeSlug );
-						toggleOpenInNewTab( false );
 						setAttributes( {
 							imageCrop: true,
 							randomOrder: false,
@@ -662,9 +674,7 @@ export default function GalleryEdit( props ) {
 					<ToolsPanelItem
 						isShownByDefault
 						label={ __( 'Crop images to fit' ) }
-						hasValue={ () =>
-							imageCrop === undefined || ! imageCrop
-						}
+						hasValue={ () => ! imageCrop }
 						onDeselect={ () =>
 							setAttributes( { imageCrop: true } )
 						}
@@ -679,7 +689,7 @@ export default function GalleryEdit( props ) {
 					<ToolsPanelItem
 						isShownByDefault
 						label={ __( 'Randomize order' ) }
-						hasValue={ () => randomOrder }
+						hasValue={ () => !! randomOrder }
 						onDeselect={ () =>
 							setAttributes( { randomOrder: false } )
 						}

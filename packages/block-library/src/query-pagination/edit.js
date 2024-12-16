@@ -8,7 +8,7 @@ import {
 	useInnerBlocksProps,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
+import { useDispatch, useSelect } from '@wordpress/data';
 import {
 	__experimentalToolsPanel as ToolsPanel,
 	__experimentalToolsPanelItem as ToolsPanelItem,
@@ -50,17 +50,27 @@ export default function QueryPaginationEdit( {
 		},
 		[ clientId ]
 	);
+	const { __unstableMarkNextChangeAsNotPersistent } =
+		useDispatch( blockEditorStore );
+	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
 	const blockProps = useBlockProps();
 	const innerBlocksProps = useInnerBlocksProps( blockProps, {
 		template: TEMPLATE,
 	} );
+
 	// Always show label text if paginationArrow is set to 'none'.
 	useEffect( () => {
 		if ( paginationArrow === 'none' && ! showLabel ) {
+			__unstableMarkNextChangeAsNotPersistent();
 			setAttributes( { showLabel: true } );
 		}
-	}, [ paginationArrow, setAttributes, showLabel ] );
-	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
+	}, [
+		paginationArrow,
+		setAttributes,
+		showLabel,
+		__unstableMarkNextChangeAsNotPersistent,
+	] );
+
 	return (
 		<>
 			{ hasNextPreviousBlocks && (

@@ -38,6 +38,7 @@ import {
 	convertDescription,
 	ConvertToLinksModal,
 } from './convert-to-links-modal';
+import { useToolsPanelDropdownMenuProps } from '../utils/hooks';
 
 // We only show the edit option when page count is <= MAX_PAGE_COUNT
 // Performance of Navigation Links is not good past this value.
@@ -124,6 +125,7 @@ export default function PageListEdit( {
 	const [ isOpen, setOpen ] = useState( false );
 	const openModal = useCallback( () => setOpen( true ), [] );
 	const closeModal = () => setOpen( false );
+	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
 
 	const { records: pages, hasResolved: hasResolvedPages } = useEntityRecords(
 		'postType',
@@ -326,6 +328,7 @@ export default function PageListEdit( {
 					resetAll={ () => {
 						setAttributes( { parentPageID: 0 } );
 					} }
+					dropdownMenuProps={ dropdownMenuProps }
 				>
 					{ pagesTree.length > 0 && (
 						<ToolsPanelItem

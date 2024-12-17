@@ -27,7 +27,7 @@
 	"wpScript": true,
 	"types": "build-types",
 	"dependencies": {
-	  "@shopify/web-worker": "^6.4.0",
+		"@shopify/web-worker": "^6.4.0",
 		"@wordpress/api-fetch": "file:../api-fetch",
 		"@wordpress/blob": "file:../blob",
 		"@wordpress/compose": "file:../compose",

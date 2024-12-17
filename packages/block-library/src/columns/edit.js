@@ -40,6 +40,7 @@ import {
 	getRedistributedColumnWidths,
 	toWidthPrecision,
 } from './utils';
+import { useToolsPanelDropdownMenuProps } from '../utils/hooks';
 
 const DEFAULT_BLOCK = {
 	name: 'core/column',
@@ -145,6 +146,8 @@ function ColumnInspectorControls( {
 		replaceInnerBlocks( clientId, innerBlocks );
 	}
 
+	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
+
 	return (
 		<ToolsPanel
 			label={ __( 'Settings' ) }
@@ -154,6 +157,7 @@ function ColumnInspectorControls( {
 					isStackedOnMobile: true,
 				} );
 			} }
+			dropdownMenuProps={ dropdownMenuProps }
 		>
 			{ canInsertColumnBlock && (
 				<ToolsPanelItem

@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { NEW_TAB_TARGET, NOFOLLOW_REL } from './constants';
 import { getUpdatedLinkAttributes } from './get-updated-link-attributes';
 import removeAnchorTag from '../utils/remove-anchor-tag';
+import { useToolsPanelDropdownMenuProps } from '../utils/hooks';
 
 /**
  * WordPress dependencies
@@ -115,10 +116,13 @@ function useEnter( props ) {
 }
 
 function WidthPanel( { selectedWidth, setAttributes } ) {
+	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
+
 	return (
 		<ToolsPanel
 			label={ __( 'Settings' ) }
 			resetAll={ () => setAttributes( { width: undefined } ) }
+			dropdownMenuProps={ dropdownMenuProps }
 		>
 			<ToolsPanelItem
 				label={ __( 'Button width' ) }

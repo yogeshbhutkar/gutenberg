@@ -16,6 +16,11 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
+import { useToolsPanelDropdownMenuProps } from '../utils/hooks';
+
 const TEMPLATE = [
 	[
 		'core/paragraph',
@@ -32,6 +37,7 @@ function DetailsEdit( { attributes, setAttributes, clientId } ) {
 		template: TEMPLATE,
 		__experimentalCaptureToolbars: true,
 	} );
+	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
 
 	// Check if either the block or the inner blocks are selected.
 	const hasSelection = useSelect(
@@ -57,6 +63,7 @@ function DetailsEdit( { attributes, setAttributes, clientId } ) {
 							showContent: false,
 						} );
 					} }
+					dropdownMenuProps={ dropdownMenuProps }
 				>
 					<ToolsPanelItem
 						isShownByDefault

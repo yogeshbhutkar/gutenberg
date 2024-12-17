@@ -31,6 +31,11 @@ import { __ } from '@wordpress/i18n';
 import { check } from '@wordpress/icons';
 import { useSelect } from '@wordpress/data';
 
+/**
+ * Internal dependencies
+ */
+import { useToolsPanelDropdownMenuProps } from '../utils/hooks';
+
 const sizeOptions = [
 	{ name: __( 'Small' ), value: 'has-small-icon-size' },
 	{ name: __( 'Normal' ), value: 'has-normal-icon-size' },
@@ -68,6 +73,8 @@ export function SocialLinksEdit( props ) {
 	const hasAnySelected = isSelected || hasSelectedChild;
 
 	const logosOnly = attributes.className?.includes( 'is-style-logos-only' );
+
+	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
 
 	// Remove icon background color when logos only style is selected or
 	// restore it when any other style is selected.
@@ -207,6 +214,7 @@ export function SocialLinksEdit( props ) {
 							showLabels: false,
 						} );
 					} }
+					dropdownMenuProps={ dropdownMenuProps }
 				>
 					<ToolsPanelItem
 						isShownByDefault

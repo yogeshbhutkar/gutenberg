@@ -28,7 +28,10 @@ import { useSelect } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { useCanEditEntity } from '../utils/hooks';
+import {
+	useCanEditEntity,
+	useToolsPanelDropdownMenuProps,
+} from '../utils/hooks';
 
 const ELLIPSIS = '…';
 
@@ -45,6 +48,8 @@ export default function PostExcerptEditor( {
 		setExcerpt,
 		{ rendered: renderedExcerpt, protected: isProtected } = {},
 	] = useEntityProp( 'postType', postType, 'excerpt', postId );
+
+	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
 
 	/**
 	 * Check if the post type supports excerpts.
@@ -232,6 +237,7 @@ export default function PostExcerptEditor( {
 							excerptLength: 55,
 						} );
 					} }
+					dropdownMenuProps={ dropdownMenuProps }
 				>
 					<ToolsPanelItem
 						hasValue={ () => showMoreOnNewLine !== true }

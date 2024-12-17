@@ -25,17 +25,24 @@ import {
 import { useSelect, useDispatch } from '@wordpress/data';
 import { sprintf, __ } from '@wordpress/i18n';
 
+/**
+ * Internal dependencies
+ */
+import { useToolsPanelDropdownMenuProps } from '../utils/hooks';
+
 function ColumnInspectorControls( { width, setAttributes } ) {
 	const [ availableUnits ] = useSettings( 'spacing.units' );
 	const units = useCustomUnits( {
 		availableUnits: availableUnits || [ '%', 'px', 'em', 'rem', 'vw' ],
 	} );
+	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
 	return (
 		<ToolsPanel
 			label={ __( 'Settings' ) }
 			resetAll={ () => {
 				setAttributes( { width: undefined } );
 			} }
+			dropdownMenuProps={ dropdownMenuProps }
 		>
 			<ToolsPanelItem
 				hasValue={ () => width !== undefined }

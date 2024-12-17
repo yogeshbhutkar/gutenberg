@@ -25,6 +25,11 @@ import ServerSideRender from '@wordpress/server-side-render';
 import { store as coreStore } from '@wordpress/core-data';
 
 /**
+ * Internal dependencies
+ */
+import { useToolsPanelDropdownMenuProps } from '../utils/hooks';
+
+/**
  * Minimum number of tags a user can show using this block.
  *
  * @type {number}
@@ -51,6 +56,7 @@ function TagCloudEdit( { attributes, setAttributes } ) {
 	} = attributes;
 
 	const [ availableUnits ] = useSettings( 'spacing.units' );
+	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
 
 	// The `pt` unit is used as the default value and is therefore
 	// always considered an available unit.
@@ -129,6 +135,7 @@ function TagCloudEdit( { attributes, setAttributes } ) {
 						largestFontSize: '22pt',
 					} );
 				} }
+				dropdownMenuProps={ dropdownMenuProps }
 			>
 				<ToolsPanelItem
 					hasValue={ () => taxonomy !== 'post_tag' }

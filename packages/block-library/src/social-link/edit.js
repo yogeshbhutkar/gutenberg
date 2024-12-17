@@ -36,6 +36,7 @@ import { keyboardReturn } from '@wordpress/icons';
  * Internal dependencies
  */
 import { getIconBySite, getNameBySite } from './social-list';
+import { useToolsPanelDropdownMenuProps } from '../utils/hooks';
 
 const SocialLinkURLPopover = ( {
 	url,
@@ -109,6 +110,7 @@ const SocialLinkEdit = ( {
 	clientId,
 } ) => {
 	const { url, service, label = '', rel } = attributes;
+	const dropdownMenuProps = useToolsPanelDropdownMenuProps();
 	const {
 		showLabels,
 		iconColor,
@@ -200,6 +202,7 @@ const SocialLinkEdit = ( {
 					resetAll={ () => {
 						setAttributes( { label: undefined } );
 					} }
+					dropdownMenuProps={ dropdownMenuProps }
 				>
 					<ToolsPanelItem
 						isShownByDefault

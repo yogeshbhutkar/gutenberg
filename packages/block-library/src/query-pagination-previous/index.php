@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Server-side rendering of the `core/query-pagination-previous` block.
  *
@@ -19,14 +20,14 @@
 function render_block_core_query_pagination_previous( $attributes, $content, $block ) {
 	$page_key            = isset( $block->context['queryId'] ) ? 'query-' . $block->context['queryId'] . '-page' : 'query-page';
 	$enhanced_pagination = isset( $block->context['enhancedPagination'] ) && $block->context['enhancedPagination'];
+	$max_page            = isset( $block->context['query']['pages'] ) ? (int) $block->context['query']['pages'] : 0;
 	$page                = empty( $_GET[ $page_key ] ) ? 1 : (int) $_GET[ $page_key ];
-
-	$wrapper_attributes = get_block_wrapper_attributes();
-	$show_label         = isset( $block->context['showLabel'] ) ? (bool) $block->context['showLabel'] : true;
-	$default_label      = __( 'Previous Page' );
-	$label_text         = isset( $attributes['label'] ) && ! empty( $attributes['label'] ) ? esc_html( $attributes['label'] ) : $default_label;
-	$label              = $show_label ? $label_text : '';
-	$pagination_arrow   = get_query_pagination_arrow( $block, false );
+	$wrapper_attributes  = get_block_wrapper_attributes();
+	$show_label          = isset( $block->context['showLabel'] ) ? (bool) $block->context['showLabel'] : true;
+	$default_label       = __( 'Previous Page' );
+	$label_text          = isset( $attributes['label'] ) && ! empty( $attributes['label'] ) ? esc_html( $attributes['label'] ) : $default_label;
+	$label               = $show_label ? $label_text : '';
+	$pagination_arrow    = get_query_pagination_arrow( $block, false );
 	if ( ! $label ) {
 		$wrapper_attributes .= ' aria-label="' . $label_text . '"';
 	}
@@ -44,13 +45,25 @@ function render_block_core_query_pagination_previous( $attributes, $content, $bl
 		add_filter( 'previous_posts_link_attributes', $filter_link_attributes );
 		$content = get_previous_posts_link( $label );
 		remove_filter( 'previous_posts_link_attributes', $filter_link_attributes );
-	} elseif ( 1 !== $page ) {
-		$content = sprintf(
-			'<a href="%1$s" %2$s>%3$s</a>',
-			esc_url( add_query_arg( $page_key, $page - 1 ) ),
-			$wrapper_attributes,
-			$label
-		);
+	} elseif ( 1 < $page ) {
+
+		$total_pages = $max_page;
+		if ( ! isset( $block->context['query']['inherit'] ) || ! $block->context['query']['inherit'] ) {
+			$block_query = new WP_Query( build_query_vars_from_query_block( $block, $page ) );
+			$total_pages = $block_query->max_num_pages;
+			wp_reset_postdata();
+		}
+
+		$total = ! $max_page || $max_page > $total_pages ? $total_pages : $max_page;
+
+		if ( $page <= $total ) {
+			$content = sprintf(
+				'<a href="%1$s" %2$s>%3$s</a>',
+				esc_url( add_query_arg( $page_key, $page - 1 ) ),
+				$wrapper_attributes,
+				$label
+			);
+		}
 	}
 
 	if ( $enhanced_pagination && isset( $content ) ) {

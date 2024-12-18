@@ -378,6 +378,7 @@ function BackgroundImageControls( {
 					/>
 				}
 				variant="secondary"
+				buttonVariant="button"
 				onError={ onUploadError }
 				onReset={ () => {
 					closeAndFocus();

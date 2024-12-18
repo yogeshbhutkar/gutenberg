@@ -40,7 +40,6 @@ import { store as blockEditorStore } from '../../store';
 const noop = () => {};
 
 const BUTTON_VARIANTS = {
-	default: ToolbarButton,
 	toolbar: ToolbarButton,
 	button: Button,
 };
@@ -68,7 +67,7 @@ const MediaReplaceFlow = ( {
 	addToGallery,
 	handleUpload = true,
 	popoverProps,
-	buttonVariant = 'default',
+	buttonVariant = 'toolbar',
 } ) => {
 	const mediaUpload = useSelect( ( select ) => {
 		return select( blockEditorStore ).getSettings().mediaUpload;

@@ -13,9 +13,9 @@ import {
 	FormFileUpload,
 	NavigableMenu,
 	MenuItem,
-	ToolbarButton,
 	Dropdown,
 	withFilters,
+	Button,
 } from '@wordpress/components';
 import { useSelect, withDispatch } from '@wordpress/data';
 import { DOWN } from '@wordpress/keycodes';
@@ -142,7 +142,8 @@ const MediaReplaceFlow = ( {
 			popoverProps={ popoverProps }
 			contentClassName="block-editor-media-replace-flow__options"
 			renderToggle={ ( { isOpen, onToggle } ) => (
-				<ToolbarButton
+				<Button
+					__next40pxDefaultSize
 					ref={ editMediaButtonRef }
 					aria-expanded={ isOpen }
 					aria-haspopup="true"
@@ -150,7 +151,7 @@ const MediaReplaceFlow = ( {
 					onKeyDown={ openOnArrowDown }
 				>
 					{ name }
-				</ToolbarButton>
+				</Button>
 			) }
 			renderContent={ ( { onClose } ) => (
 				<>

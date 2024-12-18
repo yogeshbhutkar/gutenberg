@@ -6,7 +6,7 @@ import { useMemo, useState } from '@wordpress/element';
 import { privateApis as routerPrivateApis } from '@wordpress/router';
 import { useViewportMatch } from '@wordpress/compose';
 import { Button } from '@wordpress/components';
-import { addQueryArgs } from '@wordpress/url';
+import { addQueryArgs, removeQueryArgs } from '@wordpress/url';
 import { seen } from '@wordpress/icons';
 
 /**
@@ -15,15 +15,15 @@ import { seen } from '@wordpress/icons';
 import GlobalStylesUI from '../global-styles/ui';
 import Page from '../page';
 import { unlock } from '../../lock-unlock';
-import StyleBook from '../style-book';
-import { STYLE_BOOK_COLOR_GROUPS } from '../style-book/constants';
 
 const { useLocation, useHistory } = unlock( routerPrivateApis );
 
 const GlobalStylesPageActions = ( {
 	isStyleBookOpened,
 	setIsStyleBookOpened,
+	path,
 } ) => {
+	const history = useHistory();
 	return (
 		<Button
 			isPressed={ isStyleBookOpened }
@@ -31,19 +31,26 @@ const GlobalStylesPageActions = ( {
 			label={ __( 'Style Book' ) }
 			onClick={ () => {
 				setIsStyleBookOpened( ! isStyleBookOpened );
+				const updatedPath = ! isStyleBookOpened
+					? addQueryArgs( path, { preview: 'stylebook' } )
+					: removeQueryArgs( path, 'preview' );
+				// Navigate to the updated path.
+				history.navigate( updatedPath );
 			} }
 			size="compact"
 		/>
 	);
 };
 
-export default function GlobalStylesUIWrapper() {
+/**
+ * Hook to deal with navigation and location state.
+ *
+ * @return {Array}  The current section and a function to update it.
+ */
+export const useSection = () => {
 	const { path, query } = useLocation();
 	const history = useHistory();
-	const { canvas = 'view' } = query;
-	const [ isStyleBookOpened, setIsStyleBookOpened ] = useState( false );
-	const isMobileViewport = useViewportMatch( 'medium', '<' );
-	const [ section, onChangeSection ] = useMemo( () => {
+	return useMemo( () => {
 		return [
 			query.section ?? '/',
 			( updatedSection ) => {
@@ -55,6 +62,16 @@ export default function GlobalStylesUIWrapper() {
 			},
 		];
 	}, [ path, query.section, history ] );
+};
+
+export default function GlobalStylesUIWrapper() {
+	const { path } = useLocation();
+
+	const [ isStyleBookOpened, setIsStyleBookOpened ] = useState(
+		path.includes( 'preview=stylebook' )
+	);
+	const isMobileViewport = useViewportMatch( 'medium', '<' );
+	const [ section, onChangeSection ] = useSection();
 
 	return (
 		<>
@@ -64,6 +81,7 @@ export default function GlobalStylesUIWrapper() {
 						<GlobalStylesPageActions
 							isStyleBookOpened={ isStyleBookOpened }
 							setIsStyleBookOpened={ setIsStyleBookOpened }
+							path={ path }
 						/>
 					) : null
 				}
@@ -75,45 +93,6 @@ export default function GlobalStylesUIWrapper() {
 					onPathChange={ onChangeSection }
 				/>
 			</Page>
-			{ canvas === 'view' && isStyleBookOpened && (
-				<StyleBook
-					enableResizing={ false }
-					showCloseButton={ false }
-					showTabs={ false }
-					isSelected={ ( blockName ) =>
-						// Match '/blocks/core%2Fbutton' and
-						// '/blocks/core%2Fbutton/typography', but not
-						// '/blocks/core%2Fbuttons'.
-						section ===
-							`/blocks/${ encodeURIComponent( blockName ) }` ||
-						section.startsWith(
-							`/blocks/${ encodeURIComponent( blockName ) }/`
-						)
-					}
-					path={ section }
-					onSelect={ ( blockName ) => {
-						if (
-							STYLE_BOOK_COLOR_GROUPS.find(
-								( group ) => group.slug === blockName
-							)
-						) {
-							// Go to color palettes Global Styles.
-							onChangeSection( '/colors/palette' );
-							return;
-						}
-						if ( blockName === 'typography' ) {
-							// Go to typography Global Styles.
-							onChangeSection( '/typography' );
-							return;
-						}
-
-						// Now go to the selected block.
-						onChangeSection(
-							`/blocks/${ encodeURIComponent( blockName ) }`
-						);
-					} }
-				/>
-			) }
 		</>
 	);
 }

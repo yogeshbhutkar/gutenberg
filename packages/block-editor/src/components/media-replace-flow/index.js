@@ -15,6 +15,7 @@ import {
 	MenuItem,
 	Dropdown,
 	withFilters,
+	ToolbarButton,
 	Button,
 } from '@wordpress/components';
 import { useSelect, withDispatch } from '@wordpress/data';
@@ -37,6 +38,13 @@ import LinkControl from '../link-control';
 import { store as blockEditorStore } from '../../store';
 
 const noop = () => {};
+
+const BUTTON_VARIANTS = {
+	default: ToolbarButton,
+	toolbar: ToolbarButton,
+	button: Button,
+};
+
 let uniqueId = 0;
 
 const MediaReplaceFlow = ( {
@@ -60,6 +68,7 @@ const MediaReplaceFlow = ( {
 	addToGallery,
 	handleUpload = true,
 	popoverProps,
+	buttonVariant = 'default',
 } ) => {
 	const mediaUpload = useSelect( ( select ) => {
 		return select( blockEditorStore ).getSettings().mediaUpload;
@@ -136,14 +145,15 @@ const MediaReplaceFlow = ( {
 	};
 
 	const gallery = multiple && onlyAllowsImages();
+	const ButtonComponent = BUTTON_VARIANTS[ buttonVariant ];
 
 	return (
 		<Dropdown
 			popoverProps={ popoverProps }
 			contentClassName="block-editor-media-replace-flow__options"
 			renderToggle={ ( { isOpen, onToggle } ) => (
-				<Button
-					__next40pxDefaultSize
+				<ButtonComponent
+					__next40pxDefaultSize={ buttonVariant === 'button' }
 					ref={ editMediaButtonRef }
 					aria-expanded={ isOpen }
 					aria-haspopup="true"
@@ -151,7 +161,7 @@ const MediaReplaceFlow = ( {
 					onKeyDown={ openOnArrowDown }
 				>
 					{ name }
-				</Button>
+				</ButtonComponent>
 			) }
 			renderContent={ ( { onClose } ) => (
 				<>

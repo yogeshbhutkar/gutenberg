@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Server-side rendering of the `core/query-pagination-previous` block.
  *
@@ -45,18 +44,13 @@ function render_block_core_query_pagination_previous( $attributes, $content, $bl
 		add_filter( 'previous_posts_link_attributes', $filter_link_attributes );
 		$content = get_previous_posts_link( $label );
 		remove_filter( 'previous_posts_link_attributes', $filter_link_attributes );
-	} elseif ( 1 < $page ) {
+	} else {
+		$block_query     = new WP_Query( build_query_vars_from_query_block( $block, $page ) );
+		$block_max_pages = $block_query->max_num_pages;
+		$total           = ! $max_page || $max_page > $block_max_pages ? $block_max_pages : $max_page;
+		wp_reset_postdata();
 
-		$total_pages = $max_page;
-		if ( ! isset( $block->context['query']['inherit'] ) || ! $block->context['query']['inherit'] ) {
-			$block_query = new WP_Query( build_query_vars_from_query_block( $block, $page ) );
-			$total_pages = $block_query->max_num_pages;
-			wp_reset_postdata();
-		}
-
-		$total = ! $max_page || $max_page > $total_pages ? $total_pages : $max_page;
-
-		if ( $page <= $total ) {
+		if ( 1 < $page && $page <= $total ) {
 			$content = sprintf(
 				'<a href="%1$s" %2$s>%3$s</a>',
 				esc_url( add_query_arg( $page_key, $page - 1 ) ),

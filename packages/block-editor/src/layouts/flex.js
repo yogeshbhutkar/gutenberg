@@ -96,16 +96,16 @@ export default {
 						</FlexItem>
 					) }
 				</Flex>
-				<Flex>
-					{ allowVerticalAlignment && (
+				{ allowVerticalAlignment && (
+					<Flex>
 						<FlexItem>
 							<FlexLayoutVerticalAlignmentControl
 								layout={ layout }
 								onChange={ onChange }
 							/>
 						</FlexItem>
-					) }
-				</Flex>
+					</Flex>
+				) }
 				<FlexWrapControl layout={ layout } onChange={ onChange } />
 			</>
 		);

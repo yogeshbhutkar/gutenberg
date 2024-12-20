@@ -29,9 +29,14 @@ function KeyboardShortcutsRegister() {
 			category: 'block',
 			description: __( 'Remove the selected block(s).' ),
 			keyCombination: {
-				modifier: 'access',
-				character: 'z',
+				modifier: 'shift',
+				character: 'del',
 			},
+			aliases: [
+				{
+					character: 'backspace',
+				},
+			],
 		} );
 
 		registerShortcut( {

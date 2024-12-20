@@ -30,7 +30,7 @@ function KeyboardShortcutsRegister() {
 			description: __( 'Remove the selected block(s).' ),
 			keyCombination: {
 				modifier: 'shift',
-				character: 'del',
+				character: 'delete',
 			},
 			aliases: [
 				{

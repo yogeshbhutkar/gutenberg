@@ -24,7 +24,9 @@ import {
 	Placeholder,
 	Spinner,
 	__experimentalDropdownContentWrapper as DropdownContentWrapper,
+	Button,
 } from '@wordpress/components';
+import { DOWN } from '@wordpress/keycodes';
 import { __, _x, sprintf } from '@wordpress/i18n';
 import { store as noticesStore } from '@wordpress/notices';
 import { getFilename } from '@wordpress/url';
@@ -369,16 +371,28 @@ function BackgroundImageControls( {
 							displayInPanel,
 					} ),
 				} }
-				name={
-					<InspectorImagePreviewItem
-						className="block-editor-global-styles-background-panel__image-preview"
-						imgUrl={ url }
-						filename={ title }
-						label={ imgLabel }
-					/>
-				}
 				variant="secondary"
-				buttonVariant="button"
+				renderToggle={ ( { isOpen, onToggle } ) => (
+					<Button
+						__next40pxDefaultSize
+						aria-expanded={ isOpen }
+						aria-haspopup="true"
+						onClick={ onToggle }
+						onKeyDown={ ( event ) => {
+							if ( event.keyCode === DOWN ) {
+								event.preventDefault();
+								event.target.click();
+							}
+						} }
+					>
+						<InspectorImagePreviewItem
+							className="block-editor-global-styles-background-panel__image-preview"
+							imgUrl={ url }
+							filename={ title }
+							label={ imgLabel }
+						/>
+					</Button>
+				) }
 				onError={ onUploadError }
 				onReset={ () => {
 					closeAndFocus();

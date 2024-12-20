@@ -6,7 +6,6 @@ import clsx from 'clsx';
 /**
  * WordPress dependencies
  */
-import { useRef } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import {
@@ -16,7 +15,6 @@ import {
 	Dropdown,
 	withFilters,
 	ToolbarButton,
-	Button,
 } from '@wordpress/components';
 import { useSelect, withDispatch } from '@wordpress/data';
 import { DOWN } from '@wordpress/keycodes';
@@ -38,11 +36,6 @@ import LinkControl from '../link-control';
 import { store as blockEditorStore } from '../../store';
 
 const noop = () => {};
-
-const BUTTON_VARIANTS = {
-	toolbar: ToolbarButton,
-	button: Button,
-};
 
 let uniqueId = 0;
 
@@ -67,13 +60,12 @@ const MediaReplaceFlow = ( {
 	addToGallery,
 	handleUpload = true,
 	popoverProps,
-	buttonVariant = 'toolbar',
+	renderToggle,
 } ) => {
 	const mediaUpload = useSelect( ( select ) => {
 		return select( blockEditorStore ).getSettings().mediaUpload;
 	}, [] );
 	const canUpload = !! mediaUpload;
-	const editMediaButtonRef = useRef();
 	const errorNoticeID = `block-editor/media-replace-flow/error-notice/${ ++uniqueId }`;
 
 	const onUploadError = ( message ) => {
@@ -144,24 +136,27 @@ const MediaReplaceFlow = ( {
 	};
 
 	const gallery = multiple && onlyAllowsImages();
-	const ButtonComponent = BUTTON_VARIANTS[ buttonVariant ];
+
+	const defaultRenderToggle = ( { isOpen, onToggle } ) => (
+		<ToolbarButton
+			aria-expanded={ isOpen }
+			aria-haspopup="true"
+			onClick={ onToggle }
+			onKeyDown={ openOnArrowDown }
+		>
+			{ name }
+		</ToolbarButton>
+	);
 
 	return (
 		<Dropdown
 			popoverProps={ popoverProps }
 			contentClassName="block-editor-media-replace-flow__options"
-			renderToggle={ ( { isOpen, onToggle } ) => (
-				<ButtonComponent
-					__next40pxDefaultSize={ buttonVariant === 'button' }
-					ref={ editMediaButtonRef }
-					aria-expanded={ isOpen }
-					aria-haspopup="true"
-					onClick={ onToggle }
-					onKeyDown={ openOnArrowDown }
-				>
-					{ name }
-				</ButtonComponent>
-			) }
+			renderToggle={
+				typeof renderToggle === 'function'
+					? renderToggle
+					: defaultRenderToggle
+			}
 			renderContent={ ( { onClose } ) => (
 				<>
 					<NavigableMenu className="block-editor-media-replace-flow__media-upload-menu">
@@ -248,7 +243,6 @@ const MediaReplaceFlow = ( {
 								showSuggestions={ false }
 								onChange={ ( { url } ) => {
 									onSelectURL( url );
-									editMediaButtonRef.current.focus();
 								} }
 							/>
 						</form>

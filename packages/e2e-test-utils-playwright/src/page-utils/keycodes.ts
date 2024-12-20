@@ -24,6 +24,11 @@ export const COMMAND = 'meta';
 export const SHIFT = 'shift';
 
 /**
+ * Keycode for DELETE key.
+ */
+export const DELETE = 'delete';
+
+/**
  * Object that contains functions that return the available modifier
  * depending on platform.
  */
@@ -44,5 +49,6 @@ export const modifiers: Record<
 	ctrlShift: () => [ CTRL, SHIFT ],
 	shift: () => [ SHIFT ],
 	shiftAlt: () => [ SHIFT, ALT ],
+	delete: () => [ DELETE ],
 	undefined: () => [],
 };

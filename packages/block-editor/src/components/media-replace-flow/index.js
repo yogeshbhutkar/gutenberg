@@ -36,7 +36,6 @@ import LinkControl from '../link-control';
 import { store as blockEditorStore } from '../../store';
 
 const noop = () => {};
-
 let uniqueId = 0;
 
 const MediaReplaceFlow = ( {

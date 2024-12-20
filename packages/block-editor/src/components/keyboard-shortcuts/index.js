@@ -34,6 +34,7 @@ function KeyboardShortcutsRegister() {
 			},
 			aliases: [
 				{
+					modifier: 'shift',
 					character: 'backspace',
 				},
 			],

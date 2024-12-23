@@ -29,15 +29,9 @@ function KeyboardShortcutsRegister() {
 			category: 'block',
 			description: __( 'Remove the selected block(s).' ),
 			keyCombination: {
-				modifier: 'shift',
-				character: 'delete',
+				modifier: 'platformAlt',
+				character: 'backspace',
 			},
-			aliases: [
-				{
-					modifier: 'shift',
-					character: 'backspace',
-				},
-			],
 		} );
 
 		registerShortcut( {

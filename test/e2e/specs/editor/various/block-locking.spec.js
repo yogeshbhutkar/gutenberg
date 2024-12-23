@@ -133,7 +133,7 @@ test.describe( 'Block Locking', () => {
 		).toBeVisible();
 
 		await paragraph.click();
-		await pageUtils.pressKeys( 'shift+delete' );
+		await pageUtils.pressKeys( 'platformAlt+backspace' );
 
 		await expect.poll( editor.getBlocks ).toMatchObject( [
 			{

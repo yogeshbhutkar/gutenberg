@@ -573,7 +573,7 @@ test.describe( 'Widgets screen', () => {
 			.getByRole( 'document', { name: 'Block: Paragraph' } )
 			.filter( { hasText: 'Second Paragraph' } )
 			.focus();
-		await pageUtils.pressKeys( 'shift+delete' );
+		await pageUtils.pressKeys( 'platformAlt+backspace' );
 		await widgetsScreen.saveWidgets();
 
 		await expect.poll( widgetsScreen.getWidgetAreaBlocks ).toMatchObject( {

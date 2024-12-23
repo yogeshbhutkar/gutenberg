@@ -134,7 +134,7 @@ test.describe( 'Block deletion', () => {
 		).toBeFocused();
 
 		// Remove the current paragraph via dedicated keyboard shortcut.
-		await pageUtils.pressKeys( 'platformAlt+backspace' );
+		await pageUtils.pressKeys( 'primaryShift+Delete' );
 
 		// Ensure the last block was removed.
 		await expect.poll( editor.getBlocks ).toMatchObject( [

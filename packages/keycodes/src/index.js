@@ -21,7 +21,7 @@ import { isAppleOS } from './platform';
 
 /** @typedef {typeof ALT | CTRL | COMMAND | SHIFT } WPModifierPart */
 
-/** @typedef {'primary' | 'primaryShift' | 'primaryAlt' | 'platformAlt' | 'secondary' | 'access' | 'ctrl' | 'alt' | 'ctrlShift' | 'shift' | 'shiftAlt' | 'undefined'} WPKeycodeModifier */
+/** @typedef {'primary' | 'primaryShift' | 'primaryAlt' | 'secondary' | 'access' | 'ctrl' | 'alt' | 'ctrlShift' | 'shift' | 'shiftAlt' | 'undefined'} WPKeycodeModifier */
 
 /**
  * An object of handler functions for each of the possible modifier
@@ -188,7 +188,6 @@ export const modifiers = {
 	secondary: ( _isApple ) =>
 		_isApple() ? [ SHIFT, ALT, COMMAND ] : [ CTRL, SHIFT, ALT ],
 	access: ( _isApple ) => ( _isApple() ? [ CTRL, ALT ] : [ SHIFT, ALT ] ),
-	platformAlt: ( _isApple ) => ( _isApple() ? [ CTRL ] : [ ALT ] ),
 	ctrl: () => [ CTRL ],
 	alt: () => [ ALT ],
 	ctrlShift: () => [ CTRL, SHIFT ],

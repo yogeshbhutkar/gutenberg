@@ -24,11 +24,6 @@ export const COMMAND = 'meta';
 export const SHIFT = 'shift';
 
 /**
- * Keycode for DELETE key.
- */
-export const BACKSPACE = 'backspace';
-
-/**
  * Object that contains functions that return the available modifier
  * depending on platform.
  */
@@ -44,12 +39,10 @@ export const modifiers: Record<
 	secondary: ( _isApple ) =>
 		_isApple() ? [ SHIFT, ALT, COMMAND ] : [ CTRL, SHIFT, ALT ],
 	access: ( _isApple ) => ( _isApple() ? [ CTRL, ALT ] : [ SHIFT, ALT ] ),
-	platformAlt: ( _isApple ) => ( _isApple() ? [ CTRL ] : [ ALT ] ),
 	ctrl: () => [ CTRL ],
 	alt: () => [ ALT ],
 	ctrlShift: () => [ CTRL, SHIFT ],
 	shift: () => [ SHIFT ],
 	shiftAlt: () => [ SHIFT, ALT ],
-	backspace: () => [ BACKSPACE ],
 	undefined: () => [],
 };

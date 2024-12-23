@@ -213,6 +213,7 @@ function UnforwardedLinkUI( props, ref ) {
 			placement="bottom"
 			onClose={ props.onClose }
 			anchor={ props.anchor }
+			className="link-ui-popover"
 			shift
 		>
 			{ ! addingBlock && (

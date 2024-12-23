@@ -26,7 +26,6 @@ import {
 	__experimentalDropdownContentWrapper as DropdownContentWrapper,
 	Button,
 } from '@wordpress/components';
-import { DOWN } from '@wordpress/keycodes';
 import { __, _x, sprintf } from '@wordpress/i18n';
 import { store as noticesStore } from '@wordpress/notices';
 import { getFilename } from '@wordpress/url';
@@ -379,7 +378,7 @@ function BackgroundImageControls( {
 						aria-haspopup="true"
 						onClick={ onToggle }
 						onKeyDown={ ( event ) => {
-							if ( event.keyCode === DOWN ) {
+							if ( event.key === 'ArrowDown' ) {
 								event.preventDefault();
 								event.target.click();
 							}

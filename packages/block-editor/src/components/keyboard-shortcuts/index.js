@@ -32,12 +32,6 @@ function KeyboardShortcutsRegister() {
 				modifier: 'primaryShift',
 				character: 'backspace',
 			},
-			aliases: [
-				{
-					modifier: 'primaryShift',
-					character: 'delete',
-				},
-			],
 		} );
 
 		registerShortcut( {

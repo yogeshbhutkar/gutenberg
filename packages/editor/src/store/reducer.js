@@ -267,15 +267,6 @@ export function editorSettings( state = EDITOR_SETTINGS_DEFAULTS, action ) {
 	return state;
 }
 
-export function renderingMode( state = 'post-only', action ) {
-	switch ( action.type ) {
-		case 'SET_RENDERING_MODE':
-			return action.mode;
-	}
-
-	return state;
-}
-
 /**
  * Reducer returning the editing canvas device type.
  *
@@ -395,7 +386,6 @@ export default combineReducers( {
 	postSavingLock,
 	editorSettings,
 	postAutosavingLock,
-	renderingMode,
 	deviceType,
 	removedPanels,
 	blockInserterPanel,

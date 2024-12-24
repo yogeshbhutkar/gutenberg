@@ -189,13 +189,17 @@ export const ExperimentalEditorProvider = withRegistryProvider(
 					coreStore
 				).hasFinishedResolution( 'getPostType', [ post.type ] );
 
+				const renderingMode = getRenderingMode();
+
 				return {
 					hasLoadedPostObject: _hasLoadedPostObject,
 					editorSettings: getEditorSettings(),
 					isReady: __unstableIsEditorReady(),
-					mode: getRenderingMode(),
+					mode: renderingMode,
 					defaultMode:
-						postTypeObject?.default_rendering_mode ?? 'post-only',
+						renderingMode ??
+						postTypeObject?.default_rendering_mode ??
+						'post-only',
 					selection: getEditorSelection(),
 					postTypeEntities:
 						post.type === 'wp_template'
@@ -327,8 +331,13 @@ export const ExperimentalEditorProvider = withRegistryProvider(
 
 		// Sets the right rendering mode when loading the editor.
 		useEffect( () => {
+			// If mode equals default mode, rendering mode is already set appropriately.
+			if ( mode === defaultMode ) {
+				return;
+			}
+
 			setRenderingMode( defaultMode );
-		}, [ defaultMode, setRenderingMode ] );
+		}, [ mode, defaultMode, setRenderingMode ] );
 
 		useHideBlocksFromInserter( post.type, mode );
 

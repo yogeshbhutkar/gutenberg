@@ -1287,9 +1287,9 @@ export function getEditorSettings( state ) {
  *
  * @return {string} Rendering mode.
  */
-export function getRenderingMode( state ) {
-	return state.renderingMode;
-}
+export const getRenderingMode = createRegistrySelector( ( select ) => () => {
+	return select( preferencesStore ).get( 'core', 'renderingMode' );
+} );
 
 /**
  * Returns the current editing canvas device type.

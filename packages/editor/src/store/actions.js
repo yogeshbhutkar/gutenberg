@@ -663,10 +663,9 @@ export const setRenderingMode =
 			dispatch.editPost( { selection: undefined }, { undoIgnore: true } );
 		}
 
-		dispatch( {
-			type: 'SET_RENDERING_MODE',
-			mode,
-		} );
+		registry
+			.dispatch( preferencesStore )
+			.set( 'core', 'renderingMode', mode );
 	};
 
 /**

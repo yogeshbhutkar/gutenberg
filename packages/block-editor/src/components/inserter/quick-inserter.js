@@ -33,7 +33,7 @@ export default function QuickInserter( {
 	isAppender,
 	prioritizePatterns,
 	selectBlockOnInsert,
-	closeQuickInserter,
+	onClose,
 	hasSearch = true,
 } ) {
 	const [ filterValue, setFilterValue ] = useState( '' );
@@ -90,12 +90,8 @@ export default function QuickInserter( {
 	// When clicking Browse All select the appropriate block so as
 	// the insertion point can work as expected.
 	const onBrowseAll = () => {
-		if (
-			isMobileDevice &&
-			closeQuickInserter &&
-			typeof closeQuickInserter === 'function'
-		) {
-			closeQuickInserter();
+		if ( isMobileDevice ) {
+			onClose?.();
 		}
 
 		setInserterIsOpened( {

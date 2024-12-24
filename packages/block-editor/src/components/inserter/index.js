@@ -173,7 +173,7 @@ class Inserter extends Component {
 					isAppender={ isAppender }
 					prioritizePatterns={ prioritizePatterns }
 					selectBlockOnInsert={ selectBlockOnInsert }
-					closeQuickInserter={ onClose }
+					onClose={ onClose }
 				/>
 			);
 		}

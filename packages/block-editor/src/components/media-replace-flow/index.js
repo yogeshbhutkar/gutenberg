@@ -6,7 +6,7 @@ import clsx from 'clsx';
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, _x } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import {
 	FormFileUpload,
@@ -192,7 +192,7 @@ const MediaReplaceFlow = ( {
 												openFileDialog();
 											} }
 										>
-											{ __( 'Upload' ) }
+											{ _x( 'Upload', 'verb' ) }
 										</MenuItem>
 									);
 								} }

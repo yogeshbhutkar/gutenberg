@@ -76,6 +76,7 @@ function attributesFromMedia( {
 				mediaLink: undefined,
 				href: undefined,
 				focalPoint: undefined,
+				useFeaturedImage: false,
 			} );
 			return;
 		}
@@ -128,6 +129,7 @@ function attributesFromMedia( {
 			mediaLink: media.link || undefined,
 			href: newHref,
 			focalPoint: undefined,
+			useFeaturedImage: false,
 		} );
 	};
 }

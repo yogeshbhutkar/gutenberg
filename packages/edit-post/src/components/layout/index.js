@@ -318,7 +318,9 @@ function MetaBoxesMain() {
 			// the event to end the drag is captured by the target (resize handle)
 			// whether or not it’s under the pointer.
 			onPointerDown: ( { pointerId, target } ) => {
-				target.setPointerCapture( pointerId );
+				if ( separatorRef.current.parentElement.contains( target ) ) {
+					target.setPointerCapture( pointerId );
+				}
 			},
 			onResizeStart: ( event, direction, elementRef ) => {
 				if ( isAutoHeight ) {

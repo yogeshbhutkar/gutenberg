@@ -13,6 +13,7 @@ import type {
 	FontSizePickerSelectOption,
 } from './types';
 import { getCommonSizeUnit, isSimpleCssValue } from './utils';
+import { useViewportMatch } from '@wordpress/compose';
 
 const DEFAULT_OPTION: FontSizePickerSelectOption = {
 	key: 'default',
@@ -66,6 +67,11 @@ const FontSizePickerSelect = ( props: FontSizePickerSelectProps ) => {
 		? options.find( ( option ) => option.value === value ) ?? CUSTOM_OPTION
 		: DEFAULT_OPTION;
 
+	const isMobileViewport = useViewportMatch( 'medium', '<' );
+	const truncate = ( str: string, maxLength: number ) => {
+		return str.length > maxLength ? str.slice( 0, maxLength ) + '…' : str;
+	};
+
 	return (
 		<CustomSelectControl
 			__next40pxDefaultSize={ __next40pxDefaultSize }
@@ -79,7 +85,13 @@ const FontSizePickerSelect = ( props: FontSizePickerSelectProps ) => {
 				selectedOption.name
 			) }
 			options={ options }
-			value={ selectedOption }
+			value={ {
+				...selectedOption,
+				name: truncate(
+					selectedOption.name,
+					isMobileViewport ? 45 : 30
+				),
+			} }
 			showSelectedHint
 			onChange={ ( {
 				selectedItem,

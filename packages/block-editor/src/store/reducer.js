@@ -2110,6 +2110,23 @@ export function insertionPoint( state = null, action ) {
 	return state;
 }
 
+/**
+ * Reducer setting the selected tab
+ *
+ * @param {string} state  Current state. Defaults to 'patterns'.
+ * @param {Object} action Dispatched action.
+ *
+ * @return {string} Updated state.
+ */
+export function selectedTab( state = 'patterns', action ) {
+	switch ( action.type ) {
+		case 'SET_SELECTED_TAB':
+			return action.tab;
+	}
+
+	return state;
+}
+
 const combinedReducers = combineReducers( {
 	blocks,
 	isDragging,
@@ -2143,6 +2160,7 @@ const combinedReducers = combineReducers( {
 	registeredInserterMediaCategories,
 	hoveredBlockClientId,
 	zoomLevel,
+	selectedTab,
 } );
 
 /**

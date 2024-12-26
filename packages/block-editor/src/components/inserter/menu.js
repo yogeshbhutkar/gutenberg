@@ -12,6 +12,7 @@ import {
 	useCallback,
 	useMemo,
 	useRef,
+	useEffect,
 	useLayoutEffect,
 } from '@wordpress/element';
 import { VisuallyHidden, SearchControl, Popover } from '@wordpress/components';
@@ -74,11 +75,6 @@ function InserterMenu(
 		useState( null );
 	const isLargeViewport = useViewportMatch( 'large' );
 
-	const selectedTab = useSelect( ( select ) =>
-		select( blockEditorStore ).getSelectedTab()
-	);
-	const { setSelectedTab } = useDispatch( blockEditorStore );
-
 	function getInitialTab() {
 		if ( __experimentalInitialTab ) {
 			return __experimentalInitialTab;
@@ -91,9 +87,13 @@ function InserterMenu(
 		return 'blocks';
 	}
 
-	useLayoutEffect( () => {
-		setSelectedTab( getInitialTab() );
-	}, [] );
+	const [ selectedTab, setSelectedTab ] = useState( getInitialTab() );
+	const { setSelectedTab: setInserterSelectedTab } =
+		useDispatch( blockEditorStore );
+
+	useEffect( () => {
+		setInserterSelectedTab( selectedTab );
+	}, [ selectedTab, setInserterSelectedTab ] );
 
 	const shouldUseZoomOut =
 		hasSectionRootClientId &&

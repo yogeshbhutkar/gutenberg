@@ -1739,7 +1739,7 @@ Sets the selected tab.
 
 _Parameters_
 
--   _tab_ `string`: The selected tab. Can be `patterns`, `blocks` or `media`.
+-   _tab_ `string`: The selected tab. Takes `patterns`, `blocks` or `media`.
 
 _Returns_
 

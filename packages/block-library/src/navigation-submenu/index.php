@@ -99,6 +99,17 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 	$open_on_hover_and_click = isset( $block->context['openSubmenusOnClick'] ) && ! $block->context['openSubmenusOnClick'] &&
 		$show_submenu_indicators;
 
+	$block->block_type->supports['color'] = true;
+	$colors_supports                      = wp_apply_colors_support( $block->block_type, $attributes );
+	if ( array_key_exists( 'class', $colors_supports ) ) {
+		$css_classes .= ' ' . $colors_supports['class'];
+	}
+
+	$style_attribute = '';
+	if ( array_key_exists( 'style', $colors_supports ) ) {
+		$style_attribute = $colors_supports['style'];
+	}
+
 	$wrapper_attributes = get_block_wrapper_attributes(
 		array(
 			'class' => $css_classes . ' wp-block-navigation-item' . ( $has_submenu ? ' has-child' : '' ) .
@@ -203,6 +214,9 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 	}
 
 	if ( $has_submenu ) {
+		// These properties for submenus should only be applied from context, clear previous values stored directly inside attributes.
+		unset( $attributes['textColor'], $attributes['backgroundColor'], $attributes['customTextColor'], $attributes['customBackgroundColor'] );
+
 		// Copy some attributes from the parent block to this one.
 		// Ideally this would happen in the client when the block is created.
 		if ( array_key_exists( 'overlayTextColor', $block->context ) ) {
@@ -244,11 +258,10 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 			$html = $tag_processor->get_updated_html();
 		}
 
-		$wrapper_attributes = get_block_wrapper_attributes(
-			array(
-				'class' => $css_classes,
-				'style' => $style_attribute,
-			)
+		$wrapper_attributes = sprintf(
+			'class="%s" style="%s"',
+			$css_classes,
+			$style_attribute
 		);
 
 		$html .= sprintf(

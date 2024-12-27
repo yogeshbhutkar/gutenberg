@@ -19,6 +19,7 @@
 ### Bug Fixes
 
 -   `BoxControl`: Better respect for the `min` prop in the Range Slider ([#67819](https://github.com/WordPress/gutenberg/pull/67819)).
+-   `FontSizePicker`: Add `display:contents` rule to fix overflowing text in the font size picker. ([#68280](https://github.com/WordPress/gutenberg/pull/68280)).
 
 ### Experimental
 

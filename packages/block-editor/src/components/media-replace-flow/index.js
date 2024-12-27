@@ -1,9 +1,4 @@
 /**
- * External dependencies
- */
-import clsx from 'clsx';
-
-/**
  * WordPress dependencies
  */
 import { __, _x } from '@wordpress/i18n';
@@ -61,10 +56,7 @@ const MediaReplaceFlow = ( {
 	popoverProps,
 	renderToggle,
 } ) => {
-	const mediaUpload = useSelect( ( select ) => {
-		return select( blockEditorStore ).getSettings().mediaUpload;
-	}, [] );
-	const canUpload = !! mediaUpload;
+	const { getSettings } = useSelect( blockEditorStore );
 	const errorNoticeID = `block-editor/media-replace-flow/error-notice/${ ++uniqueId }`;
 
 	const onUploadError = ( message ) => {
@@ -106,7 +98,7 @@ const MediaReplaceFlow = ( {
 			return onSelect( files );
 		}
 		onFilesUpload( files );
-		mediaUpload( {
+		getSettings().mediaUpload( {
 			allowedTypes,
 			filesList: files,
 			onFileChange: ( [ media ] ) => {
@@ -228,15 +220,7 @@ const MediaReplaceFlow = ( {
 					</NavigableMenu>
 					{ onSelectURL && (
 						// eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-						<form
-							className={ clsx(
-								'block-editor-media-flow__url-input',
-								{
-									'has-siblings':
-										canUpload || onToggleFeaturedImage,
-								}
-							) }
-						>
+						<form className="block-editor-media-flow__url-input">
 							<span className="block-editor-media-replace-flow__image-url-label">
 								{ __( 'Current media URL:' ) }
 							</span>

@@ -168,11 +168,18 @@ function MediaTextEdit( {
 		postId
 	);
 
-	const featuredImageMedia = useSelect(
-		( select ) =>
-			featuredImage &&
-			select( coreStore ).getMedia( featuredImage, { context: 'view' } ),
-		[ featuredImage ]
+	const { featuredImageMedia } = useSelect(
+		( select ) => {
+			return {
+				featuredImageMedia:
+					featuredImage && useFeaturedImage
+						? select( coreStore ).getMedia( featuredImage, {
+								context: 'view',
+						  } )
+						: undefined,
+			};
+		},
+		[ featuredImage, useFeaturedImage ]
 	);
 
 	const featuredImageURL = useFeaturedImage

@@ -136,26 +136,31 @@ const MediaReplaceFlow = ( {
 
 	const gallery = multiple && onlyAllowsImages();
 
-	const defaultRenderToggle = ( { isOpen, onToggle } ) => (
-		<ToolbarButton
-			aria-expanded={ isOpen }
-			aria-haspopup="true"
-			onClick={ onToggle }
-			onKeyDown={ openOnArrowDown }
-		>
-			{ name }
-		</ToolbarButton>
-	);
-
 	return (
 		<Dropdown
 			popoverProps={ popoverProps }
 			contentClassName="block-editor-media-replace-flow__options"
-			renderToggle={
-				typeof renderToggle === 'function'
-					? renderToggle
-					: defaultRenderToggle
-			}
+			renderToggle={ ( { isOpen, onToggle } ) => {
+				if ( renderToggle ) {
+					return renderToggle( {
+						'aria-expanded': isOpen,
+						'aria-haspopup': 'true',
+						onClick: onToggle,
+						onKeyDown: openOnArrowDown,
+						children: name,
+					} );
+				}
+				return (
+					<ToolbarButton
+						aria-expanded={ isOpen }
+						aria-haspopup="true"
+						onClick={ onToggle }
+						onKeyDown={ openOnArrowDown }
+					>
+						{ name }
+					</ToolbarButton>
+				);
+			} }
 			renderContent={ ( { onClose } ) => (
 				<>
 					<NavigableMenu className="block-editor-media-replace-flow__media-upload-menu">

@@ -370,27 +370,17 @@ function BackgroundImageControls( {
 							displayInPanel,
 					} ),
 				} }
+				name={
+					<InspectorImagePreviewItem
+						className="block-editor-global-styles-background-panel__image-preview"
+						imgUrl={ url }
+						filename={ title }
+						label={ imgLabel }
+					/>
+				}
 				variant="secondary"
-				renderToggle={ ( { isOpen, onToggle } ) => (
-					<Button
-						__next40pxDefaultSize
-						aria-expanded={ isOpen }
-						aria-haspopup="true"
-						onClick={ onToggle }
-						onKeyDown={ ( event ) => {
-							if ( event.key === 'ArrowDown' ) {
-								event.preventDefault();
-								event.target.click();
-							}
-						} }
-					>
-						<InspectorImagePreviewItem
-							className="block-editor-global-styles-background-panel__image-preview"
-							imgUrl={ url }
-							filename={ title }
-							label={ imgLabel }
-						/>
-					</Button>
+				renderToggle={ ( props ) => (
+					<Button { ...props } __next40pxDefaultSize />
 				) }
 				onError={ onUploadError }
 				onReset={ () => {

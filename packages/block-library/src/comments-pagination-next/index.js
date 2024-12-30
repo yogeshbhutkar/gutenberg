@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { _x } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { queryPaginationNext as icon } from '@wordpress/icons';
 
 /**
@@ -19,10 +19,7 @@ export const settings = {
 	edit,
 	example: {
 		attributes: {
-			label: _x(
-				'Comments Next Page',
-				'Example label for the Comments Pagination Next block'
-			),
+			label: __( 'Comments Next Page' ),
 		},
 	},
 };

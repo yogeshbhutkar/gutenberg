@@ -19,7 +19,7 @@ export const settings = {
 	edit,
 	example: {
 		attributes: {
-			content: _x( 'Read More', 'Example text for the Read More block' ),
+			content: __( 'Read more' ),
 		},
 	},
 };

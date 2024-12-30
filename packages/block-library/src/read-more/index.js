@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { _x } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { link as icon } from '@wordpress/icons';
 
 /**

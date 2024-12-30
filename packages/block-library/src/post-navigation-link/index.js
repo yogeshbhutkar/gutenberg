@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { _x } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -19,10 +19,7 @@ export const settings = {
 	variations,
 	example: {
 		attributes: {
-			label: _x(
-				'Next post',
-				'Example label for Post Navigation Link block'
-			),
+			label: __( 'Next post' ),
 			arrow: 'arrow',
 		},
 	},

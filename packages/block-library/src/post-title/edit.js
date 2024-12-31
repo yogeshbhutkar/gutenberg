@@ -15,11 +15,12 @@ import {
 	HeadingLevelDropdown,
 	useBlockEditingMode,
 } from '@wordpress/block-editor';
+import { useDebounce } from '@wordpress/compose';
 import { ToggleControl, TextControl, PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { createBlock, getDefaultBlockName } from '@wordpress/blocks';
 import { useEntityProp, store as coreStore } from '@wordpress/core-data';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 
 export default function PostTitleEdit( {
 	attributes: { level, levelOptions, textAlign, isLink, rel, linkTarget },
@@ -50,12 +51,23 @@ export default function PostTitleEdit( {
 		},
 		[ isDescendentOfQueryLoop, postType, postId ]
 	);
-	const [ rawTitle = '', setTitle, fullTitle ] = useEntityProp(
+	const [ rawTitle = '', , fullTitle ] = useEntityProp(
 		'postType',
 		postType,
 		'title',
 		postId
 	);
+
+	const { saveEntityRecord } = useDispatch( coreStore );
+	const debouncedSaveTitle = useDebounce( ( newTitle ) => {
+		saveEntityRecord( 'postType', 'post', {
+			id: postId,
+			title: newTitle,
+		} );
+	}, 500 );
+	const setTitle = ( newTitle ) => {
+		debouncedSaveTitle( newTitle );
+	};
 	const [ link ] = useEntityProp( 'postType', postType, 'link', postId );
 	const onSplitAtEnd = () => {
 		insertBlocksAfter( createBlock( getDefaultBlockName() ) );

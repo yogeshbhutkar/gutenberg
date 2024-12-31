@@ -21,11 +21,7 @@ function render_block_core_post_title( $attributes, $content, $block ) {
 		return '';
 	}
 
-	/**
-	 * The `$post` argument is intentionally omitted so that changes are reflected when previewing a post.
-	 * See: https://github.com/WordPress/gutenberg/pull/37622#issuecomment-1000932816.
-	 */
-	$title = get_the_title();
+	$title = get_the_title( $block->context['postId'] );
 
 	if ( ! $title ) {
 		return '';

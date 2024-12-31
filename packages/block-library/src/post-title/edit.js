@@ -59,15 +59,12 @@ export default function PostTitleEdit( {
 	);
 
 	const { saveEntityRecord } = useDispatch( coreStore );
-	const debouncedSaveTitle = useDebounce( ( newTitle ) => {
+	const setTitle = useDebounce( ( newTitle ) => {
 		saveEntityRecord( 'postType', 'post', {
 			id: postId,
 			title: newTitle,
 		} );
 	}, 500 );
-	const setTitle = ( newTitle ) => {
-		debouncedSaveTitle( newTitle );
-	};
 	const [ link ] = useEntityProp( 'postType', postType, 'link', postId );
 	const onSplitAtEnd = () => {
 		insertBlocksAfter( createBlock( getDefaultBlockName() ) );

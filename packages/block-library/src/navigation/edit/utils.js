@@ -61,29 +61,37 @@ export function getColors( context, isSubMenu ) {
 	} = context;
 
 	const colors = {};
+	const defaultColor = {
+		textColor: '#000',
+		backgroundColor: '#fff',
+	};
 
 	if ( isSubMenu && !! customOverlayTextColor ) {
 		colors.customTextColor = customOverlayTextColor;
 	} else if ( isSubMenu && !! overlayTextColor ) {
 		colors.textColor = overlayTextColor;
-	} else if ( !! customTextColor ) {
+	} else if ( ! isSubMenu && !! customTextColor ) {
 		colors.customTextColor = customTextColor;
-	} else if ( !! textColor ) {
+	} else if ( ! isSubMenu && !! textColor ) {
 		colors.textColor = textColor;
-	} else if ( !! style?.color?.text ) {
+	} else if ( ! isSubMenu && !! style?.color?.text ) {
 		colors.customTextColor = style.color.text;
+	} else {
+		colors.customTextColor = defaultColor.textColor;
 	}
 
 	if ( isSubMenu && !! customOverlayBackgroundColor ) {
 		colors.customBackgroundColor = customOverlayBackgroundColor;
 	} else if ( isSubMenu && !! overlayBackgroundColor ) {
 		colors.backgroundColor = overlayBackgroundColor;
-	} else if ( !! customBackgroundColor ) {
+	} else if ( ! isSubMenu && !! customBackgroundColor ) {
 		colors.customBackgroundColor = customBackgroundColor;
-	} else if ( !! backgroundColor ) {
+	} else if ( ! isSubMenu && !! backgroundColor ) {
 		colors.backgroundColor = backgroundColor;
-	} else if ( !! style?.color?.background ) {
+	} else if ( ! isSubMenu && !! style?.color?.background ) {
 		colors.customTextColor = style.color.background;
+	} else {
+		colors.customBackgroundColor = defaultColor.backgroundColor;
 	}
 
 	return colors;

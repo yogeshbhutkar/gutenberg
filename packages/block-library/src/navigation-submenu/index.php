@@ -214,8 +214,15 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 	}
 
 	if ( $has_submenu ) {
-		// These properties for submenus should only be applied from context, clear previous values stored directly inside attributes.
-		unset( $attributes['textColor'], $attributes['backgroundColor'], $attributes['customTextColor'], $attributes['customBackgroundColor'] );
+		// These properties for submenus should only be applied from context.
+		// Values directly stored inside attributes should be applied to the parent block only.
+		unset(
+			$attributes['textColor'],
+			$attributes['backgroundColor'],
+			$attributes['customTextColor'],
+			$attributes['customBackgroundColor'],
+			$attributes['style']
+		);
 
 		// Copy some attributes from the parent block to this one.
 		// Ideally this would happen in the client when the block is created.
@@ -230,6 +237,15 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 		}
 		if ( array_key_exists( 'customOverlayBackgroundColor', $block->context ) ) {
 			$attributes['style']['color']['background'] = $block->context['customOverlayBackgroundColor'];
+		}
+
+		// If there's no overlay color provided, then fallback to defaults.
+		// This is necessary to ensure parent block colors are not inherited.
+		if ( ! isset( $attributes['textColor'] ) && ! isset( $attributes['style']['color']['text'] ) ) {
+			$attributes['textColor'] = 'contrast';
+		}
+		if ( ! isset( $attributes['backgroundColor'] ) && ! isset( $attributes['style']['color']['background'] ) ) {
+			$attributes['backgroundColor'] = 'base';
 		}
 
 		// This allows us to be able to get a response from wp_apply_colors_support.

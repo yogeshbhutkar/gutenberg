@@ -287,9 +287,9 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 		}
 
 		$wrapper_attributes = sprintf(
-			'class="%s" style="%s"',
-			$css_classes,
-			$style_attribute
+			'style="%1$s" class="%2$s"',
+			$style_attribute,
+			$css_classes
 		);
 
 		$html .= sprintf(

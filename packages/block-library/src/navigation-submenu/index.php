@@ -244,10 +244,6 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 				$attributes['textColor'] = $block->context['textColor'];
 			} elseif ( array_key_exists( 'customTextColor', $block->context ) ) {
 				$attributes['style']['color']['text'] = $block->context['customTextColor'];
-			} else {
-				// If there's no color provided in the context, and nothing to inherit then fallback to defaults.
-				// This is necessary to ensure submenu parent block colors are not inherited by the container.
-				$attributes['textColor'] = 'contrast';
 			}
 		}
 		if ( ! isset( $attributes['backgroundColor'] ) && ! isset( $attributes['style']['color']['background'] ) ) {
@@ -255,8 +251,6 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 				$attributes['backgroundColor'] = $block->context['backgroundColor'];
 			} elseif ( array_key_exists( 'customBackgroundColor', $block->context ) ) {
 				$attributes['style']['color']['background'] = $block->context['customBackgroundColor'];
-			} else {
-				$attributes['backgroundColor'] = 'base';
 			}
 		}
 
@@ -286,11 +280,13 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 			$html = $tag_processor->get_updated_html();
 		}
 
-		$wrapper_attributes = sprintf(
-			'style="%1$s" class="%2$s"',
-			$style_attribute,
-			$css_classes
-		);
+		$wrapper_attributes = '';
+		if ( ! empty( $style_attribute ) ) {
+			$wrapper_attributes .= sprintf( 'style="%s"', $style_attribute );
+		}
+		if ( ! empty( $css_classes ) ) {
+			$wrapper_attributes .= sprintf( 'class="%s"', $css_classes );
+		}
 
 		$html .= sprintf(
 			'<ul %s>%s</ul>',

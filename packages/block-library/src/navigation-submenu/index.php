@@ -280,13 +280,14 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 			$html = $tag_processor->get_updated_html();
 		}
 
-		$wrapper_attributes = '';
+		$wrapper_attributes = array();
 		if ( ! empty( $style_attribute ) ) {
-			$wrapper_attributes .= sprintf( 'style="%s"', $style_attribute );
+			$wrapper_attributes[] = sprintf( 'style="%s"', $style_attribute );
 		}
 		if ( ! empty( $css_classes ) ) {
-			$wrapper_attributes .= sprintf( 'class="%s"', $css_classes );
+			$wrapper_attributes[] = sprintf( 'class="%s"', $css_classes );
 		}
+		$wrapper_attributes = implode( ' ', $wrapper_attributes );
 
 		$html .= sprintf(
 			'<ul %s>%s</ul>',

@@ -283,15 +283,11 @@ export default function NavigationSubmenuEdit( {
 		}
 	}
 
-	let _textColor = attributes.textColor ?? textColor;
+	const _textColor = attributes.textColor ?? textColor;
 	const _customTextColor = attributes.style?.color?.text ?? customTextColor;
 	const _backgroundColor = attributes.backgroundColor ?? backgroundColor;
 	const _customBackgroundColor =
 		attributes.style?.color?.background ?? customBackgroundColor;
-
-	if ( ! _textColor && ! _customTextColor ) {
-		_textColor = 'contrast';
-	}
 
 	const blockProps = useBlockProps( {
 		ref: useMergeRefs( [ setPopoverAnchor, listItemRef ] ),

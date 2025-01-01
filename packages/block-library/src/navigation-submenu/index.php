@@ -105,9 +105,8 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 		$css_classes .= ' ' . $colors_supports['class'];
 	}
 
-	$style_attribute = '';
 	if ( array_key_exists( 'style', $colors_supports ) ) {
-		$style_attribute = $colors_supports['style'];
+		$style_attribute .= $colors_supports['style'];
 	}
 
 	$wrapper_attributes = get_block_wrapper_attributes(
@@ -226,38 +225,39 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 
 		// Copy some attributes from the parent block to this one.
 		// Ideally this would happen in the client when the block is created.
-		if ( array_key_exists( 'textColor', $block->context ) ) {
-			$attributes['textColor'] = $block->context['textColor'];
-		}
 		if ( array_key_exists( 'overlayTextColor', $block->context ) ) {
 			$attributes['textColor'] = $block->context['overlayTextColor'];
-		}
-		if ( array_key_exists( 'backgroundColor', $block->context ) ) {
-			$attributes['backgroundColor'] = $block->context['backgroundColor'];
 		}
 		if ( array_key_exists( 'overlayBackgroundColor', $block->context ) ) {
 			$attributes['backgroundColor'] = $block->context['overlayBackgroundColor'];
 		}
-		if ( array_key_exists( 'customTextColor', $block->context ) ) {
-			$attributes['style']['color']['text'] = $block->context['customTextColor'];
-		}
 		if ( array_key_exists( 'customOverlayTextColor', $block->context ) ) {
 			$attributes['style']['color']['text'] = $block->context['customOverlayTextColor'];
-		}
-		if ( array_key_exists( 'customBackgroundColor', $block->context ) ) {
-			$attributes['style']['color']['background'] = $block->context['customBackgroundColor'];
 		}
 		if ( array_key_exists( 'customOverlayBackgroundColor', $block->context ) ) {
 			$attributes['style']['color']['background'] = $block->context['customOverlayBackgroundColor'];
 		}
 
-		// If there's no color provided in the context, then fallback to defaults.
-		// This is necessary to ensure submenu parent block colors are not inherited by the container.
+		// If there are no overlay colors provided, then inherit the colors from the parent block.
 		if ( ! isset( $attributes['textColor'] ) && ! isset( $attributes['style']['color']['text'] ) ) {
-			$attributes['textColor'] = 'contrast';
+			if ( array_key_exists( 'textColor', $block->context ) ) {
+				$attributes['textColor'] = $block->context['textColor'];
+			} elseif ( array_key_exists( 'customTextColor', $block->context ) ) {
+				$attributes['style']['color']['text'] = $block->context['customTextColor'];
+			} else {
+				// If there's no color provided in the context, and nothing to inherit then fallback to defaults.
+				// This is necessary to ensure submenu parent block colors are not inherited by the container.
+				$attributes['textColor'] = 'contrast';
+			}
 		}
 		if ( ! isset( $attributes['backgroundColor'] ) && ! isset( $attributes['style']['color']['background'] ) ) {
-			$attributes['backgroundColor'] = 'base';
+			if ( array_key_exists( 'backgroundColor', $block->context ) ) {
+				$attributes['backgroundColor'] = $block->context['backgroundColor'];
+			} elseif ( array_key_exists( 'customBackgroundColor', $block->context ) ) {
+				$attributes['style']['color']['background'] = $block->context['customBackgroundColor'];
+			} else {
+				$attributes['backgroundColor'] = 'base';
+			}
 		}
 
 		// This allows us to be able to get a response from wp_apply_colors_support.

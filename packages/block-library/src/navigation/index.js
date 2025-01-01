@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __ } from '@wordpress/i18n';
+import { __, sprintf } from '@wordpress/i18n';
 import { navigation as icon } from '@wordpress/icons';
 
 /**
@@ -52,6 +52,15 @@ export const settings = {
 	},
 	edit,
 	save,
+	__experimentalLabel: ( { menuTitle } ) => {
+		return menuTitle
+			? sprintf(
+					/* translators: %s: menu title */
+					__( 'Navigation (%s)' ),
+					menuTitle
+			  )
+			: __( 'Navigation' );
+	},
 	deprecated,
 };
 

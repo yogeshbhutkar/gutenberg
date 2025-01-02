@@ -19,7 +19,7 @@ export const settings = {
 	edit,
 	example: {
 		attributes: {
-			label: __( 'Comments Next Page' ),
+			label: __( 'Newer Comments' ),
 		},
 	},
 };

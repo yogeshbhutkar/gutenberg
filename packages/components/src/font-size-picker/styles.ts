@@ -36,4 +36,5 @@ export const HeaderLabel = styled( BaseControl.VisualLabel )`
 
 export const HeaderHint = styled.span`
 	color: ${ COLORS.gray[ 700 ] };
+	display: contents;
 `;

@@ -36,6 +36,7 @@ import FontSizePickerSelect from './font-size-picker-select';
 import FontSizePickerToggleGroup from './font-size-picker-toggle-group';
 import { T_SHIRT_NAMES } from './constants';
 import { maybeWarnDeprecated36pxSize } from '../utils/deprecated-36px-size';
+import { Truncate } from '../truncate';
 
 const DEFAULT_UNITS = [ 'px', 'em', 'rem', 'vw', 'vh' ];
 
@@ -141,7 +142,7 @@ const UnforwardedFontSizePicker = (
 						{ __( 'Size' ) }
 						{ headerHint && (
 							<HeaderHint className="components-font-size-picker__header__hint">
-								{ headerHint }
+								<Truncate>{ headerHint }</Truncate>
 							</HeaderHint>
 						) }
 					</HeaderLabel>

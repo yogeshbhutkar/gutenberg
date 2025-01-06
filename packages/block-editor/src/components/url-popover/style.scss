@@ -13,6 +13,14 @@
 	align-items: center;
 }
 
+.block-editor-media-placeholder__url-input-form {
+	min-width: 260px;
+
+	@include break-small() {
+		width: 300px;
+	}
+}
+
 // Any children of the popover-row that are not the settings-toggle
 // should take up as much space as possible.
 .block-editor-url-popover__row > :not(.block-editor-url-popover__settings-toggle) {

@@ -255,9 +255,8 @@ function render_block_core_navigation_submenu( $attributes, $content, $block ) {
 		}
 
 		// This allows us to be able to get a response from wp_apply_colors_support.
-		$block->block_type->supports['color'] = true;
-		$colors_supports                      = wp_apply_colors_support( $block->block_type, $attributes );
-		$css_classes                          = 'wp-block-navigation__submenu-container';
+		$colors_supports = wp_apply_colors_support( $block->block_type, $attributes );
+		$css_classes     = 'wp-block-navigation__submenu-container';
 		if ( array_key_exists( 'class', $colors_supports ) ) {
 			$css_classes .= ' ' . $colors_supports['class'];
 		}

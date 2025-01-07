@@ -394,19 +394,18 @@ export function getListViewDropTarget(
 	);
 
 	// Skip sibling insertion check if block is moving within same parent.
-	const hasDifferentParent = draggedBlocksData?.some(
-		( draggedBlock ) =>
-			! candidateBlockParents?.find(
-				( blockData ) =>
-					blockData.clientId === draggedBlock.rootClientId &&
-					blockData.nestingLevel === draggedBlock.nestingLevel - 1
-			)
+	const hasSameParent = draggedBlocksData?.some( ( draggedBlock ) =>
+		candidateBlockParents?.find(
+			( blockData ) =>
+				blockData.clientId === draggedBlock.rootClientId &&
+				blockData.nestingLevel === draggedBlock.nestingLevel - 1
+		)
 	);
 
 	// If dropping as a sibling, but block cannot be inserted in
 	// this context, return early.
 	if (
-		hasDifferentParent &&
+		! hasSameParent &&
 		! candidateBlockData.canInsertDraggedBlocksAsSibling
 	) {
 		return;

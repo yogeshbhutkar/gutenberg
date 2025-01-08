@@ -174,6 +174,7 @@
 
 		&:active:not(:disabled, [aria-disabled="true"]) {
 			background: color-mix(in srgb, $components-color-accent 8%, transparent);
+			color: $components-color-accent-darker-20;
 		}
 
 		// Pull left if the tertiary button stands alone after a description, so as to vertically align with items above.

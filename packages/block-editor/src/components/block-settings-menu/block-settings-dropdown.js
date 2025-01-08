@@ -131,7 +131,6 @@ export function BlockSettingsDropdown( {
 			duplicate: getShortcutRepresentation(
 				'core/block-editor/duplicate'
 			),
-			cut: getShortcutRepresentation( 'core/block-editor/cut' ),
 			remove: getShortcutRepresentation( 'core/block-editor/remove' ),
 			insertAfter: getShortcutRepresentation(
 				'core/block-editor/insert-after'

@@ -46,6 +46,20 @@ function CopyMenuItem( { clientIds, onCopy, label, shortcut } ) {
 	);
 }
 
+function CutMenuItem( { clientIds, onCut, label, shortcut } ) {
+	const { getBlocksByClientId } = useSelect( blockEditorStore );
+	const ref = useCopyToClipboard(
+		() => serialize( getBlocksByClientId( clientIds ) ),
+		onCut
+	);
+	const cutMenuItemLabel = label ? label : __( 'Cut' );
+	return (
+		<MenuItem ref={ ref } shortcut={ shortcut }>
+			{ cutMenuItemLabel }
+		</MenuItem>
+	);
+}
+
 export function BlockSettingsDropdown( {
 	block,
 	clientIds,
@@ -117,6 +131,7 @@ export function BlockSettingsDropdown( {
 			duplicate: getShortcutRepresentation(
 				'core/block-editor/duplicate'
 			),
+			cut: getShortcutRepresentation( 'core/block-editor/cut' ),
 			remove: getShortcutRepresentation( 'core/block-editor/remove' ),
 			insertAfter: getShortcutRepresentation(
 				'core/block-editor/insert-after'
@@ -204,6 +219,7 @@ export function BlockSettingsDropdown( {
 				onInsertBefore,
 				onRemove,
 				onCopy,
+				onCut,
 				onPasteStyles,
 			} ) => {
 				// It is possible that some plugins register fills for this menu
@@ -255,6 +271,13 @@ export function BlockSettingsDropdown( {
 										onCopy={ onCopy }
 										shortcut={ displayShortcut.primary(
 											'c'
+										) }
+									/>
+									<CutMenuItem
+										clientIds={ clientIds }
+										onCut={ onCut }
+										shortcut={ displayShortcut.primary(
+											'x'
 										) }
 									/>
 									{ canDuplicate && (

@@ -132,6 +132,13 @@ export default function BlockActions( {
 			}
 			notifyCopy( 'copy', clientIds );
 		},
+		onCut() {
+			if ( clientIds.length === 1 ) {
+				flashBlock( clientIds[ 0 ] );
+			}
+			notifyCopy( 'cut', clientIds );
+			removeBlocks( clientIds, updateSelection );
+		},
 		async onPasteStyles() {
 			await pasteStyles( getBlocksByClientId( clientIds ) );
 		},

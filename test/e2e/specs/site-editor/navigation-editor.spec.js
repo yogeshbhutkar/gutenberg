@@ -40,6 +40,13 @@ test.describe( 'Editing Navigation Menus', () => {
 				canvas: 'edit',
 			} );
 
+			// Wait for the toggle to be visible.
+			await expect(
+				page.locator(
+					'.editor-document-tools__document-overview-toggle'
+				)
+			).toBeVisible();
+
 			// Open List View.
 			await pageUtils.pressKeys( 'access+o' );
 
@@ -54,7 +61,7 @@ test.describe( 'Editing Navigation Menus', () => {
 			await expect( listView ).toBeVisible();
 
 			const navBlockNode = listView.getByRole( 'link', {
-				name: 'Navigation',
+				name: 'Navigation (Primary Menu)',
 				exact: true,
 			} );
 

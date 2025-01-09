@@ -24,9 +24,6 @@
 		"ref": {
 			"type": "number"
 		},
-		"menuTitle": {
-			"type": "string"
-		},
 		"textColor": {
 			"type": "string"
 		},

@@ -3,6 +3,8 @@
  */
 import { __, sprintf } from '@wordpress/i18n';
 import { navigation as icon } from '@wordpress/icons';
+import { select } from '@wordpress/data';
+import { store as coreStore } from '@wordpress/core-data';
 
 /**
  * Internal dependencies
@@ -52,12 +54,22 @@ export const settings = {
 	},
 	edit,
 	save,
-	__experimentalLabel: ( { menuTitle } ) => {
-		return menuTitle
+	__experimentalLabel: ( { ref } ) => {
+		if ( ! ref ) {
+			return __( 'Navigation' );
+		}
+
+		const navigation = select( coreStore ).getEntityRecord(
+			'postType',
+			'wp_navigation',
+			ref
+		);
+
+		return navigation?.title?.rendered
 			? sprintf(
 					/* translators: %s: menu title */
 					__( 'Navigation (%s)' ),
-					menuTitle
+					navigation.title.rendered
 			  )
 			: __( 'Navigation' );
 	},

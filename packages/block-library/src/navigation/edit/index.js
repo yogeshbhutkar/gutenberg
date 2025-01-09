@@ -205,7 +205,6 @@ function Navigation( {
 	__unstableLayoutClassNames: layoutClassNames,
 } ) {
 	const {
-		menuTitle,
 		openSubmenusOnClick,
 		overlayMenu,
 		showSubmenuIcon,
@@ -301,7 +300,6 @@ function Navigation( {
 		canUserCreateNavigationMenus,
 		isResolvingCanUserCreateNavigationMenus,
 		hasResolvedCanUserCreateNavigationMenus,
-		navigationMenu,
 	} = useNavigationMenu( ref );
 
 	const navMenuResolvedButMissing =
@@ -343,20 +341,6 @@ function Navigation( {
 	const navigationFallbackId = ! ( ref || hasUnsavedBlocks )
 		? getNavigationFallbackId()
 		: null;
-
-	const initializeMenuTitle = useCallback( () => {
-		const { title: navTitle } = navigationMenu || {};
-
-		if ( ! menuTitle || ! navTitle || menuTitle === navTitle ) {
-			return;
-		}
-
-		setAttributes( { menuTitle: navTitle } );
-	}, [ navigationMenu, menuTitle, setAttributes ] );
-
-	useEffect( () => {
-		initializeMenuTitle();
-	}, [ initializeMenuTitle ] );
 
 	useEffect( () => {
 		// If:

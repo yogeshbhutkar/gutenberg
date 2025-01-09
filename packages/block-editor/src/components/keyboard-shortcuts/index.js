@@ -35,6 +35,16 @@ function KeyboardShortcutsRegister() {
 		} );
 
 		registerShortcut( {
+			name: 'core/block-editor/paste',
+			category: 'block',
+			description: __( 'Paste the selected block(s).' ),
+			keyCombination: {
+				modifier: 'primary',
+				character: 'v',
+			},
+		} );
+
+		registerShortcut( {
 			name: 'core/block-editor/duplicate',
 			category: 'block',
 			description: __( 'Duplicate the selected block(s).' ),

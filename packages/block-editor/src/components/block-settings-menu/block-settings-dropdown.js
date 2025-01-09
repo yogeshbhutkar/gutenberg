@@ -26,36 +26,45 @@ import BlockSettingsMenuControls from '../block-settings-menu-controls';
 import BlockParentSelectorMenuItem from './block-parent-selector-menu-item';
 import { store as blockEditorStore } from '../../store';
 import { unlock } from '../../lock-unlock';
+import { useNotifyCopy } from '../../utils/use-notify-copy';
 
 const POPOVER_PROPS = {
 	className: 'block-editor-block-settings-menu__popover',
 	placement: 'bottom-start',
 };
 
-function CopyMenuItem( { clientIds, onCopy, label, shortcut } ) {
+function CopyMenuItem( {
+	clientIds,
+	onEvent,
+	label,
+	shortcut,
+	eventType = 'copy',
+	__experimentalUpdateSelection: updateSelection = false,
+} ) {
 	const { getBlocksByClientId } = useSelect( blockEditorStore );
+	const { removeBlocks } = useDispatch( blockEditorStore );
+	const notifyCopy = useNotifyCopy();
 	const ref = useCopyToClipboard(
 		() => serialize( getBlocksByClientId( clientIds ) ),
-		onCopy
+		() => {
+			switch ( eventType ) {
+				case 'copy':
+				case 'cut':
+					onEvent?.();
+					notifyCopy( eventType, clientIds );
+					if ( eventType === 'cut' ) {
+						removeBlocks( clientIds, updateSelection );
+					}
+					break;
+				default:
+					notifyCopy( eventType, clientIds );
+			}
+		}
 	);
 	const copyMenuItemLabel = label ? label : __( 'Copy' );
 	return (
 		<MenuItem ref={ ref } shortcut={ shortcut }>
 			{ copyMenuItemLabel }
-		</MenuItem>
-	);
-}
-
-function CutMenuItem( { clientIds, onCut, label, shortcut } ) {
-	const { getBlocksByClientId } = useSelect( blockEditorStore );
-	const ref = useCopyToClipboard(
-		() => serialize( getBlocksByClientId( clientIds ) ),
-		onCut
-	);
-	const cutMenuItemLabel = label ? label : __( 'Cut' );
-	return (
-		<MenuItem ref={ ref } shortcut={ shortcut }>
-			{ cutMenuItemLabel }
 		</MenuItem>
 	);
 }
@@ -218,7 +227,6 @@ export function BlockSettingsDropdown( {
 				onInsertBefore,
 				onRemove,
 				onCopy,
-				onCut,
 				onPasteStyles,
 			} ) => {
 				// It is possible that some plugins register fills for this menu
@@ -267,17 +275,22 @@ export function BlockSettingsDropdown( {
 									) }
 									<CopyMenuItem
 										clientIds={ clientIds }
-										onCopy={ onCopy }
+										onEvent={ onCopy }
 										shortcut={ displayShortcut.primary(
 											'c'
 										) }
 									/>
-									<CutMenuItem
+									<CopyMenuItem
 										clientIds={ clientIds }
-										onCut={ onCut }
+										onEvent={ onCopy }
+										label={ __( 'Cut' ) }
+										eventType="cut"
 										shortcut={ displayShortcut.primary(
 											'x'
 										) }
+										__experimentalUpdateSelection={
+											! __experimentalSelectBlock
+										}
 									/>
 									{ canDuplicate && (
 										<MenuItem
@@ -325,8 +338,9 @@ export function BlockSettingsDropdown( {
 									<MenuGroup>
 										<CopyMenuItem
 											clientIds={ clientIds }
-											onCopy={ onCopy }
+											onEvent={ onCopy }
 											label={ __( 'Copy styles' ) }
+											eventType="copyStyles"
 										/>
 										<MenuItem onClick={ onPasteStyles }>
 											{ __( 'Paste styles' ) }

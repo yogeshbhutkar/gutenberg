@@ -6,6 +6,10 @@
 
 -   `Components`: Standardize reduced motion handling using media queries ([#68421](https://github.com/WordPress/gutenberg/pull/68421)).
 
+### Bug Fixes
+
+-   `InputControl`: Ensures email and url inputs have consistent LTR alignment in RTL languages ([#68188](https://github.com/WordPress/gutenberg/pull/68188)).
+
 ## 29.1.0 (2025-01-02)
 
 ### Enhancements

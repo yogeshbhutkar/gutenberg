@@ -11,7 +11,6 @@ import {
 /**
  * Internal dependencies
  */
-import { useNotifyCopy } from '../../utils/use-notify-copy';
 import usePasteStyles from '../use-paste-styles';
 import { store as blockEditorStore } from '../../store';
 
@@ -20,9 +19,6 @@ export default function BlockActions( {
 	children,
 	__experimentalUpdateSelection: updateSelection,
 } ) {
-	const notifyCopy = useNotifyCopy();
-	const pasteStyles = usePasteStyles();
-
 	const { getDefaultBlockName, getGroupingBlockName } =
 		useSelect( blocksStore );
 	const selected = useSelect(
@@ -79,6 +75,8 @@ export default function BlockActions( {
 		flashBlock,
 	} = useDispatch( blockEditorStore );
 
+	const pasteStyles = usePasteStyles();
+
 	return children( {
 		canCopyStyles,
 		canDuplicate,
@@ -130,14 +128,6 @@ export default function BlockActions( {
 			if ( clientIds.length === 1 ) {
 				flashBlock( clientIds[ 0 ] );
 			}
-			notifyCopy( 'copy', clientIds );
-		},
-		onCut() {
-			if ( clientIds.length === 1 ) {
-				flashBlock( clientIds[ 0 ] );
-			}
-			notifyCopy( 'cut', clientIds );
-			removeBlocks( clientIds, updateSelection );
 		},
 		async onPasteStyles() {
 			await pasteStyles( getBlocksByClientId( clientIds ) );

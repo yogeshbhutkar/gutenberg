@@ -34,7 +34,7 @@ const POPOVER_PROPS = {
 
 function CopyMenuItem( {
 	clientIds,
-	onEvent,
+	onCopy,
 	label,
 	shortcut,
 	eventType = 'copy',
@@ -49,7 +49,7 @@ function CopyMenuItem( {
 			switch ( eventType ) {
 				case 'copy':
 				case 'cut':
-					onEvent?.();
+					onCopy?.();
 					notifyCopy( eventType, clientIds );
 					if ( eventType === 'cut' ) {
 						removeBlocks( clientIds, updateSelection );
@@ -276,12 +276,12 @@ export function BlockSettingsDropdown( {
 									) }
 									<CopyMenuItem
 										clientIds={ clientIds }
-										onEvent={ onCopy }
+										onCopy={ onCopy }
 										shortcut={ shortcuts.copy }
 									/>
 									<CopyMenuItem
 										clientIds={ clientIds }
-										onEvent={ onCopy }
+										onCopy={ onCopy }
 										label={ __( 'Cut' ) }
 										eventType="cut"
 										shortcut={ shortcuts.cut }
@@ -335,7 +335,7 @@ export function BlockSettingsDropdown( {
 									<MenuGroup>
 										<CopyMenuItem
 											clientIds={ clientIds }
-											onEvent={ onCopy }
+											onCopy={ onCopy }
 											label={ __( 'Copy styles' ) }
 											eventType="copyStyles"
 										/>

@@ -5,6 +5,7 @@ import { __, sprintf } from '@wordpress/i18n';
 import { navigation as icon } from '@wordpress/icons';
 import { select } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
+import { decodeEntities } from '@wordpress/html-entities';
 
 /**
  * Internal dependencies
@@ -67,9 +68,10 @@ export const settings = {
 
 		return navigation?.title?.rendered
 			? sprintf(
-					/* translators: %s: menu title */
-					__( 'Navigation (%s)' ),
-					navigation.title.rendered
+					/* translators: %1$s: block title, %2$s: navigation menu title */
+					__( '%1$s (%2$s)' ),
+					metadata.title,
+					decodeEntities( navigation.title.rendered )
 			  )
 			: __( 'Navigation' );
 	},

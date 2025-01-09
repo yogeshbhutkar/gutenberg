@@ -20,6 +20,9 @@ export default function BlockActions( {
 	children,
 	__experimentalUpdateSelection: updateSelection,
 } ) {
+	const notifyCopy = useNotifyCopy();
+	const pasteStyles = usePasteStyles();
+
 	const { getDefaultBlockName, getGroupingBlockName } =
 		useSelect( blocksStore );
 	const selected = useSelect(
@@ -75,9 +78,6 @@ export default function BlockActions( {
 		insertBeforeBlock,
 		flashBlock,
 	} = useDispatch( blockEditorStore );
-
-	const notifyCopy = useNotifyCopy();
-	const pasteStyles = usePasteStyles();
 
 	return children( {
 		canCopyStyles,

@@ -60,18 +60,18 @@ export const settings = {
 			return __( 'Navigation' );
 		}
 
-		const navigation = select( coreStore ).getEntityRecord(
+		const navigation = select( coreStore ).getEditedEntityRecord(
 			'postType',
 			'wp_navigation',
 			ref
 		);
 
-		return navigation?.title?.rendered
+		return navigation?.title
 			? sprintf(
 					/* translators: %1$s: block title, %2$s: navigation menu title */
 					__( '%1$s (%2$s)' ),
 					metadata.title,
-					decodeEntities( navigation.title.rendered )
+					decodeEntities( navigation.title )
 			  )
 			: __( 'Navigation' );
 	},

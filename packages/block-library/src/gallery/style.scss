@@ -150,33 +150,44 @@ figure.wp-block-gallery.has-nested-images {
 		width: 100%;
 	}
 
+	// Adjust width for columns not equal to 1 on small screens.
+	&.has-uniform-image-sizes:not(.columns-1) figure.wp-block-image:not(#individual-image) {
+		flex: 0 0 calc(50% - (var(--wp--style--unstable-gallery-gap, #{$grid-unit-20}) * 0.5));
+	}
+
 	// Beyond mobile viewports, we allow up to 8 columns.
 	@include break-small {
 		@for $i from 3 through 8 {
-			$width: calc(#{math.div(100%, $i)} - (var(--wp--style--unstable-gallery-gap, #{$grid-unit-20}) * #{math.div($i - 1, $i)}));
+			$column-width: calc(#{math.div(100%, $i)} - (var(--wp--style--unstable-gallery-gap, #{$grid-unit-20}) * #{math.div($i - 1, $i)}));
 
-			&:not(.has-uniform-image-sizes) {
-				&.columns-#{ $i } figure.wp-block-image:not(#individual-image) {
-					width: $width;
-				}
+			&.columns-#{ $i } figure.wp-block-image:not(#individual-image) {
+				width: $column-width;
 			}
 
 			&.has-uniform-image-sizes.columns-#{ $i } figure.wp-block-image:not(#individual-image) {
-				flex: 0 0 $width;
-				max-width: $width;
+				flex: 0 0 $column-width;
 			}
 		}
 		// If number of columns not explicitly set default to 3 columns if 3 or more images.
 		&.columns-default {
-			figure.wp-block-image:not(#individual-image) {
+			$width-3-col: calc(33.33% - (var(--wp--style--unstable-gallery-gap, 16px) * #{math.div(2, 3)}));
 
-				width: calc(33.33% - (var(--wp--style--unstable-gallery-gap, 16px) * #{math.div(2, 3)}));
+			figure.wp-block-image:not(#individual-image) {
+				width: $width-3-col;
 			}
+
+			&.has-uniform-image-sizes figure.wp-block-image:not(#individual-image):first-child:nth-last-child(n+3),
+			&.has-uniform-image-sizes figure.wp-block-image:not(#individual-image):first-child:nth-last-child(n+3) ~ figure.wp-block-image:not(#individual-image) {
+				flex: 0 0 $width-3-col;
+			}
+
+
 			// If only 2 child images use 2 columns.
 			figure.wp-block-image:not(#individual-image):first-child:nth-last-child(2),
 			figure.wp-block-image:not(#individual-image):first-child:nth-last-child(2) ~ figure.wp-block-image:not(#individual-image) {
 				width: calc(50% - (var(--wp--style--unstable-gallery-gap, 16px) * 0.5));
 			}
+
 			// For a single image set to 100%.
 			figure.wp-block-image:not(#individual-image):first-child:nth-last-child(1) {
 				width: 100%;

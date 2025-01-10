@@ -497,6 +497,17 @@ export default function GalleryEdit( props ) {
 		}
 	}, [ linkTo ] );
 
+	useEffect( () => {
+		if ( ! columns || ! images ) {
+			return;
+		}
+
+		// Keep the number of columns in sync with the number of images.
+		if ( images?.length < columns ) {
+			setColumnsNumber( defaultColumnsNumber( images.length ) );
+		}
+	}, [ columns, images ] );
+
 	const hasImages = !! images.length;
 	const hasImageIds = hasImages && images.some( ( image ) => !! image.id );
 	const imagesUploading = images.some( ( img ) =>
@@ -620,12 +631,14 @@ export default function GalleryEdit( props ) {
 						checked={ !! imageCrop }
 						onChange={ toggleImageCrop }
 					/>
-					<ToggleControl
-						__nextHasNoMarginBottom
-						label={ __( 'Uniform image sizes' ) }
-						checked={ !! uniformImageSizes }
-						onChange={ toggleUniformImageSizes }
-					/>
+					{ images.length > 1 && (
+						<ToggleControl
+							__nextHasNoMarginBottom
+							label={ __( 'Uniform image sizes' ) }
+							checked={ !! uniformImageSizes }
+							onChange={ toggleUniformImageSizes }
+						/>
+					) }
 					<ToggleControl
 						__nextHasNoMarginBottom
 						label={ __( 'Randomize order' ) }

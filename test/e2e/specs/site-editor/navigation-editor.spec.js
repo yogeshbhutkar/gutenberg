@@ -40,11 +40,8 @@ test.describe( 'Editing Navigation Menus', () => {
 				canvas: 'edit',
 			} );
 
-			// Wait for the toggle to be visible.
 			await expect(
-				page.locator(
-					'.editor-document-tools__document-overview-toggle'
-				)
+				page.getByRole( 'button', { name: 'Document Overview' } )
 			).toBeVisible();
 
 			// Open List View.

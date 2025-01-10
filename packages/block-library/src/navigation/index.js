@@ -55,9 +55,9 @@ export const settings = {
 	},
 	edit,
 	save,
-	__experimentalLabel: ( { ref } ) => {
-		if ( ! ref ) {
-			return __( 'Navigation' );
+	__experimentalLabel: ( { ref }, { context } ) => {
+		if ( ! ref || context !== 'list-view' ) {
+			return;
 		}
 
 		const navigation = select( coreStore ).getEditedEntityRecord(
@@ -66,14 +66,20 @@ export const settings = {
 			ref
 		);
 
-		return navigation?.title
-			? sprintf(
-					/* translators: %1$s: block title, %2$s: navigation menu title */
-					__( '%1$s (%2$s)' ),
-					metadata.title,
-					decodeEntities( navigation.title )
-			  )
-			: __( 'Navigation' );
+		if ( ! navigation?.title ) {
+			return;
+		}
+
+		if ( navigation.title === metadata.title ) {
+			return;
+		}
+
+		return sprintf(
+			// translators: %1$s: block title, %2$s: navigation title.
+			__( '%1$s (%2$s)' ),
+			metadata.title,
+			decodeEntities( navigation.title )
+		);
 	},
 	deprecated,
 };

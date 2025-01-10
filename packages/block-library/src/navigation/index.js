@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { navigation as icon } from '@wordpress/icons';
 import { select } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
@@ -66,16 +66,11 @@ export const settings = {
 			ref
 		);
 
-		if ( ! navigation?.title || navigation.title === metadata.title ) {
+		if ( ! navigation?.title ) {
 			return;
 		}
 
-		return sprintf(
-			// translators: %1$s: block title, %2$s: navigation title.
-			__( '%1$s (%2$s)' ),
-			metadata.title,
-			decodeEntities( navigation.title )
-		);
+		return decodeEntities( navigation.title );
 	},
 	deprecated,
 };

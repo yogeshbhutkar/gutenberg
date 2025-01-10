@@ -66,11 +66,7 @@ export const settings = {
 			ref
 		);
 
-		if ( ! navigation?.title ) {
-			return;
-		}
-
-		if ( navigation.title === metadata.title ) {
+		if ( ! navigation?.title || navigation.title === metadata.title ) {
 			return;
 		}
 

@@ -14,12 +14,13 @@ import {
 } from '@wordpress/block-editor';
 
 export default function saveWithInnerBlocks( { attributes } ) {
-	const { caption, columns, imageCrop } = attributes;
+	const { caption, columns, imageCrop, uniformImageSizes } = attributes;
 
 	const className = clsx( 'has-nested-images', {
 		[ `columns-${ columns }` ]: columns !== undefined,
 		[ `columns-default` ]: columns === undefined,
 		'is-cropped': imageCrop,
+		'has-uniform-image-sizes': uniformImageSizes,
 	} );
 	const blockProps = useBlockProps.save( { className } );
 	const innerBlocksProps = useInnerBlocksProps.save( blockProps );

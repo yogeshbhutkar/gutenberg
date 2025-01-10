@@ -153,9 +153,17 @@ figure.wp-block-gallery.has-nested-images {
 	// Beyond mobile viewports, we allow up to 8 columns.
 	@include break-small {
 		@for $i from 3 through 8 {
-			&.columns-#{ $i } figure.wp-block-image:not(#individual-image) {
-				width: calc(#{math.div(100%, $i)} - (var(--wp--style--unstable-gallery-gap, #{$grid-unit-20}) * #{math.div($i - 1, $i)}));
+			$width: calc(#{math.div(100%, $i)} - (var(--wp--style--unstable-gallery-gap, #{$grid-unit-20}) * #{math.div($i - 1, $i)}));
 
+			&:not(.has-uniform-image-sizes) {
+				&.columns-#{ $i } figure.wp-block-image:not(#individual-image) {
+					width: $width;
+				}
+			}
+
+			&.has-uniform-image-sizes.columns-#{ $i } figure.wp-block-image:not(#individual-image) {
+				flex: 0 0 $width;
+				max-width: $width;
 			}
 		}
 		// If number of columns not explicitly set default to 3 columns if 3 or more images.

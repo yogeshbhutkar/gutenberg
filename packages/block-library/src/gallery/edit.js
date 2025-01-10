@@ -125,8 +125,15 @@ export default function GalleryEdit( props ) {
 		  )
 		: LINK_OPTIONS;
 
-	const { columns, imageCrop, randomOrder, linkTarget, linkTo, sizeSlug } =
-		attributes;
+	const {
+		columns,
+		imageCrop,
+		uniformImageSizes,
+		randomOrder,
+		linkTarget,
+		linkTo,
+		sizeSlug,
+	} = attributes;
 
 	const {
 		__unstableMarkNextChangeAsNotPersistent,
@@ -416,6 +423,10 @@ export default function GalleryEdit( props ) {
 		setAttributes( { imageCrop: ! imageCrop } );
 	}
 
+	function toggleUniformImageSizes() {
+		setAttributes( { uniformImageSizes: ! uniformImageSizes } );
+	}
+
 	function toggleRandomOrder() {
 		setAttributes( { randomOrder: ! randomOrder } );
 	}
@@ -608,6 +619,12 @@ export default function GalleryEdit( props ) {
 						label={ __( 'Crop images to fit' ) }
 						checked={ !! imageCrop }
 						onChange={ toggleImageCrop }
+					/>
+					<ToggleControl
+						__nextHasNoMarginBottom
+						label={ __( 'Uniform image sizes' ) }
+						checked={ !! uniformImageSizes }
+						onChange={ toggleUniformImageSizes }
 					/>
 					<ToggleControl
 						__nextHasNoMarginBottom

@@ -81,6 +81,10 @@
 			"type": "boolean",
 			"default": true
 		},
+		"uniformImageSizes": {
+			"type": "boolean",
+			"default": false
+		},
 		"randomOrder": {
 			"type": "boolean",
 			"default": false

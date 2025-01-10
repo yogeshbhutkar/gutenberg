@@ -27,7 +27,7 @@ export default function Gallery( props ) {
 		multiGallerySelection,
 	} = props;
 
-	const { align, columns, imageCrop } = attributes;
+	const { align, columns, imageCrop, uniformImageSizes } = attributes;
 
 	return (
 		<figure
@@ -41,6 +41,7 @@ export default function Gallery( props ) {
 					[ `columns-${ columns }` ]: columns !== undefined,
 					[ `columns-default` ]: columns === undefined,
 					'is-cropped': imageCrop,
+					'has-uniform-image-sizes': uniformImageSizes,
 				}
 			) }
 		>

@@ -4,7 +4,6 @@
 import {
 	__experimentalParseQuantityAndUnitFromRawValue as parseQuantityAndUnitFromRawValue,
 	__experimentalUnitControl as UnitControl,
-	Tooltip,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
@@ -68,15 +67,13 @@ export default function BoxInputControls( {
 					: selectedUnits[ corner ] || selectedUnits.flat;
 
 				return (
-					<Tooltip
-						text={ label }
-						placement="top"
-						key={ corner }
+					<div
 						className="components-border-radius-control__tooltip-wrapper"
+						key={ corner }
 					>
 						<UnitControl
 							{ ...props }
-							aria-label={ label }
+							label={ label }
 							value={ [ parsedQuantity, computedUnit ].join(
 								''
 							) }
@@ -84,7 +81,7 @@ export default function BoxInputControls( {
 							onUnitChange={ createHandleOnUnitChange( corner ) }
 							size="__unstable-large"
 						/>
-					</Tooltip>
+					</div>
 				);
 			} ) }
 		</div>

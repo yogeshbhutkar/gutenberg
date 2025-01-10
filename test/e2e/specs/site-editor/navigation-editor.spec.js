@@ -58,7 +58,7 @@ test.describe( 'Editing Navigation Menus', () => {
 			await expect( listView ).toBeVisible();
 
 			const navBlockNode = listView.getByRole( 'link', {
-				name: 'Navigation (Primary Menu)',
+				name: 'Primary Menu',
 				exact: true,
 			} );
 

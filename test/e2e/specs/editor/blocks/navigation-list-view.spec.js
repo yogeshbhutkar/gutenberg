@@ -555,7 +555,10 @@ test.describe( 'Navigation block - List view editing', () => {
 
 		await editor.openDocumentSettingsSidebar();
 
-		await page.getByLabel( 'Test Menu', { exact: true } ).click();
+		await page
+			.getByLabel( 'Editor settings' )
+			.getByLabel( 'Test Menu' )
+			.click();
 
 		await page.keyboard.press( 'ArrowUp' );
 

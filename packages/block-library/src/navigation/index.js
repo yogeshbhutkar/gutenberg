@@ -55,8 +55,8 @@ export const settings = {
 	},
 	edit,
 	save,
-	__experimentalLabel: ( { ref }, { context } ) => {
-		if ( ! ref || context !== 'list-view' ) {
+	__experimentalLabel: ( { ref } ) => {
+		if ( ! ref ) {
 			return;
 		}
 

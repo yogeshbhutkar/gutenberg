@@ -58,6 +58,11 @@ function InserterMenu(
 		( select ) => unlock( select( blockEditorStore ) ).isZoomOut(),
 		[]
 	);
+	const hasSectionRootClientId = useSelect(
+		( select ) =>
+			!! unlock( select( blockEditorStore ) ).getSectionRootClientId(),
+		[]
+	);
 	const [ filterValue, setFilterValue, delayedFilterValue ] =
 		useDebouncedInput( __experimentalFilterValue );
 	const [ hoveredItem, setHoveredItem ] = useState( null );
@@ -77,11 +82,15 @@ function InserterMenu(
 		if ( isZoomOutMode ) {
 			return 'patterns';
 		}
+
+		return 'blocks';
 	}
 	const [ selectedTab, setSelectedTab ] = useState( getInitialTab() );
 
 	const shouldUseZoomOut =
-		selectedTab === 'patterns' || selectedTab === 'media';
+		hasSectionRootClientId &&
+		( selectedTab === 'patterns' || selectedTab === 'media' );
+
 	useZoomOut( shouldUseZoomOut && isLargeViewport );
 
 	const [ destinationRootClientId, onInsertBlocks, onToggleInsertionPoint ] =

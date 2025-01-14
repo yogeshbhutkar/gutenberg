@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 4.15.0 (2025-01-02)
+
+## 4.14.0 (2024-12-11)
+
+## 4.13.0 (2024-11-27)
+
 ## 4.12.0 (2024-11-16)
 
 ## 4.11.0 (2024-10-30)
@@ -179,7 +185,7 @@
 
 ### New Features
 
--   Enable an optional namespace parameter for `hasAction` & `hasFilter`. When checking if an action or filter exists, `hasAction` and `hasFilter` now accept an optional paramter to limit matches by namespace.
+-   Enable an optional namespace parameter for `hasAction` & `hasFilter`. When checking if an action or filter exists, `hasAction` and `hasFilter` now accept an optional parameter to limit matches by namespace.
 
 ## 2.4.0 (2019-06-12)
 

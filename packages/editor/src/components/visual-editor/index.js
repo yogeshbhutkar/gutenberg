@@ -337,7 +337,7 @@ function VisualEditor( {
 		! isPreview &&
 		// Disable resizing in mobile viewport.
 		! isMobileViewport &&
-		// Dsiable resizing in zoomed-out mode.
+		// Disable resizing in zoomed-out mode.
 		! isZoomedOut;
 
 	const iframeStyles = useMemo( () => {
@@ -385,6 +385,7 @@ function VisualEditor( {
 					'has-padding': isFocusedEntity || enableResizing,
 					'is-resizable': enableResizing,
 					'is-iframed': ! disableIframe,
+					'is-scrollable': disableIframe || deviceType !== 'Desktop',
 				}
 			) }
 		>
@@ -433,7 +434,7 @@ function VisualEditor( {
 						<div
 							className={ clsx(
 								'editor-visual-editor__post-title-wrapper',
-								// The following class is only here for backward comapatibility
+								// The following class is only here for backward compatibility
 								// some themes might be using it to style the post title.
 								'edit-post-visual-editor__post-title-wrapper',
 								{

@@ -237,7 +237,9 @@ test.describe( 'Site Editor Performance', () => {
 				}
 
 				await metrics.startTracing();
-				await page.getByText( 'Single Posts', { exact: true } ).click();
+				await page
+					.getByText( 'Single Posts', { exact: true } )
+					.click( { force: true } );
 				await metrics.stopTracing();
 
 				// Get the durations.
@@ -393,7 +395,7 @@ test.describe( 'Site Editor Performance', () => {
 			await requestUtils.activateTheme( 'twentytwentyfour' );
 		} );
 
-		const perPage = 20;
+		const perPage = 9;
 
 		test( 'Run the test', async ( { page, admin, requestUtils } ) => {
 			await Promise.all(

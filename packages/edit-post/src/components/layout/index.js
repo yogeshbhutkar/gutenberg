@@ -74,6 +74,7 @@ import useEditPostCommands from '../../commands/use-commands';
 import { usePaddingAppender } from './use-padding-appender';
 import { useShouldIframe } from './use-should-iframe';
 import useNavigateToEntityRecord from '../../hooks/use-navigate-to-entity-record';
+import { useMetaBoxInitialization } from '../meta-boxes/use-meta-box-initialization';
 
 const { getLayoutStyles } = unlock( blockEditorPrivateApis );
 const { useCommands } = unlock( coreCommandsPrivateApis );
@@ -148,11 +149,7 @@ function useEditorStyles( ...additionalStyles ) {
 	] );
 }
 
-/**
- * @param {Object}  props
- * @param {boolean} props.isLegacy True when the editor canvas is not in an iframe.
- */
-function MetaBoxesMain( { isLegacy } ) {
+function MetaBoxesMain() {
 	const [ isOpen, openHeight, hasAnyVisible ] = useSelect( ( select ) => {
 		const { get } = select( preferencesStore );
 		const { isMetaBoxLocationVisible } = select( editPostStore );
@@ -171,7 +168,7 @@ function MetaBoxesMain( { isLegacy } ) {
 	const [ { min, max }, setHeightConstraints ] = useState( () => ( {} ) );
 	// Keeps the resizable area’s size constraints updated taking into account
 	// editor notices. The constraints are also used to derive the value for the
-	// aria-valuenow attribute on the seperator.
+	// aria-valuenow attribute on the separator.
 	const effectSizeConstraints = useRefEffect( ( node ) => {
 		const container = node.closest(
 			'.interface-interface-skeleton__content'
@@ -232,21 +229,14 @@ function MetaBoxesMain( { isLegacy } ) {
 
 	const contents = (
 		<div
-			className={ clsx(
-				// The class name 'edit-post-layout__metaboxes' is retained because some plugins use it.
-				'edit-post-layout__metaboxes',
-				! isLegacy && 'edit-post-meta-boxes-main__liner'
-			) }
-			hidden={ ! isLegacy && isShort && ! isOpen }
+			// The class name 'edit-post-layout__metaboxes' is retained because some plugins use it.
+			className="edit-post-layout__metaboxes edit-post-meta-boxes-main__liner"
+			hidden={ isShort && ! isOpen }
 		>
 			<MetaBoxes location="normal" />
 			<MetaBoxes location="advanced" />
 		</div>
 	);
-
-	if ( isLegacy ) {
-		return contents;
-	}
 
 	const isAutoHeight = openHeight === undefined;
 	let usedMax = '50%'; // Approximation before max has a value.
@@ -328,7 +318,9 @@ function MetaBoxesMain( { isLegacy } ) {
 			// the event to end the drag is captured by the target (resize handle)
 			// whether or not it’s under the pointer.
 			onPointerDown: ( { pointerId, target } ) => {
-				target.setPointerCapture( pointerId );
+				if ( separatorRef.current.parentElement.contains( target ) ) {
+					target.setPointerCapture( pointerId );
+				}
 			},
 			onResizeStart: ( event, direction, elementRef ) => {
 				if ( isAutoHeight ) {
@@ -392,7 +384,6 @@ function Layout( {
 		showIconLabels,
 		isDistractionFree,
 		showMetaBoxes,
-		hasHistory,
 		isWelcomeGuideVisible,
 		templateId,
 		enablePaddingAppender,
@@ -414,6 +405,11 @@ function Layout( {
 			const { isZoomOut } = unlock( select( blockEditorStore ) );
 			const { getEditorMode, getRenderingMode } = select( editorStore );
 			const isRenderingPostOnly = getRenderingMode() === 'post-only';
+			const isNotDesignPostType =
+				! DESIGN_POST_TYPES.includes( currentPostType );
+			const isDirectlyEditingPattern =
+				currentPostType === 'wp_block' &&
+				! onNavigateToPreviousEntityRecord;
 
 			return {
 				mode: getEditorMode(),
@@ -425,8 +421,8 @@ function Layout( {
 				showIconLabels: get( 'core', 'showIconLabels' ),
 				isDistractionFree: get( 'core', 'distractionFree' ),
 				showMetaBoxes:
-					! DESIGN_POST_TYPES.includes( currentPostType ) &&
-					! isZoomOut(),
+					( isNotDesignPostType && ! isZoomOut() ) ||
+					isDirectlyEditingPattern,
 				isWelcomeGuideVisible: isFeatureActive( 'welcomeGuide' ),
 				templateId:
 					supportsTemplateMode &&
@@ -436,9 +432,7 @@ function Layout( {
 						? getTemplateId( currentPostType, currentPostId )
 						: null,
 				enablePaddingAppender:
-					! isZoomOut() &&
-					isRenderingPostOnly &&
-					! DESIGN_POST_TYPES.includes( currentPostType ),
+					! isZoomOut() && isRenderingPostOnly && isNotDesignPostType,
 			};
 		},
 		[
@@ -446,8 +440,11 @@ function Layout( {
 			currentPostId,
 			isEditingTemplate,
 			settings.supportsTemplateMode,
+			onNavigateToPreviousEntityRecord,
 		]
 	);
+	useMetaBoxInitialization( hasActiveMetaboxes );
+
 	const [ paddingAppenderRef, paddingStyle ] = usePaddingAppender(
 		enablePaddingAppender
 	);
@@ -559,7 +556,7 @@ function Layout( {
 
 	return (
 		<SlotFillProvider>
-			<ErrorBoundary>
+			<ErrorBoundary canCopyContent>
 				<CommandMenu />
 				<WelcomeGuide postType={ currentPostType } />
 				<div
@@ -587,15 +584,13 @@ function Layout( {
 						}
 						extraContent={
 							! isDistractionFree &&
-							showMetaBoxes && (
-								<MetaBoxesMain isLegacy={ ! shouldIframe } />
-							)
+							showMetaBoxes && <MetaBoxesMain />
 						}
 					>
 						<PostLockedModal />
 						<EditorInitialization />
 						<FullscreenMode isActive={ isFullscreenActive } />
-						<BrowserURL hasHistory={ hasHistory } />
+						<BrowserURL />
 						<UnsavedChangesWarning />
 						<AutosaveMonitor />
 						<LocalAutosaveMonitor />

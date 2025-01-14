@@ -32,7 +32,7 @@ const meta: Meta< typeof ToggleGroupControl > = {
 	argTypes: {
 		help: { control: { type: 'text' } },
 		onChange: { action: 'onChange' },
-		value: { control: { type: null } },
+		value: { control: false },
 	},
 	parameters: {
 		controls: { expanded: true },
@@ -51,6 +51,7 @@ const Template: StoryFn< typeof ToggleGroupControl > = ( {
 	return (
 		<ToggleGroupControl
 			__nextHasNoMarginBottom
+			__next40pxDefaultSize
 			{ ...props }
 			onChange={ ( ...changeArgs ) => {
 				setValue( ...changeArgs );

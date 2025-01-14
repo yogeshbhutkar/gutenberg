@@ -105,7 +105,7 @@ export const getEntityRecord =
 						}
 					);
 
-					// Boostraps the edited document as well (and load from peers).
+					// Bootstraps the edited document as well (and load from peers).
 					await getSyncProvider().bootstrap(
 						entityConfig.syncObjectType + '--edit',
 						objectId,
@@ -226,7 +226,7 @@ export const getEditedEntityRecord = forwardResolver( 'getEntityRecord' );
  *
  * @param {string}  kind  Entity kind.
  * @param {string}  name  Entity name.
- * @param {Object?} query Query Object. If requesting specific fields, fields
+ * @param {?Object} query Query Object. If requesting specific fields, fields
  *                        must always include the ID.
  */
 export const getEntityRecords =

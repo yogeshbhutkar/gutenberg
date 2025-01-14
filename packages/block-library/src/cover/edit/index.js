@@ -114,13 +114,22 @@ function CoverEdit( {
 
 	const { __unstableMarkNextChangeAsNotPersistent } =
 		useDispatch( blockEditorStore );
-	const media = useSelect(
-		( select ) =>
-			featuredImage &&
-			select( coreStore ).getMedia( featuredImage, { context: 'view' } ),
-		[ featuredImage ]
+	const { media } = useSelect(
+		( select ) => {
+			return {
+				media:
+					featuredImage && useFeaturedImage
+						? select( coreStore ).getMedia( featuredImage, {
+								context: 'view',
+						  } )
+						: undefined,
+			};
+		},
+		[ featuredImage, useFeaturedImage ]
 	);
-	const mediaUrl = media?.source_url;
+	const mediaUrl =
+		media?.media_details?.sizes?.[ sizeSlug ]?.source_url ??
+		media?.source_url;
 
 	// User can change the featured image outside of the block, but we still
 	// need to update the block when that happens. This effect should only
@@ -451,6 +460,7 @@ function CoverEdit( {
 			toggleUseFeaturedImage={ toggleUseFeaturedImage }
 			updateDimRatio={ onUpdateDimRatio }
 			onClearMedia={ onClearMedia }
+			featuredImage={ media }
 		/>
 	);
 

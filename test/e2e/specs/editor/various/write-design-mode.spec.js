@@ -7,19 +7,19 @@ test.describe( 'Write/Design mode', () => {
 	test.beforeAll( async ( { requestUtils } ) => {
 		await requestUtils.activateTheme( 'emptytheme' );
 	} );
-
-	test.beforeEach( async ( { admin } ) => {
+	test.beforeEach( async ( { admin, page } ) => {
+		await page.addInitScript( () => {
+			window.__experimentalEditorWriteMode = true;
+		} );
 		await admin.visitSiteEditor( {
 			postId: 'emptytheme//index',
 			postType: 'wp_template',
 			canvas: 'edit',
 		} );
 	} );
-
 	test.afterAll( async ( { requestUtils } ) => {
 		await requestUtils.activateTheme( 'twentytwentyone' );
 	} );
-
 	test( 'Should prevent selecting intermediary blocks', async ( {
 		editor,
 		page,
@@ -100,6 +100,17 @@ test.describe( 'Write/Design mode', () => {
 
 		expect( await getSelectedBlock() ).toEqual( sectionClientId );
 
+		// open the block toolbar more settings menu
+		await page.getByLabel( 'Block tools' ).getByLabel( 'Options' ).click();
+
+		// get the length of the options menu
+		const optionsMenu = page
+			.getByRole( 'menu', { name: 'Options' } )
+			.getByRole( 'menuitem' );
+
+		// we expect 3 items in the options menu
+		await expect( optionsMenu ).toHaveCount( 3 );
+
 		// We should be able to select the paragraph block and write in it.
 		await paragraph.click();
 		await page.keyboard.type( ' something' );
@@ -120,5 +131,60 @@ test.describe( 'Write/Design mode', () => {
 		await expect(
 			editorSettings.getByRole( 'button', { name: 'Content' } )
 		).toBeVisible();
+	} );
+
+	test( 'hides the blocks that cannot be interacted with in List View', async ( {
+		editor,
+		page,
+		pageUtils,
+	} ) => {
+		await editor.setContent( '' );
+
+		// Insert a section with a nested block and an editable block.
+		await editor.insertBlock( {
+			name: 'core/group',
+			attributes: {},
+			innerBlocks: [
+				{
+					name: 'core/group',
+					attributes: {
+						metadata: {
+							name: 'Non-content block',
+						},
+					},
+					innerBlocks: [
+						{
+							name: 'core/paragraph',
+							attributes: {
+								content: 'Something',
+							},
+						},
+					],
+				},
+			],
+		} );
+
+		// Select the inner paragraph block so that List View is expanded.
+		await editor.canvas
+			.getByRole( 'document', {
+				name: 'Block: Paragraph',
+			} )
+			.click();
+
+		// Open List View.
+		await pageUtils.pressKeys( 'access+o' );
+		const listView = page.getByRole( 'treegrid', {
+			name: 'Block navigation structure',
+		} );
+		const nonContentBlock = listView.getByRole( 'link', {
+			name: 'Non-content block',
+		} );
+
+		await expect( nonContentBlock ).toBeVisible();
+
+		// Switch to write mode.
+		await editor.switchEditorTool( 'Write' );
+
+		await expect( nonContentBlock ).toBeHidden();
 	} );
 } );

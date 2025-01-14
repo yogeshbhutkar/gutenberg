@@ -183,7 +183,7 @@ export const __EXPERIMENTAL_STYLE_PROPERTY = {
 	},
 	fontFamily: {
 		value: [ 'typography', 'fontFamily' ],
-		support: [ 'typography', 'fontFamily' ],
+		support: [ 'typography', '__experimentalFontFamily' ],
 		useEngine: true,
 	},
 	fontSize: {
@@ -193,12 +193,12 @@ export const __EXPERIMENTAL_STYLE_PROPERTY = {
 	},
 	fontStyle: {
 		value: [ 'typography', 'fontStyle' ],
-		support: [ 'typography', 'fontStyle' ],
+		support: [ 'typography', '__experimentalFontStyle' ],
 		useEngine: true,
 	},
 	fontWeight: {
 		value: [ 'typography', 'fontWeight' ],
-		support: [ 'typography', 'fontWeight' ],
+		support: [ 'typography', '__experimentalFontWeight' ],
 		useEngine: true,
 	},
 	lineHeight: {
@@ -240,17 +240,17 @@ export const __EXPERIMENTAL_STYLE_PROPERTY = {
 	},
 	textDecoration: {
 		value: [ 'typography', 'textDecoration' ],
-		support: [ 'typography', 'textDecoration' ],
+		support: [ 'typography', '__experimentalTextDecoration' ],
 		useEngine: true,
 	},
 	textTransform: {
 		value: [ 'typography', 'textTransform' ],
-		support: [ 'typography', 'textTransform' ],
+		support: [ 'typography', '__experimentalTextTransform' ],
 		useEngine: true,
 	},
 	letterSpacing: {
 		value: [ 'typography', 'letterSpacing' ],
-		support: [ 'typography', 'letterSpacing' ],
+		support: [ 'typography', '__experimentalLetterSpacing' ],
 		useEngine: true,
 	},
 	writingMode: {
@@ -296,13 +296,4 @@ export const __EXPERIMENTAL_PATHS_WITH_OVERRIDE = {
 	'dimensions.aspectRatios': true,
 	'typography.fontSizes': true,
 	'spacing.spacingSizes': true,
-};
-
-export const TYPOGRAPHY_SUPPORTS_EXPERIMENTAL_TO_STABLE = {
-	__experimentalFontFamily: 'fontFamily',
-	__experimentalFontStyle: 'fontStyle',
-	__experimentalFontWeight: 'fontWeight',
-	__experimentalLetterSpacing: 'letterSpacing',
-	__experimentalTextDecoration: 'textDecoration',
-	__experimentalTextTransform: 'textTransform',
 };

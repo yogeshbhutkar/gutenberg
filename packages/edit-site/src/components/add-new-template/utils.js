@@ -3,7 +3,6 @@
  */
 import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
-import { store as editorStore } from '@wordpress/editor';
 import { decodeEntities } from '@wordpress/html-entities';
 import { useMemo, useCallback } from '@wordpress/element';
 import { __, _x, sprintf } from '@wordpress/i18n';
@@ -37,7 +36,7 @@ const getValueFromObjectPath = ( object, path ) => {
  *
  * @param {Object[]} entities The array of entities.
  * @param {string}   path     The path to map a `name` property from the entity.
- * @return {IHasNameAndId[]} An array of enitities that now implement the `IHasNameAndId` interface.
+ * @return {IHasNameAndId[]} An array of entities that now implement the `IHasNameAndId` interface.
  */
 export const mapToIHasNameAndId = ( entities, path ) => {
 	return ( entities || [] ).map( ( entity ) => ( {
@@ -69,7 +68,8 @@ export const useExistingTemplates = () => {
 export const useDefaultTemplateTypes = () => {
 	return useSelect(
 		( select ) =>
-			select( editorStore ).__experimentalGetDefaultTemplateTypes(),
+			select( coreStore ).getEntityRecord( 'root', '__unstableBase' )
+				?.default_template_types || [],
 		[]
 	);
 };

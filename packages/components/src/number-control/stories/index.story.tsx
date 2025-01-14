@@ -23,7 +23,7 @@ const meta: Meta< typeof NumberControl > = {
 		step: { control: { type: 'text' } },
 		suffix: { control: { type: 'text' } },
 		type: { control: { type: 'text' } },
-		value: { control: null },
+		value: { control: false },
 	},
 	parameters: {
 		controls: { expanded: true },
@@ -62,4 +62,5 @@ const Template: StoryFn< typeof NumberControl > = ( {
 export const Default = Template.bind( {} );
 Default.args = {
 	label: 'Value',
+	__next40pxDefaultSize: true,
 };

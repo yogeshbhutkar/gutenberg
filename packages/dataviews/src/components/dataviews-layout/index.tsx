@@ -21,13 +21,13 @@ export default function DataViewsLayout() {
 		data,
 		fields,
 		getItemId,
+		getItemLevel,
 		isLoading,
 		view,
 		onChangeView,
 		selection,
 		onChangeSelection,
 		setOpenedFilter,
-		density,
 		onClickItem,
 		isItemClickable,
 	} = useContext( DataViewsContext );
@@ -41,6 +41,7 @@ export default function DataViewsLayout() {
 			data={ data }
 			fields={ fields }
 			getItemId={ getItemId }
+			getItemLevel={ getItemLevel }
 			isLoading={ isLoading }
 			onChangeView={ onChangeView }
 			onChangeSelection={ onChangeSelection }
@@ -49,7 +50,6 @@ export default function DataViewsLayout() {
 			onClickItem={ onClickItem }
 			isItemClickable={ isItemClickable }
 			view={ view }
-			density={ density }
 		/>
 	);
 }

@@ -6,7 +6,12 @@ import { createSelector, createRegistrySelector } from '@wordpress/data';
 /**
  * Internal dependencies
  */
-import { getDefaultTemplateId, getEntityRecord, type State } from './selectors';
+import {
+	canUser,
+	getDefaultTemplateId,
+	getEntityRecord,
+	type State,
+} from './selectors';
 import { STORE_NAME } from './name';
 import { unlock } from './lock-unlock';
 
@@ -57,7 +62,12 @@ export const getBlockPatternsForPostType = createRegistrySelector(
  */
 export const getEntityRecordsPermissions = createRegistrySelector( ( select ) =>
 	createSelector(
-		( state: State, kind: string, name: string, ids: string[] ) => {
+		(
+			state: State,
+			kind: string,
+			name: string,
+			ids: string | string[]
+		) => {
 			const normalizedIds = Array.isArray( ids ) ? ids : [ ids ];
 			return normalizedIds.map( ( id ) => ( {
 				delete: select( STORE_NAME ).canUser( 'delete', {
@@ -129,6 +139,13 @@ interface SiteData {
 export const getHomePage = createRegistrySelector( ( select ) =>
 	createSelector(
 		() => {
+			const canReadSiteData = select( STORE_NAME ).canUser( 'read', {
+				kind: 'root',
+				name: 'site',
+			} );
+			if ( ! canReadSiteData ) {
+				return null;
+			}
 			const siteData = select( STORE_NAME ).getEntityRecord(
 				'root',
 				'site'
@@ -151,8 +168,10 @@ export const getHomePage = createRegistrySelector( ( select ) =>
 			return { postType: 'wp_template', postId: frontPageTemplateId };
 		},
 		( state ) => [
-			// @ts-expect-error
-			getEntityRecord( state, 'root', 'site' ),
+			canUser( state, 'read', {
+				kind: 'root',
+				name: 'site',
+			} ) && getEntityRecord( state, 'root', 'site' ),
 			getDefaultTemplateId( state, {
 				slug: 'front-page',
 			} ),
@@ -161,6 +180,13 @@ export const getHomePage = createRegistrySelector( ( select ) =>
 );
 
 export const getPostsPageId = createRegistrySelector( ( select ) => () => {
+	const canReadSiteData = select( STORE_NAME ).canUser( 'read', {
+		kind: 'root',
+		name: 'site',
+	} );
+	if ( ! canReadSiteData ) {
+		return null;
+	}
 	const siteData = select( STORE_NAME ).getEntityRecord( 'root', 'site' ) as
 		| SiteData
 		| undefined;

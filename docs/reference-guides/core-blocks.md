@@ -255,7 +255,7 @@ Hide and show additional content. ([Source](https://github.com/WordPress/gutenbe
 -	**Name:** core/details
 -	**Category:** text
 -	**Supports:** align (full, wide), anchor, color (background, gradients, link, text), interactivity (clientNavigation), layout (~~allowEditing~~), spacing (blockGap, margin, padding), typography (fontSize, lineHeight), ~~html~~
--	**Attributes:** showContent, summary
+-	**Attributes:** allowedBlocks, showContent, summary
 
 ## Embed
 
@@ -512,7 +512,7 @@ Display a list of all pages. ([Source](https://github.com/WordPress/gutenberg/tr
 -	**Name:** core/page-list
 -	**Category:** widgets
 -	**Allowed Blocks:** core/page-list-item
--	**Supports:** interactivity (clientNavigation), spacing (margin, padding), typography (fontSize, lineHeight), ~~html~~, ~~reusable~~
+-	**Supports:** color (background, gradients, link, text), interactivity (clientNavigation), spacing (margin, padding), typography (fontSize, lineHeight), ~~html~~, ~~reusable~~
 -	**Attributes:** isNested, parentPageID
 
 ## Page List Item
@@ -660,8 +660,8 @@ Contains the block elements used to render a post, like the title, date, feature
 
 -	**Name:** core/post-template
 -	**Category:** theme
--	**Parent:** core/query
--	**Supports:** align (full, wide), color (background, gradients, link, text), interactivity (clientNavigation), layout, spacing (blockGap), typography (fontSize, lineHeight), ~~html~~, ~~reusable~~
+-	**Ancestor:** core/query
+-	**Supports:** align (full, wide), color (background, gradients, link, text), interactivity (clientNavigation), layout, spacing (blockGap, margin, padding), typography (fontSize, lineHeight), ~~html~~, ~~reusable~~
 
 ## Post Terms
 
@@ -724,7 +724,7 @@ Contains the block elements used to render content when no query results are fou
 
 -	**Name:** core/query-no-results
 -	**Category:** theme
--	**Parent:** core/query
+-	**Ancestor:** core/query
 -	**Supports:** align, color (background, gradients, link, text), interactivity (clientNavigation), typography (fontSize, lineHeight), ~~html~~, ~~reusable~~
 
 ## Pagination
@@ -777,6 +777,16 @@ Display the query title. ([Source](https://github.com/WordPress/gutenberg/tree/t
 -	**Supports:** align (full, wide), color (background, gradients, text), interactivity (clientNavigation), spacing (margin, padding), typography (fontSize, lineHeight), ~~html~~
 -	**Attributes:** level, levelOptions, showPrefix, showSearchTerm, textAlign, type
 
+## Query Total
+
+Display the total number of results in a query. ([Source](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/query-total))
+
+-	**Name:** core/query-total
+-	**Category:** theme
+-	**Ancestor:** core/query
+-	**Supports:** align (full, wide), color (background, gradients, text), spacing (margin, padding), typography (fontSize, lineHeight), ~~html~~
+-	**Attributes:** displayType
+
 ## Quote
 
 Give quoted text visual emphasis. "In quoting others, we cite ourselves." — Julio Cortázar ([Source](https://github.com/WordPress/gutenberg/tree/trunk/packages/block-library/src/quote))
@@ -801,7 +811,7 @@ Display entries from any RSS or Atom feed. ([Source](https://github.com/WordPres
 
 -	**Name:** core/rss
 -	**Category:** widgets
--	**Supports:** align, interactivity (clientNavigation), ~~html~~
+-	**Supports:** align, color (background, gradients, link, text), interactivity (clientNavigation), ~~html~~
 -	**Attributes:** blockLayout, columns, displayAuthor, displayDate, displayExcerpt, excerptLength, feedURL, itemsToShow
 
 ## Search
@@ -820,7 +830,7 @@ Create a break between ideas or sections with a horizontal separator. ([Source](
 -	**Name:** core/separator
 -	**Category:** design
 -	**Supports:** align (center, full, wide), anchor, color (background, gradients, ~~enableContrastChecker~~, ~~text~~), interactivity (clientNavigation), spacing (margin)
--	**Attributes:** opacity
+-	**Attributes:** opacity, tagName
 
 ## Shortcode
 

@@ -2,6 +2,28 @@
 
 ## Unreleased
 
+## 10.15.0 (2025-01-02)
+
+### Enhancements
+
+-   Add support for WordPress multisite installations. Enabled via the new `multisite` environment config ([#67845](https://github.com/WordPress/gutenberg/pull/67845)).
+
+### Internal
+
+-   Refactored the code to use new API introduced together with `@inquirer/prompts` instead of legacy `inquirer` package ([#67877](https://github.com/WordPress/gutenberg/pull/67877)).
+
+## 10.14.0 (2024-12-11)
+
+### Enhancements
+
+-   Add phpMyAdmin as an optional service. Enabled via the new `phpmyadminPort` environment config, as well as env vars `WP_ENV_PHPMYADMIN_PORT` and `WP_ENV_TESTS_PHPMYADMIN_PORT` ([#67588](https://github.com/WordPress/gutenberg/pull/67588)).
+
+### Internal
+
+-   The bundled `rimraf` dependency has been updated from `^3.0.2` to `^5.0.10` ([#67708](https://github.com/WordPress/gutenberg/pull/67708)).
+
+## 10.13.0 (2024-11-27)
+
 ## 10.12.0 (2024-11-16)
 
 ## 10.11.0 (2024-10-30)
@@ -300,7 +322,7 @@
 
 ### Breaking Changes
 
--   `wp-env start` is now the only command which writes to the docker configuration files. Previously, running any command would also parse the config and then write it to the correct location. Now, other commands still parse the config, but they will not overwrite the confugiration which was set by wp-env start. This allows parameters to be passed to wp-env start which can affect the configuration.
+-   `wp-env start` is now the only command which writes to the docker configuration files. Previously, running any command would also parse the config and then write it to the correct location. Now, other commands still parse the config, but they will not overwrite the configuration which was set by wp-env start. This allows parameters to be passed to wp-env start which can affect the configuration.
 
 ### Enhancements
 

@@ -19,24 +19,37 @@ import { pipe, useCopyToClipboard } from '@wordpress/compose';
  * Internal dependencies
  */
 import BlockActions from '../block-actions';
-import __unstableCommentIconFill from '../../components/collab/block-comment-icon-slot';
+import CommentIconSlotFill from '../../components/collab/block-comment-icon-slot';
 import BlockHTMLConvertButton from './block-html-convert-button';
 import __unstableBlockSettingsMenuFirstItem from './block-settings-menu-first-item';
 import BlockSettingsMenuControls from '../block-settings-menu-controls';
 import BlockParentSelectorMenuItem from './block-parent-selector-menu-item';
 import { store as blockEditorStore } from '../../store';
 import { unlock } from '../../lock-unlock';
+import { useNotifyCopy } from '../../utils/use-notify-copy';
 
 const POPOVER_PROPS = {
 	className: 'block-editor-block-settings-menu__popover',
 	placement: 'bottom-start',
 };
 
-function CopyMenuItem( { clientIds, onCopy, label, shortcut } ) {
+function CopyMenuItem( {
+	clientIds,
+	onCopy,
+	label,
+	shortcut,
+	eventType = 'copy',
+} ) {
 	const { getBlocksByClientId } = useSelect( blockEditorStore );
+	const notifyCopy = useNotifyCopy();
 	const ref = useCopyToClipboard(
 		() => serialize( getBlocksByClientId( clientIds ) ),
-		onCopy
+		() => {
+			if ( onCopy && eventType === 'copy' ) {
+				onCopy();
+			}
+			notifyCopy( eventType, clientIds );
+		}
 	);
 	const copyMenuItemLabel = label ? label : __( 'Copy' );
 	return (
@@ -57,6 +70,7 @@ export function BlockSettingsDropdown( {
 	const currentClientId = block?.clientId;
 	const count = clientIds.length;
 	const firstBlockClientId = clientIds[ 0 ];
+
 	const {
 		firstParentClientId,
 		parentBlockType,
@@ -102,6 +116,7 @@ export function BlockSettingsDropdown( {
 		},
 		[ firstBlockClientId ]
 	);
+
 	const { getBlockOrder, getSelectedBlockClientIds } =
 		useSelect( blockEditorStore );
 
@@ -248,15 +263,13 @@ export function BlockSettingsDropdown( {
 											clientId={ firstBlockClientId }
 										/>
 									) }
-									{ ! isContentOnly && (
-										<CopyMenuItem
-											clientIds={ clientIds }
-											onCopy={ onCopy }
-											shortcut={ displayShortcut.primary(
-												'c'
-											) }
-										/>
-									) }
+									<CopyMenuItem
+										clientIds={ clientIds }
+										onCopy={ onCopy }
+										shortcut={ displayShortcut.primary(
+											'c'
+										) }
+									/>
 									{ canDuplicate && (
 										<MenuItem
 											onClick={ pipe(
@@ -295,7 +308,7 @@ export function BlockSettingsDropdown( {
 											</MenuItem>
 										</>
 									) }
-									<__unstableCommentIconFill.Slot
+									<CommentIconSlotFill.Slot
 										fillProps={ { onClose } }
 									/>
 								</MenuGroup>
@@ -305,20 +318,23 @@ export function BlockSettingsDropdown( {
 											clientIds={ clientIds }
 											onCopy={ onCopy }
 											label={ __( 'Copy styles' ) }
+											eventType="copyStyles"
 										/>
 										<MenuItem onClick={ onPasteStyles }>
 											{ __( 'Paste styles' ) }
 										</MenuItem>
 									</MenuGroup>
 								) }
-								<BlockSettingsMenuControls.Slot
-									fillProps={ {
-										onClose,
-										count,
-										firstBlockClientId,
-									} }
-									clientIds={ clientIds }
-								/>
+								{ ! isContentOnly && (
+									<BlockSettingsMenuControls.Slot
+										fillProps={ {
+											onClose,
+											count,
+											firstBlockClientId,
+										} }
+										clientIds={ clientIds }
+									/>
+								) }
 								{ typeof children === 'function'
 									? children( { onClose } )
 									: Children.map( ( child ) =>

@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## 4.15.0 (2025-01-02)
+
+## 4.14.0 (2024-12-11)
+
+## Enhancements
+
+-   The package now has built-in TypeScript definitions 🎉 ([#67416](https://github.com/WordPress/gutenberg/pull/67416))
+
+## 4.13.0 (2024-11-27)
+
 ## 4.12.0 (2024-11-16)
 
 ## 4.11.0 (2024-10-30)

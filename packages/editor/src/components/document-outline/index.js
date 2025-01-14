@@ -106,7 +106,7 @@ const isEmptyHeading = ( heading ) =>
  * @param {Function} props.onSelect                Function to be called when an outline item is selected
  * @param {boolean}  props.hasOutlineItemsDisabled Indicates whether the outline items are disabled.
  *
- * @return {Component} The component to be rendered.
+ * @return {React.ReactNode} The rendered component.
  */
 export default function DocumentOutline( {
 	onSelect,
@@ -168,7 +168,7 @@ export default function DocumentOutline( {
 						{ title }
 					</DocumentOutlineItem>
 				) }
-				{ headings.map( ( item, index ) => {
+				{ headings.map( ( item ) => {
 					// Headings remain the same, go up by one, or down by any amount.
 					// Otherwise there are missing levels.
 					const isIncorrectLevel =
@@ -184,7 +184,7 @@ export default function DocumentOutline( {
 
 					return (
 						<DocumentOutlineItem
-							key={ index }
+							key={ item.clientId }
 							level={ `H${ item.level }` }
 							isValid={ isValid }
 							isDisabled={ hasOutlineItemsDisabled }

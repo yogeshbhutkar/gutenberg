@@ -21,9 +21,11 @@ import {
 	Dropdown,
 	Flex,
 	FlexItem,
+	Button,
 } from '@wordpress/components';
 import { __, _x } from '@wordpress/i18n';
 import { useCallback, useMemo } from '@wordpress/element';
+import { reset as resetIcon } from '@wordpress/icons';
 
 /**
  * Internal dependencies
@@ -117,6 +119,41 @@ const LabeledColorIndicator = ( { indicator, label } ) => (
 	</HStack>
 );
 
+const renderToggle =
+	( duotone, resetDuotone, clearable ) =>
+	( { onToggle, isOpen } ) => {
+		const toggleProps = {
+			onClick: onToggle,
+			className: clsx( { 'is-open': isOpen } ),
+			'aria-expanded': isOpen,
+		};
+
+		return (
+			<ItemGroup
+				className="block-editor-panel-duotone-settings__dropdown"
+				isBordered
+				isSeparated
+			>
+				<Item as="button" { ...toggleProps }>
+					<LabeledColorIndicator
+						indicator={ duotone }
+						label={ __( 'Duotone' ) }
+					/>
+				</Item>
+				{ clearable && duotone && (
+					<Button
+						__next40pxDefaultSize
+						label={ __( 'Reset' ) }
+						className="block-editor-panel-duotone-settings__reset"
+						size="small"
+						icon={ resetIcon }
+						onClick={ resetDuotone }
+					/>
+				) }
+			</ItemGroup>
+		);
+	};
+
 export default function FiltersPanel( {
 	as: Wrapper = FiltersToolsPanel,
 	value,
@@ -125,6 +162,7 @@ export default function FiltersPanel( {
 	settings,
 	panelId,
 	defaultControls = DEFAULT_CONTROLS,
+	clearable = false,
 } ) {
 	const decodeValue = ( rawValue ) =>
 		getValueFromVariable( { settings }, '', rawValue );
@@ -182,24 +220,11 @@ export default function FiltersPanel( {
 					<Dropdown
 						popoverProps={ popoverProps }
 						className="block-editor-global-styles-filters-panel__dropdown"
-						renderToggle={ ( { onToggle, isOpen } ) => {
-							const toggleProps = {
-								onClick: onToggle,
-								className: clsx( { 'is-open': isOpen } ),
-								'aria-expanded': isOpen,
-							};
-
-							return (
-								<ItemGroup isBordered isSeparated>
-									<Item as="button" { ...toggleProps }>
-										<LabeledColorIndicator
-											indicator={ duotone }
-											label={ __( 'Duotone' ) }
-										/>
-									</Item>
-								</ItemGroup>
-							);
-						} }
+						renderToggle={ renderToggle(
+							duotone,
+							resetDuotone,
+							clearable
+						) }
 						renderContent={ () => (
 							<DropdownContentWrapper paddingSize="small">
 								<MenuGroup label={ __( 'Duotone' ) }>

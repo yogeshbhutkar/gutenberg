@@ -143,6 +143,7 @@ function DuotonePanelPure( { style, setAttributes, name } ) {
 						setAttributes( { style: newStyle } );
 					} }
 					settings={ settings }
+					clearable
 				/>
 			</InspectorControls>
 			<BlockControls group="block" __experimentalShareWithChildBlocks>

@@ -75,3 +75,28 @@
 	/*rtl:ignore*/
 	direction: ltr;
 }
+
+.block-editor-panel-duotone-settings__dropdown {
+	position: relative;
+}
+
+.block-editor-panel-duotone-settings__reset {
+	position: absolute;
+	right: 0;
+	top: $grid-unit;
+	margin: auto $grid-unit auto;
+	opacity: 0;
+	transition: opacity 0.1s ease-in-out;
+	@include reduce-motion("transition");
+
+	.block-editor-panel-duotone-settings__dropdown:hover + &,
+	&:focus,
+	&:hover {
+		opacity: 1;
+	}
+
+	@media (hover: none) {
+		// Show reset button on devices that do not support hover.
+		opacity: 1;
+	}
+}

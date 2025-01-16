@@ -27,11 +27,12 @@ export default function DataViewsFooter() {
 	const hasBulkActions =
 		useSomeItemHasAPossibleBulkAction( actions, data ) &&
 		[ LAYOUT_TABLE, LAYOUT_GRID ].includes( view.type );
+	const currentPage = view.page ?? 1;
 
 	if (
 		! totalItems ||
 		! totalPages ||
-		( totalPages <= 1 && ! hasBulkActions )
+		( totalPages <= 1 && currentPage <= totalPages && ! hasBulkActions )
 	) {
 		return null;
 	}

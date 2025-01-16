@@ -6,7 +6,12 @@ import {
 	__experimentalHStack as HStack,
 	SelectControl,
 } from '@wordpress/components';
-import { createInterpolateElement, memo, useContext } from '@wordpress/element';
+import {
+	createInterpolateElement,
+	memo,
+	useContext,
+	useEffect,
+} from '@wordpress/element';
 import { sprintf, __, _x, isRTL } from '@wordpress/i18n';
 import { next, previous } from '@wordpress/icons';
 
@@ -20,13 +25,25 @@ function DataViewsPagination() {
 		view,
 		onChangeView,
 		paginationInfo: { totalItems = 0, totalPages },
+		data,
 	} = useContext( DataViewsContext );
+
+	const currentPage = view.page ?? 1;
+
+	// If the current page is not the first page, and there are no items on the current page, go to the previous page.
+	useEffect( () => {
+		if ( currentPage !== 1 && ! data.length ) {
+			onChangeView( {
+				...view,
+				page: currentPage - 1,
+			} );
+		}
+	}, [ data.length, currentPage, view, onChangeView ] );
 
 	if ( ! totalItems || ! totalPages ) {
 		return null;
 	}
 
-	const currentPage = view.page ?? 1;
 	const pageSelectOptions = Array.from( Array( totalPages ) ).map(
 		( _, i ) => {
 			const page = i + 1;

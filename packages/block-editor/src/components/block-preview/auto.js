@@ -39,13 +39,13 @@ function ScaledBlockPreview( {
 		};
 	}, [] );
 
-	// Avoid scrollbars for pattern previews.
+	// Avoid scrollbars and hide block editor warnings for pattern previews.
 	const editorStyles = useMemo( () => {
 		if ( styles ) {
 			return [
 				...styles,
 				{
-					css: 'body{height:auto;overflow:hidden;border:none;padding:0;}',
+					css: 'body{height:auto;overflow:hidden;border:none;padding:0;} .block-editor-warning{display:none;} .is-root-container .block-editor-block-list__block.has-warning:after{background:none;}',
 					__unstableType: 'presets',
 				},
 				...additionalStyles,

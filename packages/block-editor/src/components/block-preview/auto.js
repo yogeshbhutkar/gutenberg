@@ -20,7 +20,9 @@ const MemoizedBlockList = memo( BlockList );
 const MAX_HEIGHT = 2000;
 const EMPTY_ADDITIONAL_STYLES = [];
 const PREVIEW_STYLES = {
-	css: 'body{height:auto;overflow:hidden;border:none;padding:0;} .block-editor-warning{display:none;} .is-root-container .block-editor-block-list__block.has-warning:after{background:none;}',
+	css: `body{height:auto;overflow:hidden;border:none;padding:0;}
+		.block-editor-warning{display:none;}
+		.is-root-container .block-editor-block-list__block.has-warning:after{background:none;}`,
 	__unstableType: 'presets',
 };
 

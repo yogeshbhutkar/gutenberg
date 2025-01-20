@@ -150,10 +150,22 @@ class WP_Navigation_Block_Renderer {
 	 */
 	private static function get_markup_for_inner_block( $inner_block ) {
 		$inner_block_content = $inner_block->render();
-		if ( ! empty( $inner_block_content ) ) {
-			if ( static::does_block_need_a_list_item_wrapper( $inner_block ) ) {
-				return '<li class="wp-block-navigation-item">' . $inner_block_content . '</li>';
+
+		if ( empty( $inner_block_content ) ) {
+			return $inner_block_content;
+		}
+
+		if ( static::does_block_need_a_list_item_wrapper( $inner_block ) ) {
+			$style        = '';
+			$self_stretch = $inner_block->parsed_block['attrs']['style']['layout']['selfStretch'] ?? null;
+
+			// If the block is set to fill then set the flex-grow to 1.
+			if ( 'fill' === $self_stretch ) {
+				$style = 'flex-grow: 1;';
 			}
+
+			$style_attribute = $style ? sprintf( ' style="%s"', $style ) : '';
+			return sprintf( '<li class="wp-block-navigation-item" %1$s>%2$s</li>', $style_attribute, $inner_block_content );
 		}
 
 		return $inner_block_content;

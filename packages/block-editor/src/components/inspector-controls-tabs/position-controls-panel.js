@@ -17,8 +17,8 @@ import { default as InspectorControls } from '../inspector-controls';
 import { store as blockEditorStore } from '../../store';
 
 const PositionControlsPanel = () => {
-	const { selectedClientIDs, positionAttribute, isShownByDefault } =
-		useSelect( ( select ) => {
+	const { selectedClientIDs, hasPositionAttribute } = useSelect(
+		( select ) => {
 			const { getBlocksByClientId, getSelectedBlockClientIds } =
 				select( blockEditorStore );
 
@@ -29,13 +29,13 @@ const PositionControlsPanel = () => {
 
 			return {
 				selectedClientIDs: selectedBlockClientIds,
-				positionAttribute:
-					selectedBlocks?.[ 0 ]?.attributes?.style?.position?.type,
-				isShownByDefault: selectedBlocks?.some(
+				hasPositionAttribute: selectedBlocks?.some(
 					( { attributes } ) => !! attributes?.style?.position?.type
 				),
 			};
-		}, [] );
+		},
+		[]
+	);
 
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 
@@ -56,9 +56,9 @@ const PositionControlsPanel = () => {
 			resetAll={ resetPosition }
 		>
 			<ToolsPanelItem
-				isShownByDefault={ isShownByDefault }
+				isShownByDefault={ hasPositionAttribute }
 				label={ __( 'Position' ) }
-				hasValue={ () => !! positionAttribute }
+				hasValue={ () => !! hasPositionAttribute }
 				onDeselect={ resetPosition }
 			>
 				<InspectorControls.Slot group="position" />

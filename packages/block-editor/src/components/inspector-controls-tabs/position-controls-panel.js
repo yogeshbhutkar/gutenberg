@@ -19,26 +19,19 @@ import { store as blockEditorStore } from '../../store';
 const PositionControlsPanel = () => {
 	const { selectedClientIDs, positionAttribute, isShownByDefault } =
 		useSelect( ( select ) => {
-			const {
-				getBlocksByClientId,
-				getSelectedBlockClientIds,
-				getBlockAttributes,
-			} = select( blockEditorStore );
+			const { getBlocksByClientId, getSelectedBlockClientIds } =
+				select( blockEditorStore );
 
 			const selectedBlockClientIds = getSelectedBlockClientIds();
-			const multiSelectedBlocks = getBlocksByClientId(
+			const selectedBlocks = getBlocksByClientId(
 				selectedBlockClientIds
-			);
-
-			// If multiple blocks are selected, the position value will be the value of the first block.
-			const blockAttributes = getBlockAttributes(
-				selectedBlockClientIds[ 0 ]
 			);
 
 			return {
 				selectedClientIDs: selectedBlockClientIds,
-				positionAttribute: blockAttributes?.style?.position?.type,
-				isShownByDefault: multiSelectedBlocks.some(
+				positionAttribute:
+					selectedBlocks?.[ 0 ]?.attributes?.style?.position?.type,
+				isShownByDefault: selectedBlocks?.some(
 					( { attributes } ) => !! attributes?.style?.position?.type
 				),
 			};

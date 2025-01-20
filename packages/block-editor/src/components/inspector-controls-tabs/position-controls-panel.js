@@ -17,26 +17,37 @@ import { default as InspectorControls } from '../inspector-controls';
 import { store as blockEditorStore } from '../../store';
 
 const PositionControlsPanel = () => {
-	// Determine whether the panel should be expanded.
-	const { selectedClientID, positionAttribute } = useSelect( ( select ) => {
-		const { getSelectedBlockClientIds, getBlockAttributes } =
-			select( blockEditorStore );
+	const { selectedClientIDs, positionAttribute, isShownByDefault } =
+		useSelect( ( select ) => {
+			const {
+				getBlocksByClientId,
+				getSelectedBlockClientIds,
+				getBlockAttributes,
+			} = select( blockEditorStore );
 
-		const clientIds = getSelectedBlockClientIds();
+			const selectedBlockClientIds = getSelectedBlockClientIds();
+			const multiSelectedBlocks = getBlocksByClientId(
+				selectedBlockClientIds
+			);
 
-		// If multiple blocks are selected, prioritize the first block.
-		const blockAttributes = getBlockAttributes( clientIds[ 0 ] );
+			// If multiple blocks are selected, the position value will be the value of the first block.
+			const blockAttributes = getBlockAttributes(
+				selectedBlockClientIds[ 0 ]
+			);
 
-		return {
-			selectedClientID: clientIds[ 0 ],
-			positionAttribute: blockAttributes?.style?.position?.type,
-		};
-	}, [] );
+			return {
+				selectedClientIDs: selectedBlockClientIds,
+				positionAttribute: blockAttributes?.style?.position?.type,
+				isShownByDefault: multiSelectedBlocks.some(
+					( { attributes } ) => !! attributes?.style?.position?.type
+				),
+			};
+		}, [] );
 
 	const { updateBlockAttributes } = useDispatch( blockEditorStore );
 
 	function resetPosition() {
-		updateBlockAttributes( selectedClientID, {
+		updateBlockAttributes( selectedClientIDs, {
 			style: {
 				position: {
 					type: undefined,
@@ -52,7 +63,7 @@ const PositionControlsPanel = () => {
 			resetAll={ resetPosition }
 		>
 			<ToolsPanelItem
-				isShownByDefault
+				isShownByDefault={ isShownByDefault }
 				label={ __( 'Position' ) }
 				hasValue={ () => !! positionAttribute }
 				onDeselect={ resetPosition }

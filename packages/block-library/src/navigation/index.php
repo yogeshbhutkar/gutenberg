@@ -165,7 +165,7 @@ class WP_Navigation_Block_Renderer {
 			}
 
 			$style_attribute = $style ? sprintf( ' style="%s"', $style ) : '';
-			return sprintf( '<li class="wp-block-navigation-item" %1$s>%2$s</li>', $style_attribute, $inner_block_content );
+			return sprintf( '<li class="wp-block-navigation-item"%1$s>%2$s</li>', $style_attribute, $inner_block_content );
 		}
 
 		return $inner_block_content;

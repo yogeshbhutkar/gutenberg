@@ -27,6 +27,8 @@
 				"inherit": true,
 				"taxQuery": null,
 				"parents": [],
+				"currentPostAsParent": false,
+				"directChildren": true,
 				"format": []
 			}
 		},

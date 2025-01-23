@@ -2,9 +2,14 @@
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { FormTokenField } from '@wordpress/components';
+import {
+	FormTokenField,
+	ToggleControl,
+	__experimentalVStack as VStack,
+} from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 import { store as coreStore } from '@wordpress/core-data';
+import { store as editorStore } from '@wordpress/editor';
 import { useState, useEffect, useMemo } from '@wordpress/element';
 import { useDebounce } from '@wordpress/compose';
 
@@ -20,7 +25,13 @@ const BASE_QUERY = {
 	context: 'view',
 };
 
-function ParentControl( { parents, postType, onChange } ) {
+function ParentControl( {
+	parents,
+	currentPostAsParent,
+	directChildren,
+	postType,
+	onChange,
+} ) {
 	const [ search, setSearch ] = useState( '' );
 	const [ value, setValue ] = useState( EMPTY_ARRAY );
 	const [ suggestions, setSuggestions ] = useState( EMPTY_ARRAY );
@@ -67,6 +78,12 @@ function ParentControl( { parents, postType, onChange } ) {
 		},
 		[ parents ]
 	);
+
+	const currentPostId = useSelect( ( select ) => {
+		const { getCurrentPostId } = select( editorStore );
+		return getCurrentPostId();
+	} );
+
 	// Update the `value` state only after the selectors are resolved
 	// to avoid emptying the input when we're changing parents.
 	useEffect( () => {
@@ -93,6 +110,14 @@ function ParentControl( { parents, postType, onChange } ) {
 		}, [] );
 		setValue( sanitizedValue );
 	}, [ parents, currentParents ] );
+
+	useEffect( () => {
+		if ( currentPostAsParent && currentPostId ) {
+			onChange( { parents: [ currentPostId ] } );
+		} else {
+			onChange( { parents: [] } );
+		}
+	}, [ currentPostAsParent, currentPostId ] );
 
 	const entitiesInfo = useMemo( () => {
 		if ( ! searchResults?.length ) {
@@ -131,16 +156,36 @@ function ParentControl( { parents, postType, onChange } ) {
 		onChange( { parents: ids } );
 	};
 	return (
-		<FormTokenField
-			__next40pxDefaultSize
-			label={ __( 'Parents' ) }
-			value={ value }
-			onInputChange={ debouncedSearch }
-			suggestions={ suggestions }
-			onChange={ onParentChange }
-			__experimentalShowHowTo={ false }
-			__nextHasNoMarginBottom
-		/>
+		<VStack spacing={ 4 }>
+			<ToggleControl
+				__nextHasNoMarginBottom
+				label={ __( 'Set current post as Parent' ) }
+				checked={ currentPostAsParent }
+				onChange={ () => {
+					onChange( { currentPostAsParent: ! currentPostAsParent } );
+				} }
+			/>
+			<ToggleControl
+				__nextHasNoMarginBottom
+				label={ __( 'Only display direct children' ) }
+				checked={ directChildren }
+				onChange={ () => {
+					onChange( { directChildren: ! directChildren } );
+				} }
+			/>
+			{ ! currentPostAsParent && (
+				<FormTokenField
+					__next40pxDefaultSize
+					label={ __( 'Parents' ) }
+					value={ value }
+					onInputChange={ debouncedSearch }
+					suggestions={ suggestions }
+					onChange={ onParentChange }
+					__experimentalShowHowTo={ false }
+					__nextHasNoMarginBottom
+				/>
+			) }
+		</VStack>
 	);
 }
 

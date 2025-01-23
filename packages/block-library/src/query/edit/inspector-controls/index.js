@@ -53,6 +53,8 @@ export default function QueryInspectorControls( props ) {
 		inherit,
 		taxQuery,
 		parents,
+		currentPostAsParent,
+		directChildren,
 		format,
 	} = query;
 	const allowedControls = useAllowedControls( attributes );
@@ -87,6 +89,8 @@ export default function QueryInspectorControls( props ) {
 		}
 		// We need to reset `parents` because they are tied to each post type.
 		updateQuery.parents = [];
+		updateQuery.currentPostAsParent = false;
+		updateQuery.directChildren = true;
 		// Post types can register post format support with `add_post_type_support`.
 		// But we need to reset the `format` property when switching to post types
 		// that do not support post formats.
@@ -401,6 +405,8 @@ export default function QueryInspectorControls( props ) {
 						setQuery( {
 							author: '',
 							parents: [],
+							currentPostAsParent: false,
+							directChildren: true,
 							search: '',
 							taxQuery: null,
 							format: [],
@@ -456,10 +462,18 @@ export default function QueryInspectorControls( props ) {
 						<ToolsPanelItem
 							hasValue={ () => !! parents?.length }
 							label={ __( 'Parents' ) }
-							onDeselect={ () => setQuery( { parents: [] } ) }
+							onDeselect={ () =>
+								setQuery( {
+									parents: [],
+									currentPostAsParent: false,
+									directChildren: true,
+								} )
+							}
 						>
 							<ParentControl
 								parents={ parents }
+								currentPostAsParent={ currentPostAsParent }
+								directChildren={ directChildren }
 								postType={ postType }
 								onChange={ setQuery }
 							/>

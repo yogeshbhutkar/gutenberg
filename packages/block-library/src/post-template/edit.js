@@ -89,6 +89,7 @@ export default function PostTemplateEdit( {
 			inherit,
 			taxQuery,
 			parents,
+			directChildren,
 			pages,
 			format,
 			// We gather extra query args to pass to the REST API call.
@@ -172,6 +173,10 @@ export default function PostTemplateEdit( {
 			}
 			if ( parents?.length ) {
 				query.parent = parents;
+
+				if ( directChildren ) {
+					query.include_children = ! directChildren;
+				}
 			}
 			if ( format?.length ) {
 				query.format = format;
@@ -229,6 +234,7 @@ export default function PostTemplateEdit( {
 			templateSlug,
 			taxQuery,
 			parents,
+			directChildren,
 			format,
 			restQueryArgs,
 			previewPostType,

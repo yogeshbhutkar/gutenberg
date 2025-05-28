@@ -1,7 +1,7 @@
 /**
  * WordPress dependencies
  */
-import { __, _x, sprintf } from '@wordpress/i18n';
+import { __, _x, sprintf, isRTL } from '@wordpress/i18n';
 import {
 	NavigableMenu,
 	MenuItem,
@@ -22,7 +22,12 @@ import {
 	MediaUploadCheck,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { upload, media } from '@wordpress/icons';
+import {
+	upload,
+	media,
+	chevronLeftSmall,
+	chevronRightSmall,
+} from '@wordpress/icons';
 import { useSelect } from '@wordpress/data';
 import { useState, useRef, useEffect } from '@wordpress/element';
 import { getFilename } from '@wordpress/url';
@@ -81,9 +86,18 @@ function SingleTrackEditor( { track, onChange, onClose, onRemove } ) {
 			className="block-library-video-tracks-editor__single-track-editor"
 			spacing="4"
 		>
-			<span className="block-library-video-tracks-editor__single-track-editor-edit-track-label">
-				{ __( 'Edit track' ) }
-			</span>
+			<HStack justify="flex-start">
+				<Button
+					__next40pxDefaultSize
+					icon={ isRTL() ? chevronRightSmall : chevronLeftSmall }
+					onClick={ onClose }
+					size="small"
+					label={ __( 'Back' ) }
+				/>
+				<span className="block-library-video-tracks-editor__single-track-editor-edit-track-label">
+					{ __( 'Edit track' ) }
+				</span>
+			</HStack>
 			<span>
 				{ __( 'File' ) }: <b>{ fileName }</b>
 			</span>
@@ -130,45 +144,15 @@ function SingleTrackEditor( { track, onChange, onClose, onRemove } ) {
 						} );
 					} }
 				/>
-				<HStack className="block-library-video-tracks-editor__single-track-editor-buttons-container">
-					<Button
-						__next40pxDefaultSize
-						isDestructive
-						variant="link"
-						onClick={ onRemove }
-					>
-						{ __( 'Remove track' ) }
-					</Button>
-					<Button
-						__next40pxDefaultSize
-						variant="primary"
-						onClick={ () => {
-							const changes = {};
-							let hasChanges = false;
-							if ( label === '' ) {
-								changes.label = __( 'English' );
-								hasChanges = true;
-							}
-							if ( srcLang === '' ) {
-								changes.srcLang = 'en';
-								hasChanges = true;
-							}
-							if ( track.kind === undefined ) {
-								changes.kind = DEFAULT_KIND;
-								hasChanges = true;
-							}
-							if ( hasChanges ) {
-								onChange( {
-									...track,
-									...changes,
-								} );
-							}
-							onClose();
-						} }
-					>
-						{ __( 'Apply' ) }
-					</Button>
-				</HStack>
+				<Button
+					__next40pxDefaultSize
+					isDestructive
+					variant="tertiary"
+					onClick={ onRemove }
+					className="block-library-video-tracks-editor__single-track-editor-remove-track-button"
+				>
+					{ __( 'Remove track' ) }
+				</Button>
 			</VStack>
 		</VStack>
 	);
